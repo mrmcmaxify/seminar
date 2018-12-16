@@ -5,6 +5,10 @@
 				show_404();
 			}
 			$data['title'] = ucfirst($page);
+			$data['seminar']= $this->seminar_model->get_seminare();
+			
+		
+			
 			$this->load->view('templates/header');
 			$this->load->view('pages/'.$page, $data);
 			$this->load->view('templates/footer');
