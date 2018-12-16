@@ -1,11 +1,11 @@
 <?php
-    class seminar_model extends CI_Model{
+    class fristen_model extends CI_Model{
         public function __construct(){
             $this->load->database();
         }
         
-        public function get_seminare(){
-            $query = $this->db->get('seminar');
+        public function get_fristen(){
+            $query = $this->db->get('fristen');
             return $query->result_array();
         }
     }
