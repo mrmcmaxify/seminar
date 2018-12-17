@@ -1,44 +1,5 @@
-<h2><?= $title ?></h2>
 
-<p>Willkommen!</p>
-
-<form>
-  <div class="form-group">
-    <label for="exampleInputEmail1">Email-Adresse</label>
-    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="E-Mail">
-    <small id="emailHelp" class="form-text text-muted">Bitte universitäre E-Mail-Adresse eingeben.</small>
-  </div>
-  <div class="form-group">
-    <label for="exampleInputPassword1">Passwort</label>
-    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Passwort">
-  </div>
-  
-  <button type="submit" class="btn btn-primary">Anmelden</button>
-</form>
-
-<table class="table">
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">Frist</th>
-      <th scope="col">Von</th>
-      <th scope="col">Bis</th>
-      
-    </tr>
-  </thead>
-  <tbody>
-    <?php foreach ($fristen as $frist) : ?>
-    <tr>
-      <th scope="row"> <?php echo $frist['Name']; ?> </th>
-      <td><?php echo $frist['Datum']; ?></td>
-      
-      
-    </tr>
-<?php endforeach; ?>
-  </tbody>
-</table>
-
-
-
+<h4>Verfügbare Seminare:</h4>
 <table class="table">
   <thead class="thead-dark">
     <tr>
@@ -60,5 +21,28 @@
   </tbody>
 </table>
 
+</br></br>
 
+<h4>Fristen der Seminarvergabe:</h4>
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Frist</th>
+      <th scope="col">Von</th>
+      <th scope="col">Bis</th>
+      
+    </tr>
+  </thead>
+  <tbody>
+    <?php foreach ($fristen as $frist) : ?>
+    <tr>
+      <th scope="row"> <?php echo $frist['Name']; ?> </th>
+      <td><?php echo $frist['Von']; ?></td>
+      <td><?php echo $frist['Bis']; ?></td>
+      
+      
+    </tr>
+<?php endforeach; ?>
+  </tbody>
+</table>
 
