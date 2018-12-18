@@ -4,16 +4,14 @@
             //User data array(benutzeraccount)
             $data = array(
                 'e-mail' => $this->input->post('e-mail'),
-                'password' => $enc_password,
+                'passwort' => $enc_password,
                 'rolle' => "student"
 
             );
             
-            //insert user(benutzeraccount)
-            return $this->db->insert('benutzeraccount', $data);
 
-            //User data array(student)
-            $data1 = array(
+             //User data array(student)
+             $data1 = array(
                 'e-mail' => $this->input->post('e-mail'),
                 'vorname' => $this->input->post('vorname'),
                 'name' => $this->input->post('name'),
@@ -23,8 +21,39 @@
                 'hisqis' => $this->input->post('hisqis'),
             );
 
-            //insert user (student)
+            //insert user(benutzeraccount)
+            $this->db->insert('benutzeraccount', $data);
             return $this->db->insert('student', $data1);
+
+           
+
+        }
+
+
+        //Log user in
+        public function login($email, $password){
+            //validate
+            $this->db->where('E-Mail', $email);
+            $this->db->where('Passwort', $password);
+
+            $result = $this->db->get('benutzeraccount');
+
+            if($result->num_rows() == 1){
+                return true;
+            }else{
+                return false;
+            }
+        }
+
+
+        //Check email exists
+        public function check_email_exists($email){
+            $query = $this->db->get_where('benutzeraccount', array('E-Mail' => $email));
+            if(empty($query->row_array())){
+                return true;
+            }else{
+                return false;
+            }
 
         }
     }

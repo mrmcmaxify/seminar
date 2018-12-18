@@ -5,7 +5,7 @@
         public function register(){
             $data['title']= 'Sign Up';
 
-            $this->form_validation->set_rules('e-mail', 'Name', 'required');
+            $this->form_validation->set_rules('e-mail', 'Name', 'required|callback_check_email_exists');
             $this->form_validation->set_rules('password', 'Passwort', 'required');
             $this->form_validation->set_rules('password2', 'Passwort bestätigen', 'matches[password]');
             $this->form_validation->set_rules('vorname', 'Vorname', 'required');
@@ -18,7 +18,7 @@
             if($this->form_validation->run() === FALSE){
                 $this->load->view('templates/header');
                 $this->load->view('users/register', $data);
-                $this->load->view('templates/header');
+                $this->load->view('templates/footer');
 
 
             }else{
@@ -33,6 +33,65 @@
                 redirect('startseite');
             }
        
+        }
+        //User Log in
+        public function login(){
+            $data['title']= 'Sign In';
+
+            $this->form_validation->set_rules('e-mail', 'E-Mail', 'required');
+            $this->form_validation->set_rules('password', 'Passwort', 'required');
+            
+       
+            if($this->form_validation->run() === FALSE){
+                $this->load->view('templates/header');
+                $this->load->view('users/login', $data);
+                $this->load->view('templates/footer');
+
+
+            }else{
+                
+                //Get e-mail
+                $email = $this->input->post('e-mail');
+                //Get and encrypt password
+                $password = md5($this->input->post('password'));
+
+                //Login user
+                $user_id = $this->user_model->login($email, $password);
+
+                if($user_id){
+                    //Create session
+                    die('SUCCESS');
+
+
+                    //Set message
+                    $this->session->set_flashdata('user_loggedin', 'Sie sind jetzt eingeloggt!');
+
+                    redirect('startseite');
+                }else{
+                    $this->session->set_flashdata('login_failed', 'Login fehlgeschlagen');
+
+                    redirect('users/login');
+
+                }
+
+                //Set confirm message
+                $this->session->set_flashdata('user_loggedin', 'Sie sind jetzt eingeloggt!');
+
+                redirect('startseite');
+            }
+       
+        }
+
+        //Check if e-mail exists
+        public function check_email_exists($email){
+            $this->form_validation->set_message('check_email_exists', 'Diese E-Mail-Adresse ist bereits im System regstriert');
+
+            if($this->user_model->check_email_exists($email)){
+                return true;
+            }else{
+                return false;
+            }
+
         }
 
     }
