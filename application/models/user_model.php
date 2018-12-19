@@ -39,7 +39,7 @@
             $result = $this->db->get('benutzeraccount');
 
             if($result->num_rows() == 1){
-                return true;
+                return $result->row(0)->Rolle;
             }else{
                 return false;
             }

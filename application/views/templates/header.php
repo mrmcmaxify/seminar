@@ -17,9 +17,13 @@
   <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
     <div class="navbar-nav">
       <a class="nav-item nav-link active" href="<?php echo base_url(); ?>">Allgemeine Informationen <span class="sr-only">(current)</span></a>
+    </div>
+    <div class="navbar-nav navbar-right">
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>users/login">Login</a>
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>users/register">Registrieren</a>
-    
+      <?php if($this->session->userdata('logged_in')) : ?>
+      <a class="nav-item nav-link" href="<?php echo base_url(); ?>users/logout">Logout</a>
+      <?php endif; ?>
     </div>
   </div>
 </nav>
@@ -35,9 +39,13 @@
 <?php endif; ?>
 
 <?php if($this->session->flashdata('login_failed')): ?>
-  <?php echo '<p class="alert alert-success">'.$this->session->flashdata('login_failed').'</p>'; ?>
+  <?php echo '<p class="alert alert-danger">'.$this->session->flashdata('login_failed').'</p>'; ?>
 <?php endif; ?>
 
 <?php if($this->session->flashdata('user_loggedin')): ?>
   <?php echo '<p class="alert alert-success">'.$this->session->flashdata('user_loggedin').'</p>'; ?>
+<?php endif; ?>
+
+<?php if($this->session->flashdata('user_loggedout')): ?>
+  <?php echo '<p class="alert alert-success">'.$this->session->flashdata('user_loggedout').'</p>'; ?>
 <?php endif; ?>

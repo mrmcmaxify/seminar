@@ -56,11 +56,19 @@
                 $password = md5($this->input->post('password'));
 
                 //Login user
-                $user_id = $this->user_model->login($email, $password);
+                $user_rolle = $this->user_model->login($email, $password);
 
-                if($user_id){
+                if($user_rolle){
                     //Create session
-                    die('SUCCESS');
+                   $user_data = array(
+                    'user_email' => $email,
+                    'rolle' => $user_rolle,
+                    'logged_in' => true
+
+
+                   );
+
+                   $this->session->set_userdata($user_data);
 
 
                     //Set message
@@ -74,13 +82,25 @@
 
                 }
 
-                //Set confirm message
-                $this->session->set_flashdata('user_loggedin', 'Sie sind jetzt eingeloggt!');
-
-                redirect('startseite');
+                
             }
        
         }
+
+        //Log user out
+        public function logout(){
+            //unset user data
+            $this->session->unset_userdata('user_email');
+            $this->session->unset_userdata('rolle');
+            $this->session->unset_userdata('logged_in');
+
+            //Set logout message
+            $this->session->set_flashdata('user_loggedout', 'Sie sind jetzt ausgeloggt!');
+
+            redirect('startseite');
+
+        }
+
 
         //Check if e-mail exists
         public function check_email_exists($email){

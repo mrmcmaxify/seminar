@@ -23,6 +23,8 @@
 
 </br></br>
 
+
+
 <h4>Fristen der Seminarvergabe:</h4>
 <table class="table">
   <thead class="thead-dark">
