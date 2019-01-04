@@ -22,8 +22,10 @@
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>users/login">Login</a>
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>users/register">Registrieren</a>
       <?php if($this->session->userdata('logged_in')) : ?>
+      <a class="nav-item nav-link" href="<?php echo base_url(); ?>users/changepw">Passwort ändern</a>
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>users/logout">Logout</a>
       <?php endif; ?>
+      <a class="nav-item nav-link" href="<?php echo base_url(); ?>users/logout">Logout</a>
     </div>
   </div>
 </nav>
