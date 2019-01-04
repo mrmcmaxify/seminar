@@ -17,6 +17,9 @@
   <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
     <div class="navbar-nav">
       <a class="nav-item nav-link active" href="<?php echo base_url(); ?>">Allgemeine Informationen <span class="sr-only">(current)</span></a>
+      <?php if($this->session->userdata('rolle')==='admin') : ?>
+      <a class="nav-item nav-link" href="<?php echo base_url(); ?>users/logout">Logout</a>
+      <?php endif; ?>
     </div>
     <div class="navbar-nav navbar-right">
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>users/login">Login</a>
