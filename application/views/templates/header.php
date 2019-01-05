@@ -26,6 +26,7 @@
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>users/register">Registrieren</a>
       <?php if($this->session->userdata('logged_in')) : ?>
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>users/changepw">Passwort ändern</a>
+      <a class="nav-item nav-link" href="<?php echo base_url(); ?>admin/startseite_admin">Startseite Admin</a>
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>users/logout">Logout</a>
       <?php endif; ?>
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>users/logout">Logout</a>
@@ -53,4 +54,12 @@
 
 <?php if($this->session->flashdata('user_loggedout')): ?>
   <?php echo '<p class="alert alert-success">'.$this->session->flashdata('user_loggedout').'</p>'; ?>
+<?php endif; ?>
+
+<?php if($this->session->flashdata('pw_changed')): ?>
+  <?php echo '<p class="alert alert-success">'.$this->session->flashdata('pw_changed').'</p>'; ?>
+<?php endif; ?>
+
+<?php if($this->session->flashdata('pw_nomatch')): ?>
+  <?php echo '<p class="alert alert-danger">'.$this->session->flashdata('pw_nomatch').'</p>'; ?>
 <?php endif; ?>

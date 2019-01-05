@@ -1,6 +1,6 @@
 <?php  
     class User_model extends CI_Model{
-        public function register($enc_password){
+        public function register($enc_password, $filename){
             //User data array(benutzeraccount)
             $data = array(
                 'e-mail' => $this->input->post('e-mail'),
@@ -18,7 +18,7 @@
                 'fachsemester' => $this->input->post('fachsemester'),
                 'ba/ma' => $this->input->post('ba/ma'),
                 'ects' => $this->input->post('ects'),
-                'hisqis' => $this->input->post('hisqis'),
+                'hisqis' => $filename,
             );
 
             //insert user(benutzeraccount)
@@ -54,7 +54,21 @@
             }else{
                 return false;
             }
+        }
 
+        //Gibt den User als Objekt zur Passwortüberprüfung zurück
+        public function getCurrPassword($userid){
+            $query = $this->db->where(['e-mail'=>$userid])->get('benutzeraccount');
+              if($query->num_rows() > 0){
+                  return $query->row();
+              }
+            }
+        //Ändert das Passwort under Datenbank des Users mit Email $userid
+        public function updatePassword($enc_new_password, $userid){
+            $data = array(
+                'E-Mail' => $userid,
+                'Passwort' => $enc_new_password,
+            );
+            return $this->db->where('E-Mail', $userid)->update('benutzeraccount', $data);
         }
     }
-

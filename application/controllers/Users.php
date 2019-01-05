@@ -152,7 +152,50 @@
             }
 
         }
+       
+        //Ändert das Passwort
+        public function changepw(){
+            $data['title']= 'Change Password';
+
+            $this->form_validation->set_rules('password', 'Current Password');
+            //Überprüfung ob neues Passwort den Regeln entspricht
+            $this->form_validation->set_rules('newpassword', 'New Password', 'required|callback_valid_password');
+            //Überprüfung ob neue Passwörter übereinstimmen
+            $this->form_validation->set_rules('confpassword', 'Confirm Password', 'matches[newpassword]');
+            
+            //Lädt die View changepw
+            if($this->form_validation->run() === FALSE){
+                $this->load->view('templates/header');
+                $this->load->view('users/changepw', $data);
+                $this->load->view('templates/footer');
 
 
+            }
+            else{
+                
+                $cur_password = $this->input->post('password');
+                $new_password = $this->input->post('newpassword');
+                $conf_password = $this->input->post('confpassword');
+                $userid = $this->session->userdata('user_email');
+                $passwd = $this->user_model->getCurrPassword($userid);
+                $enc_cur_password = md5($this->input->post('password'));
+                //Überprüfung des aktuellen Passworts
+                if($passwd->Passwort == $enc_cur_password){
+                    $enc_new_password = md5($new_password);
+                    if ($this->user_model->updatePassword($enc_new_password, $userid)){
+                        $this->session->set_flashdata('pw_changed','Ihr Passwort wurde geändert.');
+                        redirect('startseite');
+                    }  
+                    else{
+                        echo 'Failed to update password';
+                    }
+                }
+                else{
+                    $this->session->set_flashdata('pw_nomatch', 'Das aktuelle Passwort ist falsch!');
 
+                    redirect('users/changepw');
+                }
+            }               
+        }
+       
     }
