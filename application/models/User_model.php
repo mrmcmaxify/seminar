@@ -1,6 +1,6 @@
 <?php  
     class User_model extends CI_Model{
-        public function register($enc_password){
+        public function register($enc_password, $filename){
             //User data array(benutzeraccount)
             $data = array(
                 'e-mail' => $this->input->post('e-mail'),
@@ -18,7 +18,7 @@
                 'fachsemester' => $this->input->post('fachsemester'),
                 'ba/ma' => $this->input->post('ba/ma'),
                 'ects' => $this->input->post('ects'),
-                'hisqis' => $this->input->post('hisqis'),
+                'hisqis' => $filename,
             );
 
             //insert user(benutzeraccount)
