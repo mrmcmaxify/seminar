@@ -5,15 +5,17 @@
 <?php echo form_open('users/changepw'); ?>
     <div class="row">
         <div class="col-md-4 col-md-offset-4">
-            <h1 class="text-center"><?php echo "Einloggen"; ?></h1>
+            <h1 class="text-center"><?php echo "Passwort ändern"; ?></h1>
             <div class="form-group">
-                <input type="email" name="e-mail" class="form-control" placeholder="E-Mail" required autofocus>
-            
+                <input type="password" name="password" class="form-control" placeholder="Aktuelles Passwort" required autofocus>
             </div>
             <div class="form-group">
-                <input type="password" name="password" class="form-control" placeholder="Passwort" required>
+                <input type="password" name="newpassword" class="form-control" placeholder="Neues Passwort" required>
             </div>
-            <button type="submit" class="btn btn-primary btn-block">Anmelden</button>
+            <div class="form-group">
+                <input type="password" name="confpassword" class="form-control" placeholder="Neues Passwort wiederholen" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Passwort ändern</button>
         </div>
     </div>
 <?php echo form_close(); ?>

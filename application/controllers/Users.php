@@ -152,7 +152,83 @@
             }
 
         }
+        // Funktion zum ändern des PWs mit der view changepw
+        /*public function changepw(){
+            $this->form_validation->set_rules('password', 'Current Password');
+            $this->form_validation->set_rules('newpass', 'New Password', 'required|callback_valid_password');
+            $this->form_validation->set_rules('confpassword', 'Confirm Password', 'matches[newpassword]');
+        
+            if($this->form_validation->run()){
+                $cur_password = $this->input->post('password');
+                $new_password = $this->input->post('newpass');
+                $conf_password = $this->input->post('confpassword');
+                $this->session->userdata('current_user_email');
+                $passwd = $this->user_model->getCurrPassword($email);
+                $enc_cur_password = md5($this->input->post('password'));
+                if($passwd->password == $enc_cur_password){
+                    $enc_new_password = md5($this->input->post('newpassword'));
+                    $this->user_model->updatePassword($enc_new_newpassword, $email);  
+                    $this->session->set_flashdata('pw_changed','Ihr Passwort wurde geändert.'); 
+                }
+                else {
+                $this->load->view('templates/header');
+                $this->load->view('users/changepw', $data);
+                $this->load->view('templates/footer');
+
+                $this->session->set_flashdata('pw_nomatch', 'Das aktuelle Passwort ist falsch!');
+                }
+            }
+        } */
+       
+        public function changepw(){
+            $data['title']= 'Change Password';
+
+            $this->form_validation->set_rules('password', 'Current Password');
+            $this->form_validation->set_rules('newpassword', 'New Password', 'required|callback_valid_password');
+            $this->form_validation->set_rules('confpassword', 'Confirm Password', 'matches[newpassword]');
+            
+       
+            if($this->form_validation->run() === FALSE){
+                $this->load->view('templates/header');
+                $this->load->view('users/changepw', $data);
+                $this->load->view('templates/footer');
 
 
+            }
+            else{
+                
+                $cur_password = $this->input->post('password');
+                $new_password = $this->input->post('newpassword');
+                $conf_password = $this->input->post('confpassword');
+                //$this->load->model('user_model');
+                $userid = $this->session->userdata('user_email');
+                $passwd = $this->user_model->getCurrPassword($userid);
+                $enc_cur_password = md5($this->input->post('password'));
+                /*print_r($cur_password.' - ');
+                print_r($new_password.' - ');
+                print_r($conf_password.' - ');
+                print_r($enc_cur_password.' - ');
+                print_r($passwd);
+                print_r($userid.' - ');
+                print_r($passwd->Passwort);*/
+                if($passwd->Passwort == $enc_cur_password){
+                    $enc_new_password = md5($new_password);
+                    /*print_r($enc_new_password);
+                    die();*/
+                    if ($this->user_model->updatePassword($enc_new_password, $userid)){
+                        $this->session->set_flashdata('pw_changed','Ihr Passwort wurde geändert.');
+                        redirect('startseite');
+                    }  
+                    else{
+                        echo 'Failed to update password';
+                    }
+                }
+                else{
+                    $this->session->set_flashdata('pw_nomatch', 'Das aktuelle Passwort ist falsch!');
 
+                    redirect('users/changepw');
+                }
+            }               
+        }
+       
     }
