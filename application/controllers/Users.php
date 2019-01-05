@@ -201,30 +201,8 @@
                 $this->load->view('users/changepw', $data);
                 $this->load->view('templates/footer');
 
-        public function do_upload()
-        {
-                $config['upload_path']          = './uploads/';
-                $config['allowed_types']        = 'pdf';
-                $config['max_size']             = 2048;
-                
 
-                $this->load->library('upload', $config);
-                $this->upload->do_upload();
-                $data = $this->upload->data();
-
-                if ( ! $this->upload->do_upload('hisqis'))
-                {
-                    $this->session->set_flashdata('upload', 'Schlecht');                  
-                }
-                else
-                {
-                    $this->session->set_flashdata('upload', 'Gut');               
-                }
-        }
-
-
-            }
-            else{
+            }else{
                 
                 $cur_password = $this->input->post('password');
                 $new_password = $this->input->post('newpassword');
