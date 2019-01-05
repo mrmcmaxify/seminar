@@ -228,5 +228,24 @@
                 }
             }               
         }
+
+        //Download HisQis-Auszug
+        public function download($pdf){
+
+            if(empty($pdf)){
+                $this->session->set_flashdata('download', 'Kein HisQis-Auszug vorhanden!');
+                redirect('dekan/startseite_dekan');
+
+    
+            }else{
+
+                $this->load->helper('download');
+                $data = file_get_contents(base_url('/uploads/'.$pdf));
+                force_download($pdf, $data);
+    
+            }
+
+       
+        }
        
     }

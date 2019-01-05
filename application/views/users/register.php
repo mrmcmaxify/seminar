@@ -31,9 +31,12 @@
                     <label>Fachsemester</label>
                     <input type="text" class="form-control" name="fachsemester" placeholder="Fachsemester" value="<?php echo set_value('fachsemester'); ?>">
                 </div>
+                </br>
                 <div class="form group">
-                    <label>BA/MA</label>
-                    <input type="text" class="form-control" name="ba/ma" placeholder="BA/MA" value="<?php echo set_value('ba/ma'); ?>">
+                <input type="radio" id="ba" name="ba/ma" value="BA" checked>
+                <label for="ba"> Bachelor</label> 
+                <input type="radio" id="ma" name="ba/ma" value="MA">
+                <label for="ma"> Master</label>
                 </div>
                 <div class="form group">
                     <label>ECTS</label>

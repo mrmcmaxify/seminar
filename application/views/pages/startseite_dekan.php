@@ -48,7 +48,7 @@
     <tr>
       <th scope="row"> <?php echo $studenten['E-Mail']; ?> </th>
       <td><?php echo $studenten['Fachsemester']; ?></td>
-      <td><?php echo $studenten['HisQis']; ?></td>
+      <td><a class="btn btn-default pull-left" href="<?php echo base_url(); ?>users/download/<?php echo $studenten['HisQis']; ?>">Download</a></td>
       <td><?php echo $studenten['ECTS']; ?></td>
       <td><?php echo $studenten['ECTS']; ?></td>
       <td><?php echo $studenten['ECTS']; ?></td>
@@ -80,7 +80,8 @@
     <tr>
       <th scope="row"> <?php echo $studenten['E-Mail']; ?> </th>
       <td><?php echo $studenten['Fachsemester']; ?></td>
-      <td><a class="btn btn-default pull-left" href="<?php echo base_url(); ?>posts/edit/<?php echo $studenten['HisQis']; ?>">Download</a></td>
+     
+      <td><a class="btn btn-default pull-left" href="<?php echo base_url(); ?>users/download/<?php echo $studenten['HisQis']; ?>">Download</a></td>
       <td><?php echo $studenten['ECTS']; ?></td>
       <td><?php echo $studenten['ECTS']; ?></td>
       <td><?php echo $studenten['ECTS']; ?></td>

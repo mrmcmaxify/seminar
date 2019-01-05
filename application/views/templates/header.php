@@ -76,3 +76,6 @@
 <?php if($this->session->flashdata('upload')): ?>
   <?php echo '<p class="alert alert-success">'.$this->session->flashdata('upload').'</p>'; ?>
 <?php endif; ?>
+<?php if($this->session->flashdata('testing')): ?>
+  <?php echo '<p class="alert alert-success">'.$this->session->flashdata('testing').'</p>'; ?>
+<?php endif; ?>
