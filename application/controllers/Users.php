@@ -2,6 +2,7 @@
 
     class Users extends CI_Controller{
 
+        //Registrierung
         public function register(){
             $data['title']= 'Sign Up';
 
@@ -13,8 +14,13 @@
             $this->form_validation->set_rules('fachsemester', 'Fachsemester', 'required');
             $this->form_validation->set_rules('ba/ma', 'BA/MA', 'required');
             $this->form_validation->set_rules('ects', 'ECTS', 'required');
-            $this->form_validation->set_rules('hisqis', 'HisQis', 'required');
-       
+            
+            if (empty($_FILES['hisqis']['name']))
+                {
+                $this->form_validation->set_rules('hisqis', 'HisQis', 'required');
+                }
+
+
             if($this->form_validation->run() === FALSE){
                 $this->load->view('templates/header');
                 $this->load->view('users/register', $data);
@@ -25,7 +31,33 @@
                 //Encrypt password
                 $enc_password = md5($this->input->post('password'));
 
-                $this->user_model->register($enc_password);
+                
+                //File Upload
+                $config['upload_path']          = './uploads/';                
+                $config['allowed_types']        = 'pdf';
+                $config['max_size']             = 2048;
+               
+
+                $filename = time().$_FILES["hisqis"]['name'];
+                $config['file_name'] = $filename;
+              
+
+                $this->load->library('upload', $config);
+
+                if ( ! $this->upload->do_upload('hisqis'))
+                {
+                        $error = array('error' => $this->upload->display_errors());
+                        
+                        $this->session->set_flashdata('upload', 'Dateiupload fehlgeschlagen!');
+                }
+                else
+                {
+                        $data = array('upload_data' => $this->upload->data());
+
+                        
+                }
+                //Aufruf register methode
+                $this->user_model->register($enc_password, $filename);
 
                 //Set confirm message
                 $this->session->set_flashdata('user_registered', 'Sie sind jetzt registriert!');
@@ -168,6 +200,27 @@
                 $this->load->view('templates/header');
                 $this->load->view('users/changepw', $data);
                 $this->load->view('templates/footer');
+
+        public function do_upload()
+        {
+                $config['upload_path']          = './uploads/';
+                $config['allowed_types']        = 'pdf';
+                $config['max_size']             = 2048;
+                
+
+                $this->load->library('upload', $config);
+                $this->upload->do_upload();
+                $data = $this->upload->data();
+
+                if ( ! $this->upload->do_upload('hisqis'))
+                {
+                    $this->session->set_flashdata('upload', 'Schlecht');                  
+                }
+                else
+                {
+                    $this->session->set_flashdata('upload', 'Gut');               
+                }
+        }
 
 
             }

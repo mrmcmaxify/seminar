@@ -7,9 +7,13 @@
       <th scope="col">Seminar</th>
       <th scope="col">Teilnehmer</th>
       
+
     </tr>
   </thead>
   <tbody>
+
+ 
+
     <?php foreach ($seminar as $seminare) : ?>
     <tr>
       <th scope="row"> <?php echo $seminare['LehrstuhlName']; ?> </th>
