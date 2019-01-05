@@ -56,14 +56,14 @@
             }
         }
 
-        //Gibt das Passwort des Users mit $email als Hashwert zurück
+        //Gibt den User als Objekt zur Passwortüberprüfung zurück
         public function getCurrPassword($userid){
             $query = $this->db->where(['e-mail'=>$userid])->get('benutzeraccount');
               if($query->num_rows() > 0){
                   return $query->row();
               }
             }
-          
+        //Ändert das Passwort under Datenbank des Users mit Email $userid
         public function updatePassword($enc_new_password, $userid){
             $data = array(
                 'E-Mail' => $userid,
