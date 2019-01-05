@@ -17,20 +17,28 @@
   <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
     <div class="navbar-nav">
       <a class="nav-item nav-link active" href="<?php echo base_url(); ?>">Allgemeine Informationen <span class="sr-only">(current)</span></a>
+      
+      <!-- Rollennavbar Dekan -->
       <?php if($this->session->userdata('rolle')==='dekan') : ?>
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>dekan/startseite_dekan">Startseite</a>
       <?php endif; ?>
+      <!-- Rollennavbar Admin -->
+      <?php if($this->session->userdata('rolle')==='admin') : ?>
+      <a class="nav-item nav-link" href="<?php echo base_url(); ?>admin/startseite_admin">Startseite Admin</a>
+      <?php endif; ?>
+
     </div>
     <div class="navbar-nav navbar-right">
+    <!-- Navbar nicht eingeloggt -->
     <?php if(empty($this->session->userdata('logged_in'))) : ?>
         <a class="nav-item nav-link" href="<?php echo base_url(); ?>users/login">Login</a>
         <a class="nav-item nav-link" href="<?php echo base_url(); ?>users/register">Registrieren</a>
       <?php endif; ?>
-      <?php if($this->session->userdata('logged_in')) : ?>
+    <!-- Navbar eingeloggt -->
+    <?php if($this->session->userdata('logged_in')) : ?>
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>users/changepw">Passwort ändern</a>
-      <a class="nav-item nav-link" href="<?php echo base_url(); ?>admin/startseite_admin">Startseite Admin</a>
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>users/logout">Logout</a>
-      <?php endif; ?>
+    <?php endif; ?>
       
     </div>
   </div>
