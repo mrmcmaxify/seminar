@@ -145,7 +145,7 @@
                     //Set message
                     $this->session->set_flashdata('user_loggedin', 'Sie sind jetzt eingeloggt!');
 
-                    redirect('startseite');
+                    redirect('startseite_'.$user_data['rolle']);
                 }else{
                     $this->session->set_flashdata('login_failed', 'Login fehlgeschlagen');
 
@@ -308,5 +308,34 @@
 
    
     }
+<<<<<<< HEAD
    
 }      
+=======
+//Bewerbung für ein Seminar
+        public function bewerben(){
+            $data['seminar']= $this->seminar_model->get_seminare();
+			$data['fristen']= $this->fristen_model->get_fristen();
+			
+		
+			
+			$this->load->view('templates/header');
+			$this->load->view('users/bewerben', $data);
+			$this->load->view('templates/footer');
+        }
+
+
+        //Beschreibung des Seminars anzeigen
+        public function seminar_info(){
+            $data['seminar']= $this->seminar_model->get_seminare();
+			$data['fristen']= $this->fristen_model->get_fristen();
+			
+		
+			
+			$this->load->view('templates/header');
+			$this->load->view('users/seminar_info', $data);
+			$this->load->view('templates/footer');
+        }
+    }
+
+>>>>>>> a7720000ec4e6102f6351602745cae4e9679b00d
