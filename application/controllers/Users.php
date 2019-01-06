@@ -248,7 +248,6 @@
        
         }
        
-    }
 //Bewerbung für ein Seminar
         public function bewerben(){
             $data['seminar']= $this->seminar_model->get_seminare();
