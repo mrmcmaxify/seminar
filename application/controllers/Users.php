@@ -282,7 +282,7 @@
 
 
             }else{
-                $this->staff_model->addstaff();
+                $this->Seminaranlegen_model->seminaranlegen();
                 //Set confirm message
                 $this->session->set_flashdata('seminar_angelegt', 'Das Seminar wurde angelegt!');
 
