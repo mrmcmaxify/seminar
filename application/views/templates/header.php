@@ -17,15 +17,36 @@
   <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
     <div class="navbar-nav">
       <a class="nav-item nav-link active" href="<?php echo base_url(); ?>">Allgemeine Informationen <span class="sr-only">(current)</span></a>
-    </div>
-    <div class="navbar-nav navbar-right">
+      
+      <!-- Rollennavbar Dekan -->
+      <?php if($this->session->userdata('rolle')==='dekan') : ?>
+      <a class="nav-item nav-link" href="<?php echo base_url(); ?>dekan/startseite_dekan">Startseite</a>
+      <?php endif; ?>
+      <!-- Rollennavbar Admin -->
+      <?php if($this->session->userdata('rolle')==='admin') : ?>
+      <a class="nav-item nav-link" href="<?php echo base_url(); ?>admin/startseite_admin">Startseite Admin</a>
+      <?php endif; ?>
+       <!-- Rollennavbar Admin -->
+       <?php if($this->session->userdata('rolle')==='lehrstuhl') : ?>
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>users/addstaff">Mitarbeiter anlegen</a>
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>users/seminaranlegen">Seminar anlegen</a>
-      <a class="nav-item nav-link" href="<?php echo base_url(); ?>users/login">Login</a>
-      <a class="nav-item nav-link" href="<?php echo base_url(); ?>users/register">Registrieren</a>
-      <?php if($this->session->userdata('logged_in')) : ?>
-      <a class="nav-item nav-link" href="<?php echo base_url(); ?>users/logout">Logout</a>
       <?php endif; ?>
+
+
+      
+
+    </div>
+    <div class="navbar-nav navbar-right">
+    <!-- Navbar nicht eingeloggt -->
+    <?php if(empty($this->session->userdata('logged_in'))) : ?>
+        <a class="nav-item nav-link" href="<?php echo base_url(); ?>users/login">Login</a>
+        <a class="nav-item nav-link" href="<?php echo base_url(); ?>users/register">Registrieren</a>
+      <?php endif; ?>
+    <!-- Navbar eingeloggt -->
+    <?php if($this->session->userdata('logged_in')) : ?>
+      <a class="nav-item nav-link" href="<?php echo base_url(); ?>users/changepw">Passwort ändern</a>
+      <a class="nav-item nav-link" href="<?php echo base_url(); ?>users/logout">Logout</a>
+    <?php endif; ?>
       
     </div>
   </div>
@@ -51,4 +72,18 @@
 
 <?php if($this->session->flashdata('user_loggedout')): ?>
   <?php echo '<p class="alert alert-success">'.$this->session->flashdata('user_loggedout').'</p>'; ?>
+<?php endif; ?>
+
+<?php if($this->session->flashdata('pw_changed')): ?>
+  <?php echo '<p class="alert alert-success">'.$this->session->flashdata('pw_changed').'</p>'; ?>
+<?php endif; ?>
+
+<?php if($this->session->flashdata('pw_nomatch')): ?>
+  <?php echo '<p class="alert alert-danger">'.$this->session->flashdata('pw_nomatch').'</p>'; ?>
+  <?php endif; ?>
+<?php if($this->session->flashdata('upload')): ?>
+  <?php echo '<p class="alert alert-success">'.$this->session->flashdata('upload').'</p>'; ?>
+<?php endif; ?>
+<?php if($this->session->flashdata('testing')): ?>
+  <?php echo '<p class="alert alert-success">'.$this->session->flashdata('testing').'</p>'; ?>
 <?php endif; ?>
