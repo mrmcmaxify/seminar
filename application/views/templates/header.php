@@ -19,11 +19,14 @@
       <a class="nav-item nav-link active" href="<?php echo base_url(); ?>">Allgemeine Informationen <span class="sr-only">(current)</span></a>
     </div>
     <div class="navbar-nav navbar-right">
+      <a class="nav-item nav-link" href="<?php echo base_url(); ?>users/addstaff">Mitarbeiter anlegen</a>
+      <a class="nav-item nav-link" href="<?php echo base_url(); ?>users/seminaranlegen">Seminar anlegen</a>
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>users/login">Login</a>
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>users/register">Registrieren</a>
       <?php if($this->session->userdata('logged_in')) : ?>
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>users/logout">Logout</a>
       <?php endif; ?>
+      
     </div>
   </div>
 </nav>
