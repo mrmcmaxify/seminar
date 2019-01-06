@@ -25,6 +25,7 @@
       <!-- Rollennavbar Admin -->
       <?php if($this->session->userdata('rolle')==='admin') : ?>
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>admin/startseite_admin">Startseite Admin</a>
+      <a class="nav-item nav-link" href="<?php echo base_url(); ?>admin/add_user">Benutzer hinzufügen</a>
       <?php endif; ?>
        <!-- Rollennavbar Lehrstuhl -->
        <?php if($this->session->userdata('rolle')==='lehrstuhl') : ?>
@@ -86,4 +87,7 @@
 <?php endif; ?>
 <?php if($this->session->flashdata('testing')): ?>
   <?php echo '<p class="alert alert-success">'.$this->session->flashdata('testing').'</p>'; ?>
+<?php endif; ?>
+<?php if($this->session->flashdata('user_added')): ?>
+  <?php echo '<p class="alert alert-success">'.$this->session->flashdata('user_added').'</p>'; ?>
 <?php endif; ?>
