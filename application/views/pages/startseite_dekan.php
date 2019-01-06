@@ -34,32 +34,28 @@
       <th scope="col">Fachsemester</th>
       <th scope="col">HisQis</th>
       <th scope="col">ECTS</th>
-      <th scope="col">Zuteilen1</th>
-      <th scope="col">Zuteilen2</th>
+      <th scope="col">Seminarplatz zuweisen</th>
+      
       
 
     </tr>
   </thead>
   <tbody>
 
- <?php $options = array(
-        'small'         => 'Small Shirt',
-        'med'           => 'Medium Shirt',
-        'large'         => 'Large Shirt',
-        'xlarge'        => 'Extra Large Shirt',
-);
-
-
- ?>
 
     <?php foreach ($ba_ohne as $studenten) : ?>
     <tr>
       <th scope="row"> <?php echo $studenten['E-Mail']; ?> </th>
       <td><?php echo $studenten['Fachsemester']; ?></td>
       <td><a class="btn btn-default pull-left" href="<?php echo base_url(); ?>users/download/<?php echo $studenten['HisQis']; ?>">Download</a></td>
-      <td><?php echo form_dropdown('shirts', $options, 'large'); ?></td>
       <td><?php echo $studenten['ECTS']; ?></td>
-      <td><?php echo $studenten['ECTS']; ?></td>
+      <td>
+      <?php echo form_open('dekan/zuweisen_anzeigen'); ?>
+      <input type="hidden" name="E-Mail" value="<?php echo $studenten['E-Mail']; ?>">
+      <button type="submit" class="btn btn-primary">Seminar auswählen</button>
+      <?php echo form_close(); ?>
+      </td>
+      
       
     </tr>
     <?php endforeach; ?>
@@ -74,8 +70,8 @@
       <th scope="col">Fachsemester</th>
       <th scope="col">HisQis</th>
       <th scope="col">ECTS</th>
-      <th scope="col">Zuteilen1</th>
-      <th scope="col">Zuteilen2</th>
+      <th scope="col">Seminarplatz zuteilen</th>
+      
       
 
     </tr>
@@ -91,8 +87,8 @@
      
       <td><a class="btn btn-default pull-left" href="<?php echo base_url(); ?>users/download/<?php echo $studenten['HisQis']; ?>">Download</a></td>
       <td><?php echo $studenten['ECTS']; ?></td>
-      <td><?php echo $studenten['ECTS']; ?></td>
-      <td><?php echo $studenten['ECTS']; ?></td>
+      <td><a class="btn btn-default pull-left" href="<?php echo base_url(); ?>users/download/<?php echo $studenten['HisQis']; ?>">Seminar auswählen</a></td>
+      
       
     </tr>
 <?php endforeach; ?>

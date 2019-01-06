@@ -14,6 +14,22 @@
 
 
 		}
+
+		public function zuweisen_anzeigen(){
+
+			//$email = $this->input->post('E-Mail');
+			//$email='test';
+
+			$email=array(
+				'email'=>$this->input->post('E-Mail')
+
+			);
+
+			$this->load->view('templates/header');
+			$this->load->view('pages/zuweisen_anzeigen', $email);
+			$this->load->view('templates/footer');
+
+		}
 	}
 
 
