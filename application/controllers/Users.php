@@ -273,8 +273,7 @@
             $this->form_validation->set_rules('semester', 'Semester', 'required');
             $this->form_validation->set_rules('BA/MA', 'BA/MA', 'required');
             $this->form_validation->set_rules('msnotwendig', 'MSnotwendig', 'required');
-            
-            
+         
             
             if($this->form_validation->run() === FALSE){
                 $this->load->view('templates/header');
@@ -308,10 +307,6 @@
 
    
     }
-<<<<<<< HEAD
-   
-}      
-=======
 //Bewerbung für ein Seminar
         public function bewerben(){
             $data['seminar']= $this->seminar_model->get_seminare();
@@ -338,4 +333,3 @@
         }
     }
 
->>>>>>> a7720000ec4e6102f6351602745cae4e9679b00d
