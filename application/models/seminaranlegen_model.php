@@ -3,7 +3,7 @@
         public function seminaranlegen(){
            
 
-             //User data array(lehrstuhl)
+             //User data array(seminar)
              $data1 = array(
                 'seminarname' => $this->input->post('seminarname'),
                 'lehrstuhlname' => $this->input->post('lehrstuhlname'),
@@ -17,8 +17,8 @@
                               
             );
 
-            //insert user(benutzeraccount)
-            return $this->db->insert('lehrstuhl', $data1);
+            //insert seminar(seminar)
+            return $this->db->insert('seminar', $data1);
 
            
 
