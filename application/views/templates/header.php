@@ -26,7 +26,7 @@
       <?php if($this->session->userdata('rolle')==='admin') : ?>
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>admin/startseite_admin">Startseite Admin</a>
       <?php endif; ?>
-       <!-- Rollennavbar Admin -->
+       <!-- Rollennavbar Lehrstuhl -->
        <?php if($this->session->userdata('rolle')==='lehrstuhl') : ?>
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>users/addstaff">Mitarbeiter anlegen</a>
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>users/seminaranlegen">Seminar anlegen</a>
