@@ -42,19 +42,27 @@
   </thead>
   <tbody>
 
- 
+ <?php $options = array(
+        'small'         => 'Small Shirt',
+        'med'           => 'Medium Shirt',
+        'large'         => 'Large Shirt',
+        'xlarge'        => 'Extra Large Shirt',
+);
+
+
+ ?>
 
     <?php foreach ($ba_ohne as $studenten) : ?>
     <tr>
       <th scope="row"> <?php echo $studenten['E-Mail']; ?> </th>
       <td><?php echo $studenten['Fachsemester']; ?></td>
       <td><a class="btn btn-default pull-left" href="<?php echo base_url(); ?>users/download/<?php echo $studenten['HisQis']; ?>">Download</a></td>
-      <td><?php echo $studenten['ECTS']; ?></td>
+      <td><?php echo form_dropdown('shirts', $options, 'large'); ?></td>
       <td><?php echo $studenten['ECTS']; ?></td>
       <td><?php echo $studenten['ECTS']; ?></td>
       
     </tr>
-<?php endforeach; ?>
+    <?php endforeach; ?>
   </tbody>
 </table>
 
