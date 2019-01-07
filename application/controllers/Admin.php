@@ -109,6 +109,44 @@
                 return false;
             }
 		}
+		//Sucht Benutzer anhand von E-Mail Adresse in zeigt sie im view admin/search_user an
+		public function search_user(){
+
+			$data['user']= $this->user_model->get_users();
+
+
+			$field  = 'E-Mail';
+			$search = $this->input->post('search');
+			if (!empty($search)) {
+				$data['user'] = $this->user_model->getUserWhereLike($field, $search);
+			} else {
+				$data['user'] = $this->user_model->get_users();
+			}
+
+			$this->load->view('templates/header');
+            $this->load->view('admin/search_user', $data);
+			$this->load->view('templates/footer');
+
+		}
+		//Öffnet die Bestätigungsseite zum Löschen des Benutzers mit $email
+		public function delete_user_index($email){
+			$data['email']=$email;
+			$this->load->view('templates/header');
+            $this->load->view('admin/delete_user', $data);
+			$this->load->view('templates/footer');
+		}
+
+		//Löscht den Benutzer mit Array $user
+		public function delete_user($email){
+			if($this->user_model->delete_user($email)){
+				$this->session->set_flashdata('user_deleted', 'Der Benutzer wurde gelöscht.');
+			}
+			else{
+				$this->session->set_flashdata('user_deleted_failed', 'Der Benutzer konnte nicht gelöscht werden!');
+			}
+			redirect('admin/search_user');
+		}
+		
 }
 
 

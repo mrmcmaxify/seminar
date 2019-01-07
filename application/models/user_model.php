@@ -71,4 +71,21 @@
             );
             return $this->db->where('E-Mail', $userid)->update('benutzeraccount', $data);
         }
+
+        //Gibt alle Benutzer die im Feld $field den Suchbegriff $search enthalten zurück
+        public function getUserWhereLike($field, $search){
+            $query = $this->db->like($field, $search)->order_by($field)->get('benutzeraccount');
+            return $query->result_array();
+        }
+
+        //Gibt alle Benutzer zurück
+        public function get_users(){
+            $query = $this->db->get('benutzeraccount');
+            return $query->result_array();
+        }
+
+        //Löscht den Benutzer mit der $email
+        public function delete_user($email){
+            return $this->db->where('E-Mail', $email)->delete('benutzeraccount');
     }
+}

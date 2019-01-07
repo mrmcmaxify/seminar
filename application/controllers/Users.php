@@ -331,5 +331,7 @@
 			$this->load->view('users/seminar_info', $data);
 			$this->load->view('templates/footer');
         }
+
+        
     }
 

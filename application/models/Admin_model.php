@@ -58,6 +58,9 @@
                 return false;
             }
         }
-        
 
+        public function getUserWhereLike($field, $search){
+            $query = $this->db->like($field, $search)->orderBy('E-Mail')->get('benutzeraccount');
+            return $query->result();
+        }
     }
