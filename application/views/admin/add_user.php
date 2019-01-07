@@ -44,7 +44,7 @@
                 </br>
                 <div class="form group">
                     <label>Name</label>
-                    <input type="text" class="form-control" name="lehrstuhlname" placeholder="Lehrstuhlname (Wenn Lehrstuhl-Benutzer" value="<?php echo set_value('lehrstuhlname'); ?>">
+                    <input type="text" class="form-control" name="lehrstuhlname" placeholder="Lehrstuhlname (Wenn Lehrstuhl-Benutzer)" value="<?php echo set_value('lehrstuhlname'); ?>">
                 </div>
                 </br>
                 <button type="submit" class="btn btn-primary">Benutzer anlegen</button>

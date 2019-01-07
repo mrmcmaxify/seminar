@@ -3,7 +3,7 @@
 
         public function add_user($enc_password){
             //User data array(benutzeraccount)
-            if(this->input->post->('rolle')=='dekan'){
+            if($this->input->post('rolle')=='dekan'){
             $data = array(
                 'e-mail' => $this->input->post('e-mail'),
                 'passwort' => $enc_password,
@@ -48,7 +48,7 @@
            }
         }
 
-        public function check_email_exists($email){
+        public function admin_check_email_exists($email){
             $query = $this->db->get_where('benutzeraccount', array('E-Mail' => $email));
             if(empty($query->row_array())){
                 return true;

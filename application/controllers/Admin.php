@@ -23,7 +23,7 @@
 		public function add_user(){
             $data['title']= 'Add User';
 
-            $this->form_validation->set_rules('e-mail', 'Name', 'required|callback_check_email_exists');
+            $this->form_validation->set_rules('e-mail', 'Name', 'required|callback_admin_check_email_exists');
             $this->form_validation->set_rules('password', 'Passwort', 'required|callback_valid_password');
             $this->form_validation->set_rules('password2', 'Passwort bestätigen', 'matches[password]');
             $this->form_validation->set_rules('vorname', 'Vorname', 'required');
@@ -44,7 +44,7 @@
 
                 
                 //Aufruf register methode
-                $this->user_model->register($enc_password);
+                $this->admin_model->add_user($enc_password);
 
                 //Set confirm message
                 $this->session->set_flashdata('user_added', 'Der Benutzer wurde angelegt.');
@@ -92,10 +92,10 @@
 		    return TRUE;
 		}
 
-		public function check_email_exists($email){
-            $this->form_validation->set_message('check_email_exists', 'Diese E-Mail-Adresse ist bereits im System regstriert');
+		public function admin_check_email_exists($email){
+            $this->form_validation->set_message('admin_check_email_exists', 'Diese E-Mail-Adresse ist bereits im System regstriert');
 
-            if($this->Admin_model->check_email_exists($email)){
+			if($this->admin_model->admin_check_email_exists($email)){
                 return true;
             }else{
                 return false;
