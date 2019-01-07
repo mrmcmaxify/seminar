@@ -2,6 +2,7 @@
 
     class Admin extends CI_Controller{
 
+		//Konstruktor mit Login und Rollen Überprüfung
         function __construct(){
 			parent::__construct();
 			if($this->session->userdata('rolle') == 'admin' && $this->session->userdata('logged_in') == true){
@@ -13,13 +14,15 @@
 				redirect('users/login');
 			}
 		}
-				
+		
+		//Aufruf der Startseite vom Admin
 		public function startseite_admin(){
 			$this->load->view('templates/header');
             $this->load->view('pages/startseite_admin');
 			$this->load->view('templates/footer');
 		}
 
+		//Fügt Benutzer mit Rolle Lehrstuhl oder Dekan hinzu
 		public function add_user(){
             $data['title']= 'Add User';
 
@@ -49,7 +52,11 @@
                 //Set confirm message
                 $this->session->set_flashdata('user_added', 'Der Benutzer wurde angelegt.');
 
-                redirect('admin/add_user');
+				// linkname wird an die view übergeben und dort wird mit ok dieser link aufgerufen (hier wird zurückgeführt)
+				$link['linkname']='admin/add_user';
+                $this->load->view('templates/header');
+            	$this->load->view('pages/ok', $link);
+				$this->load->view('templates/footer');
             }
        
         }
@@ -92,6 +99,7 @@
 		    return TRUE;
 		}
 
+		//Überprüft ob Email bei Funktion add_user bereits existiert
 		public function admin_check_email_exists($email){
             $this->form_validation->set_message('admin_check_email_exists', 'Diese E-Mail-Adresse ist bereits im System regstriert');
 

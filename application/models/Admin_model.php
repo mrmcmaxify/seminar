@@ -1,6 +1,7 @@
 <?php  
     class Admin_model extends CI_Model{
 
+        //Fügt Benutzer mit Rolle dekan oder lehrstuhl in die Datenbank ein
         public function add_user($enc_password){
             //User data array(benutzeraccount)
             if($this->input->post('rolle')=='dekan'){
@@ -48,6 +49,7 @@
            }
         }
 
+        //Überprüft ob eine Email bereits existiert und gibt true/false zurück
         public function admin_check_email_exists($email){
             $query = $this->db->get_where('benutzeraccount', array('E-Mail' => $email));
             if(empty($query->row_array())){
