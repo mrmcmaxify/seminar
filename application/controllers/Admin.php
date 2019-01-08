@@ -149,11 +149,11 @@
 
 		public function unlock_user($email){
 			$user=$this->user_model->getUserWhereLike('E-Mail', $email);
-			if($user['Loginsperre']='2'){
+			if($user['Loginsperre']='1'){
 				$this->user_model->unlock_user($email);
 				$this->session->set_flashdata('user_unlocked', 'Der Benutzer wurde entsperrt.');
 			}
-			elseif($user['Loginsperre']='1'){
+			elseif($user['Loginsperre']='2'){
 				$this->session->set_flashdata('user_unlocked_failed', 'Der Benutzer ist nicht gesperrt.');
 			}
 			else{
@@ -165,11 +165,11 @@
 		public function lock_user($email){
 			$user=$this->user_model->getUserWhereLike('E-Mail', $email);
 			
-			if($user['Loginsperre']='1'){
+			if($user['Loginsperre']='2'){
 				$this->user_model->lock_user($email);
 				$this->session->set_flashdata('user_locked', 'Der Benutzer wurde gesperrt.');
 			}
-			elseif($user['Loginsperre']='2'){
+			elseif($user['Loginsperre']='1'){
 				$this->session->set_flashdata('user_unlocked_failed', 'Der Benutzer ist bereits gesperrt.');
 			}
 			else{

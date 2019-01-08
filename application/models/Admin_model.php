@@ -9,7 +9,7 @@
                 'e-mail' => $this->input->post('e-mail'),
                 'passwort' => $enc_password,
                 'rolle' => $this->input->post('rolle'),
-                'loginsperre' => '1'
+                'loginsperre' => '2'
             );
             
 
@@ -31,7 +31,7 @@
                 'e-mail' => $this->input->post('e-mail'),
                 'passwort' => $enc_password,
                 'rolle' => $this->input->post('rolle'),
-                'loginsperre' => '1'
+                'loginsperre' => '2'
             );
             
 

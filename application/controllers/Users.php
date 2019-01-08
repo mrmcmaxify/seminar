@@ -53,16 +53,18 @@
                 else
                 {
                         $data = array('upload_data' => $this->upload->data());
+                        
+                        //Aufruf register methode
+                        $this->user_model->register($enc_password, $filename);
+
+                        //Set confirm message
+                        $this->session->set_flashdata('user_registered', 'Sie sind jetzt registriert!');
+
+                        redirect('startseite');
 
                         
                 }
-                //Aufruf register methode
-                $this->user_model->register($enc_password, $filename);
-
-                //Set confirm message
-                $this->session->set_flashdata('user_registered', 'Sie sind jetzt registriert!');
-
-                redirect('startseite');
+                
             }
        
         }

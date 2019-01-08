@@ -6,7 +6,7 @@
                 'e-mail' => $this->input->post('e-mail'),
                 'passwort' => $enc_password,
                 'rolle' => "student",
-                'Loginsperre' => '1'
+                'Loginsperre' => '2'
 
             );
             
