@@ -20,11 +20,17 @@
       <td><?php echo $seminare['SeminarName']; ?></td>
       <td><?php echo $seminare['BA/MA']; ?></td>
         <td>
-          <form action="" method="post">
-            <input type="submit" class="btn btn-success" name="ausfuehren" value="Beschreibung"/>
-         </form> 
+        <?php echo form_open('student/seminar_info'); ?>
+      <input type="hidden" name="Beschreibung" value="<?php echo $seminare['Beschreibung']; ?>">
+      <button type="submit" class="btn btn-success">Beschreibung</button>
+      <?php echo form_close(); ?>
         </td>
-      <td><a href="users/bewerben"><button type="button" class="btn btn-success">Bewerbung</button></a></td>
+      <td>
+      <?php echo form_open('student/bewerben'); ?>
+      <input type="hidden" name="SeminarID" value="<?php echo $seminare['SeminarID']; ?>">
+      <button type="submit" class="btn btn-success">Bewerbung</button>
+      <?php echo form_close(); ?>
+      </td>
     </tr>
 <?php endforeach; ?>
 
@@ -106,12 +112,7 @@
 
 
 
-<?php 
-if(isset($_POST["ausfuehren"])) {
-            meine_funktion($seminare['LehrstuhlName']);
-            }
 
-          ?>
           
 
 

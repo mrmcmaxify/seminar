@@ -1,3 +1,3 @@
-<h2>Bewerben</h2>
+<h2>Seminar-Information</h2>
 
-<h1><?php echo 'hallo' ?> </h1>
+<?php echo $beschreibung; ?>
