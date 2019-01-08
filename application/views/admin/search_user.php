@@ -9,7 +9,7 @@
     <tr>
       <th scope="col">E-Mail Adresse</th>
       <th scope="col">Benutzerrolle</th>
-      <th scope="col">Loginsperre (0=nein/2=ja)</th>
+      <th scope="col">Loginsperre</th>
       <th scope="col">Registriert seit</th>
       <th scope="col">Funktionen</th>
 
@@ -23,9 +23,19 @@
     <tr>
       <th scope="row"> <?php echo $users['E-Mail']; ?> </th>
       <td><?php echo $users['Rolle']; ?></td>
-      <td><?php echo $users['Loginsperre'];?></td>
+      <td><?php if($users['Loginsperre']=='1'){
+        echo 'Nicht gesperrt';
+      }
+      elseif($users['Loginsperre']=='2'){
+        echo 'Gesperrt';
+      }
+      else{
+        echo 'Error';
+      }?></td>
       <td><?php echo $users['registriert_am'];?></td>
-      <td><a href="<?php echo base_url();?>admin/delete_user_index/<?php echo $users['E-Mail'];?>" class="btn btn-primary" role="button">Löschen</a></td>
+      <td><a href="<?php echo base_url();?>admin/delete_user_index/<?php echo $users['E-Mail'];?>" class="btn btn-primary" role="button">Löschen</a>
+      <a href="<?php echo base_url();?>admin/lock_user/<?php echo $users['E-Mail'];?>" class="btn btn-primary" role="button">Sperren</a>
+      <a href="<?php echo base_url();?>admin/unlock_user/<?php echo $users['E-Mail'];?>" class="btn btn-primary" role="button">Entsperren</a></td>
     </tr>
 <?php endforeach; ?>
   </tbody>

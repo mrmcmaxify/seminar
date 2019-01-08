@@ -5,7 +5,8 @@
             $data = array(
                 'e-mail' => $this->input->post('e-mail'),
                 'passwort' => $enc_password,
-                'rolle' => "student"
+                'rolle' => "student",
+                'Loginsperre' => '1'
 
             );
             
@@ -87,5 +88,23 @@
         //Löscht den Benutzer mit der $email
         public function delete_user($email){
             return $this->db->where('E-Mail', $email)->delete('benutzeraccount');
-    }
+        }
+
+        //Setzt Loginsperre auf 2 = Gesperrt
+        public function lock_user($email){
+            $data = array(
+                'E-Mail' => $email,
+                'Loginsperre' => '2',
+            );
+            $this->db->where('E-Mail', $email)->update('benutzeraccount', $data);
+        }
+
+        //Setzt Loginsperre auf 1 = Nicht gesperrt
+        public function unlock_user($email){
+            $data = array(
+                'E-Mail' => $email,
+                'Loginsperre' => '1',
+            );
+            $this->db->where('E-Mail', $email)->update('benutzeraccount', $data);
+        }
 }

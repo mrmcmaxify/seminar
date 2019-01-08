@@ -5,7 +5,8 @@
             $data = array(
                 'e-mail' => $this->input->post('e-mail'),
                 'passwort' => $enc_password,
-                'rolle' => "lehrstuhl"
+                'rolle' => "lehrstuhl",
+                'loginsperre' => '1'
 
             );
             

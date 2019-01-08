@@ -96,5 +96,20 @@
   <?php echo '<p class="alert alert-success">'.$this->session->flashdata('user_deleted').'</p>'; ?>
 <?php endif; ?>
 <?php if($this->session->flashdata('user_deleted_failed')): ?>
-  <?php echo '<p class="alert alert-success">'.$this->session->flashdata('user_deleted_failed').'</p>'; ?>
+  <?php echo '<p class="alert alert-danger">'.$this->session->flashdata('user_deleted_failed').'</p>'; ?>
+<?php endif; ?>
+<?php if($this->session->flashdata('user_unlocked')): ?>
+  <?php echo '<p class="alert alert-success">'.$this->session->flashdata('user_unlocked').'</p>'; ?>
+<?php endif; ?>
+<?php if($this->session->flashdata('user_unlocked_failed')): ?>
+  <?php echo '<p class="alert alert-danger">'.$this->session->flashdata('user_unlocked_failed').'</p>'; ?>
+<?php endif; ?>
+<?php if($this->session->flashdata('user_locked')): ?>
+  <?php echo '<p class="alert alert-success">'.$this->session->flashdata('user_locked').'</p>'; ?>
+<?php endif; ?>
+<?php if($this->session->flashdata('user_locked_failed')): ?>
+  <?php echo '<p class="alert alert-danger">'.$this->session->flashdata('user_locked_failed').'</p>'; ?>
+<?php endif; ?>
+<?php if($this->session->flashdata('user_lock_error')): ?>
+  <?php echo '<p class="alert alert-danger">'.$this->session->flashdata('user_lock_error').'</p>'; ?>
 <?php endif; ?>

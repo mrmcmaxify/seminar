@@ -9,6 +9,7 @@
                 'e-mail' => $this->input->post('e-mail'),
                 'passwort' => $enc_password,
                 'rolle' => $this->input->post('rolle'),
+                'loginsperre' => '1'
             );
             
 
@@ -30,6 +31,7 @@
                 'e-mail' => $this->input->post('e-mail'),
                 'passwort' => $enc_password,
                 'rolle' => $this->input->post('rolle'),
+                'loginsperre' => '1'
             );
             
 
@@ -59,8 +61,4 @@
             }
         }
 
-        public function getUserWhereLike($field, $search){
-            $query = $this->db->like($field, $search)->orderBy('E-Mail')->get('benutzeraccount');
-            return $query->result();
-        }
     }

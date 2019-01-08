@@ -146,6 +146,37 @@
 			}
 			redirect('admin/search_user');
 		}
+
+		public function unlock_user($email){
+			$user=$this->user_model->getUserWhereLike('E-Mail', $email);
+			if($user['Loginsperre']='2'){
+				$this->user_model->unlock_user($email);
+				$this->session->set_flashdata('user_unlocked', 'Der Benutzer wurde entsperrt.');
+			}
+			elseif($user['Loginsperre']='1'){
+				$this->session->set_flashdata('user_unlocked_failed', 'Der Benutzer ist nicht gesperrt.');
+			}
+			else{
+				$this->session->set_flashdata('user_lock_error', 'Der Benutzer besitzt keinen gültigen Eintrag bei "Loginsperre" in der Datenbank.');
+			}
+			redirect('admin/search_user');
+		}
+
+		public function lock_user($email){
+			$user=$this->user_model->getUserWhereLike('E-Mail', $email);
+			
+			if($user['Loginsperre']='1'){
+				$this->user_model->lock_user($email);
+				$this->session->set_flashdata('user_locked', 'Der Benutzer wurde gesperrt.');
+			}
+			elseif($user['Loginsperre']='2'){
+				$this->session->set_flashdata('user_unlocked_failed', 'Der Benutzer ist bereits gesperrt.');
+			}
+			else{
+				$this->session->set_flashdata('user_lock_error', 'Der Benutzer besitzt keinen gültigen Eintrag bei "Loginsperre" in der Datenbank.');
+			}
+			redirect('admin/search_user');
+		}
 		
 }
 
