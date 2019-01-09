@@ -21,6 +21,7 @@
       <!-- Rollennavbar Dekan -->
       <?php if($this->session->userdata('rolle')==='dekan') : ?>
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>dekan/startseite_dekan">Startseite</a>
+      <a class="nav-item nav-link" href="<?php echo base_url(); ?>dekan/fristen_anzeigen">Fristen</a>
       <?php endif; ?>
       <!-- Rollennavbar Admin -->
       <?php if($this->session->userdata('rolle')==='admin') : ?>

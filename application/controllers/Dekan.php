@@ -86,6 +86,24 @@
 
 
 		}
+
+		public function fristen_anzeigen(){
+
+			$data= array(
+				'fristen'=> $this->fristen_model->get_fristen(),
+				'frist' => $this->fristen_model->get_namen(),
+
+			);
+			
+
+			$this->load->view('templates/header');
+			$this->load->view('pages/fristen', $data);
+			$this->load->view('templates/footer');
+		}
+
+		public function fristen_edit(){
+
+		}
 	}
 
 
