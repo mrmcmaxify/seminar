@@ -116,3 +116,9 @@
 <?php if($this->session->flashdata('user_lock_error')): ?>
   <?php echo '<p class="alert alert-danger">'.$this->session->flashdata('user_lock_error').'</p>'; ?>
 <?php endif; ?>
+<?php if($this->session->flashdata('zugewiesen')): ?>
+  <?php echo '<p class="alert alert-success">'.$this->session->flashdata('zugewiesen').'</p>'; ?>
+<?php endif; ?>
+<?php if($this->session->flashdata('zugewiesen_nicht')): ?>
+  <?php echo '<p class="alert alert-danger">'.$this->session->flashdata('zugewiesen_nicht').'</p>'; ?>
+<?php endif; ?>

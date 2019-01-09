@@ -16,12 +16,13 @@
 
     <?php foreach ($beworben as $seminare) : ?>
     <tr>
+    <?php echo($seminare['SeminarID']);?>
       <th scope="row"> <?php echo $seminare['SeminarName']; ?> </th>
       <td><?php echo $seminare['LehrstuhlName']; ?></td>
       <td>
       <?php echo form_open('dekan/zuweisen'); ?>
       <input type="hidden" name="E-Mail" value="<?php echo $email; ?>">
-      <input type="hidden" name="Name" value="<?php echo $seminare['SeminarID']; ?>">
+      <input type="hidden" name="SeminarID" value="<?php echo $seminare['SeminarID']; ?>">
       <button type="submit" class="btn btn-primary">Zuweisen</button>
       <?php echo form_close(); ?>
       </td>

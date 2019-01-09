@@ -33,6 +33,23 @@
             $query = $this->db->get();
             return $query->result_array();
         }
+        //Trägt Studenten in Seminarzuteilung ein und Setzt #Annahmen +1
+        public function zuweisen($email, $id){
+            $data = array(
+                'E-Mail' => $email,
+                'SeminarID' => $id,
+                
+            );
+        
+            $this->db->insert('Seminarzuteilung', $data);
+
+            $data1 = array(
+                '#Annahmen' => '1',
+            );
+            $this->db->where('E-Mail', $email);
+            $this->db->update('student', $data1);
+
+        }
 
        
         

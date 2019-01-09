@@ -59,6 +59,7 @@
       <input type="hidden" name="E-Mail" value="<?php echo $studenten['E-Mail']; ?>">
       <input type="hidden" name="Name" value="<?php echo $studenten['Name']; ?>">
       <input type="hidden" name="Vorname" value="<?php echo $studenten['Vorname']; ?>">
+      <input type="hidden" name="BA/MA" value="<?php echo $studenten['BA/MA']; ?>">
       <button type="submit" class="btn btn-primary">Seminar auswählen</button>
       <?php echo form_close(); ?>
       </td>
@@ -100,8 +101,15 @@
      
       <td><a class="btn btn-default pull-left" href="<?php echo base_url(); ?>users/download/<?php echo $studenten['HisQis']; ?>">Download</a></td>
       <td><?php echo $studenten['ECTS']; ?></td>
-      <td><a class="btn btn-default pull-left" href="<?php echo base_url(); ?>users/download/<?php echo $studenten['HisQis']; ?>">Seminar auswählen</a></td>
-      
+      <td>
+      <?php echo form_open('dekan/zuweisen_anzeigen'); ?>
+      <input type="hidden" name="E-Mail" value="<?php echo $studenten['E-Mail']; ?>">
+      <input type="hidden" name="Name" value="<?php echo $studenten['Name']; ?>">
+      <input type="hidden" name="Vorname" value="<?php echo $studenten['Vorname']; ?>">
+      <input type="hidden" name="BA/MA" value="<?php echo $studenten['BA/MA']; ?>">
+      <button type="submit" class="btn btn-primary">Seminar auswählen</button>
+      <?php echo form_close(); ?>
+      </td>      
       
     </tr>
 <?php endforeach; ?>
