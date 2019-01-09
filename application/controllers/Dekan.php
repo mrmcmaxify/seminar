@@ -73,6 +73,19 @@
 
 
 		}
+
+		public function show_seminar(){
+			$id=$this->input->post('SeminarID');
+			$data= array(
+				'seminar'=>$this->seminar_model->get_seminar($id),
+			);
+
+			$this->load->view('templates/header');
+			$this->load->view('pages/show_seminar', $data);
+			$this->load->view('templates/footer');
+
+
+		}
 	}
 
 

@@ -9,6 +9,12 @@
             return $query->result_array();
         }
 
+        public function get_seminar($id){
+            $this->db->where('SeminarID', $id);
+            $query = $this->db->get('seminar');
+            return $query->result_array();
+        }
+
         public function get_seminare_ba(){
             $this->db->where('BA/MA', 'BA');
             $query = $this->db->get('seminar');
