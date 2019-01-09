@@ -4,6 +4,7 @@
     <tr>
       <th scope="col">Lehrstuhl</th>
       <th scope="col">Seminar</th>
+      <th scope="col">BA/MA</th>
       <th scope="col">Beschreibung</th>
       <th scope="col">Teilnehmer</th>
       
@@ -18,6 +19,7 @@
     <tr>
       <th scope="row"> <?php echo $seminare['LehrstuhlName']; ?> </th>
       <td><?php echo $seminare['SeminarName']; ?></td>
+      <td><?php echo $seminare['BA/MA']; ?></td>
       <td><?php echo $seminare['Beschreibung']; ?></td>
       <td><?php echo $seminare['Ist-Teilnehmerzahl']." / ".$seminare['Soll-Teilnehmerzahl']; ?></td>
       

@@ -18,15 +18,29 @@
 		public function zuweisen_anzeigen(){
 
 			$email=$this->input->post('E-Mail');
+			$abschluss=$this->input->post('BA/MA');
 
-			$data=array(
-				'email'=>$this->input->post('E-Mail'),
-				'name'=>$this->input->post('Name'),
-				'vorname'=>$this->input->post('Vorname'),
-				'seminar'=>$this->seminar_model->get_seminare(),
-				'beworben'=>$this->seminar_model->get_seminare_beworben($email),
+			if($abschluss==='BA'){
+				$data=array(
+					'email'=>$this->input->post('E-Mail'),
+					'name'=>$this->input->post('Name'),
+					'vorname'=>$this->input->post('Vorname'),
+					'seminar'=>$this->seminar_model->get_seminare_ma(),
+					'beworben'=>$this->seminar_model->get_seminare_beworben($email),
+	
+				);
+			}else{
+				$data=array(
+					'email'=>$this->input->post('E-Mail'),
+					'name'=>$this->input->post('Name'),
+					'vorname'=>$this->input->post('Vorname'),
+					'seminar'=>$this->seminar_model->get_seminare_ba(),
+					'beworben'=>$this->seminar_model->get_seminare_beworben($email),
+	
+				);
+			}
 
-			);
+			
 			
 			$this->load->view('templates/header');
 			$this->load->view('pages/zuweisen_anzeigen', $data);

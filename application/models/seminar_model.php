@@ -9,6 +9,18 @@
             return $query->result_array();
         }
 
+        public function get_seminare_ba(){
+            $this->db->where('BA/MA', 'BA');
+            $query = $this->db->get('seminar');
+            return $query->result_array();
+        }
+
+        public function get_seminare_ma(){
+            $this->db->where('BA/MA', 'MA');
+            $query = $this->db->get('seminar');
+            return $query->result_array();
+        }
+
         public function get_seminare_beworben($email){
             $this->db->select('*');
             $this->db->from('seminarbewerbung');
