@@ -17,17 +17,27 @@
 
 		public function zuweisen_anzeigen(){
 
-			//$email = $this->input->post('E-Mail');
-			//$email='test';
+			$email=$this->input->post('E-Mail');
 
-			$email=array(
-				'email'=>$this->input->post('E-Mail')
+			$data=array(
+				'email'=>$this->input->post('E-Mail'),
+				'name'=>$this->input->post('Name'),
+				'vorname'=>$this->input->post('Vorname'),
+				'seminar'=>$this->seminar_model->get_seminare(),
+				'beworben'=>$this->seminar_model->get_seminare_beworben($email),
 
 			);
 
 			$this->load->view('templates/header');
-			$this->load->view('pages/zuweisen_anzeigen', $email);
+			$this->load->view('pages/zuweisen_anzeigen', $data);
 			$this->load->view('templates/footer');
+
+		}
+
+		public function zuweisen(){
+			
+
+
 
 		}
 	}
