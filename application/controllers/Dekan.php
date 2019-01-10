@@ -89,12 +89,7 @@
 
 		public function fristen_anzeigen(){
 
-			$data= array(
-				'fristen'=> $this->fristen_model->get_fristen(),
-				'frist' => $this->fristen_model->get_namen(),
-
-			);
-			
+			$data['fristen']= $this->fristen_model->get_fristen();	
 
 			$this->load->view('templates/header');
 			$this->load->view('pages/fristen', $data);
@@ -118,6 +113,17 @@
 				'von6'=>$this->input->post('Von6'),
 				'bis6'=>$this->input->post('Bis6'),
 			);
+			
+			$this->fristen_model->fristen_edit($data);
+
+			$this->session->set_flashdata('fristen_success', 'Fristen erfolgreich geändert!');
+
+			$data1['fristen']= $this->fristen_model->get_fristen();	
+
+			$this->load->view('templates/header');
+			$this->load->view('pages/fristen', $data1);
+			$this->load->view('templates/footer');
+
 		}
 	}
 

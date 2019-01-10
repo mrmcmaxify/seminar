@@ -25,7 +25,7 @@
 
 <?php echo validation_errors(); ?>
 
-<?php echo form_open_multipart('users/register'); ?>      
+<?php echo form_open_multipart('dekan/fristen_edit'); ?>      
     
         <label>Anmeldephase</label>
         <input type="date" name="Von1" value="<?php echo set_value('Von1'); ?>">
