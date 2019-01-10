@@ -128,3 +128,6 @@
 <?php if($this->session->flashdata('fristen_success')): ?>
   <?php echo '<p class="alert alert-success">'.$this->session->flashdata('fristen_success').'</p>'; ?>
 <?php endif; ?>
+<?php if($this->session->flashdata('fristen_fail')): ?>
+  <?php echo '<p class="alert alert-success">'.$this->session->flashdata('fristen_fail').'</p>'; ?>
+<?php endif; ?>

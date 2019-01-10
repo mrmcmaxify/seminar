@@ -3,13 +3,13 @@
         public function __construct(){
             $this->load->database();
         }
-        
+        //liest gesamte fristen-tabelle as, sortiert nach ID
         public function get_fristen(){
             $this->db->order_by('ID', 'ASC');
             $query = $this->db->get('fristen');
             return $query->result_array();
         }
-
+        //schreibt neue fristen ind fristen-tabelle
         public function fristen_edit($data){
             
             $date1['Von']=$data['von1'];
