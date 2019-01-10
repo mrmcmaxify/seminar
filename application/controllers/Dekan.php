@@ -98,31 +98,82 @@
 
 		public function fristen_edit(){
 
+			$this->form_validation->set_rules('Von1', 'Anmeldephase', 'required');
+			$this->form_validation->set_rules('Bis1', 'Anmeldephase', 'required|callback_check_bigger['.$this->input->post('Von1').']');
+			$this->form_validation->set_rules('Von2', '1. Auswahlphase', 'required');
+			$this->form_validation->set_rules('Bis2', '1. Auswahlphase', 'required');            
+			$this->form_validation->set_rules('Von3', '1. Annahme-/Rücktrittsphase', 'required');
+			$this->form_validation->set_rules('Bis3', '1. Annahme-/Rücktrittsphase', 'required');
+			$this->form_validation->set_rules('Von4', '2. Auswahlphase', 'required');
+			$this->form_validation->set_rules('Bis4', '2. Auswahlphase', 'required');
+			$this->form_validation->set_rules('Von5', '2. Annahme-/Rücktrittsphase', 'required');
+			$this->form_validation->set_rules('Bis5', '2. Annahme-/Rücktrittsphase', 'required');
+			$this->form_validation->set_rules('Von6', 'Zuteilungsphase', 'required');
+            $this->form_validation->set_rules('Bis6', 'Zuteilungsphase', 'required');
 
-			$data= array (
-				'von1'=>$this->input->post('Von1'),
-				'bis1'=>$this->input->post('Bis1'),
-				'von2'=>$this->input->post('Von2'),
-				'bis2'=>$this->input->post('Bis2'),
-				'von3'=>$this->input->post('Von3'),
-				'bis3'=>$this->input->post('Bis3'),
-				'von4'=>$this->input->post('Von4'),
-				'bis4'=>$this->input->post('Bis4'),
-				'von5'=>$this->input->post('Von5'),
-				'bis5'=>$this->input->post('Bis5'),
-				'von6'=>$this->input->post('Von6'),
-				'bis6'=>$this->input->post('Bis6'),
-			);
+			if($this->form_validation->run() === FALSE){
+
+				$data1['fristen']= $this->fristen_model->get_fristen();	
+                $this->load->view('templates/header');
+                $this->load->view('pages/fristen', $data1);
+                $this->load->view('templates/footer');
+
+
+            }else{
+
+				$data= array (
+					'von1'=>$this->input->post('Von1'),
+					'bis1'=>$this->input->post('Bis1'),
+					'von2'=>$this->input->post('Von2'),
+					'bis2'=>$this->input->post('Bis2'),
+					'von3'=>$this->input->post('Von3'),
+					'bis3'=>$this->input->post('Bis3'),
+					'von4'=>$this->input->post('Von4'),
+					'bis4'=>$this->input->post('Bis4'),
+					'von5'=>$this->input->post('Von5'),
+					'bis5'=>$this->input->post('Bis5'),
+					'von6'=>$this->input->post('Von6'),
+					'bis6'=>$this->input->post('Bis6'),
+				);
 			
-			$this->fristen_model->fristen_edit($data);
+			if($this->fristen_model->fristen_edit($data)){
 
-			$this->session->set_flashdata('fristen_success', 'Fristen erfolgreich geändert!');
+				$this->session->set_flashdata('fristen_success', 'Fristen erfolgreich aktualisiert!');
 
-			$data1['fristen']= $this->fristen_model->get_fristen();	
+				$data1['fristen']= $this->fristen_model->get_fristen();	
 
-			$this->load->view('templates/header');
-			$this->load->view('pages/fristen', $data1);
-			$this->load->view('templates/footer');
+				$this->load->view('templates/header');
+				$this->load->view('pages/fristen', $data1);
+				$this->load->view('templates/footer');
+
+			}else{
+			
+				$this->session->set_flashdata('fristen_success', 'Fristen erfolgreich aktualisiert!');
+
+				$data1['fristen']= $this->fristen_model->get_fristen();	
+
+				$this->load->view('templates/header');
+				$this->load->view('pages/fristen', $data1);
+				$this->load->view('templates/footer');
+
+			}
+
+			
+
+		}
+
+		}
+
+		public function check_bigger($datejetzt, $datevor){
+			if ($datejetzt < $datevor){
+				$this->form_validation->set_message('check_bigger', 'Zeiträume müssen chronologisch korrekt geordnet sein!');
+				return false;       
+      		}else{
+
+				return true;
+			  }
+      			
+
 
 		}
 	}

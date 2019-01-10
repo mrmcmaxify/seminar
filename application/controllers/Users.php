@@ -1,11 +1,9 @@
 <?php
 
     class Users extends CI_Controller{
-
         //Registrierung
         public function register(){
             $data['title']= 'Registrieren';
-
             $this->form_validation->set_rules('e-mail', 'Name', 'required|callback_check_email_exists');
             $this->form_validation->set_rules('password', 'Passwort', 'required|callback_valid_password');
             $this->form_validation->set_rules('password2', 'Passwort bestätigen', 'matches[password]');
