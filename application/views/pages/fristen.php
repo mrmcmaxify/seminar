@@ -25,19 +25,37 @@
 
 <?php echo validation_errors(); ?>
 
-<?php echo form_open_multipart('users/register'); ?>    
-    <form>
-    <select>
-        <option selected="selected">Auswählen</option>
-        
-        
-        
-        <?php foreach ($frist as $item) : ?>
-        <option value="1"><?php echo "1"; ?></option>
-        <?php endforeach; ?>
-    </select>
-    <input type="submit" value="Submit">
-    </form>
+<?php echo form_open_multipart('users/register'); ?>      
+    
+        <label>Anmeldephase</label>
+        <input type="date" name="Von1" value="<?php echo set_value('Von1'); ?>">
+        <input type="date" name="Bis1" value="<?php echo set_value('Bis1'); ?>">
+        <br>
+        <label>1. Auswahlphase</label>
+        <input type="date" name="Von2" value="<?php echo set_value('Von2'); ?>">
+        <input type="date" name="Bis2" value="<?php echo set_value('Bis2'); ?>">
+        <br>
+        <label>1. Annahme-/Rücktrittsphase</label>
+        <input type="date" name="Von3" value="<?php echo set_value('Von3'); ?>">
+        <input type="date" name="Bis3" value="<?php echo set_value('Bis3'); ?>">
+        <br>
+        <label>2. Auswahlphase</label>
+        <input type="date" name="Von4" value="<?php echo set_value('Von4'); ?>">
+        <input type="date" name="Bis4" value="<?php echo set_value('Bis4'); ?>">
+        <br>
+        <label>2. Annahme-/Rücktrittsphase</label>
+        <input type="date" name="Von5" value="<?php echo set_value('Von5'); ?>">
+        <input type="date" name="Bis5" value="<?php echo set_value('Bis5'); ?>">
+        <br>
+        <label>Zuteilungsphase</label>
+        <input type="date" name="Von6" value="<?php echo set_value('Von6'); ?>">
+        <input type="date" name="Bis6" value="<?php echo set_value('Bis6'); ?>">
+        <br>
+       
+   
+
+    <button type="submit" class="btn btn-primary">Festlegen</button>
+   
 <?php echo form_close(); ?>
 
-<?php var_dump($frist); ?>
+

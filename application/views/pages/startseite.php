@@ -59,3 +59,5 @@
   </tbody>
 </table>
 
+<?php var_dump($fristen);
+

@@ -103,6 +103,21 @@
 
 		public function fristen_edit(){
 
+
+			$data= array (
+				'von1'=>$this->input->post('Von1'),
+				'bis1'=>$this->input->post('Bis1'),
+				'von2'=>$this->input->post('Von2'),
+				'bis2'=>$this->input->post('Bis2'),
+				'von3'=>$this->input->post('Von3'),
+				'bis3'=>$this->input->post('Bis3'),
+				'von4'=>$this->input->post('Von4'),
+				'bis4'=>$this->input->post('Bis4'),
+				'von5'=>$this->input->post('Von5'),
+				'bis5'=>$this->input->post('Bis5'),
+				'von6'=>$this->input->post('Von6'),
+				'bis6'=>$this->input->post('Bis6'),
+			);
 		}
 	}
 
