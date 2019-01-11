@@ -33,6 +33,7 @@
             $query = $this->db->get();
             return $query->result_array();
         }
+
         //Trägt Studenten in Seminarzuteilung ein und Setzt #Annahmen +1
         public function zuweisen($email, $id){
             $data = array(
@@ -51,6 +52,35 @@
 
         }
 
+
+            // Liest seminarbewerbungen ein
+            public function bewerbung_hinzufuegen(){
+                    
+
+                //User data array(seminarbewerbung)
+                $data = array(
+                'e-mail' => $this->input->post('e-mail'),
+                'seminarid' => $this->input->post('seminarid'),
+                'ms' => $this->input->post('ms'),                 
+                );
+
+            //insert seminarbewerbung(seminarbewerbung)
+            return $this->db->insert('seminarbewerbung', $data);
+            }
+
+  
+
+}
+
+//Gibt zurück, ob der Student die Höchstanzahl an Seminarbewerbungen sch0n erreicht hat
+//public function get_anzahl_bewerbungen(){
+//    $this->db->select('#Bewerbungen');
+//   $this->db->from('student');
+//    $this->db->where('#Annahmen', '5');
+//    $this->db->join(this->session->userdata('email')='student.e-mail'))
+//    $query = $this->db->get();
+//    return $query->result_array();
+//}
        
         
-    }
+    }        
