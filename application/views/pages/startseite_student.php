@@ -26,8 +26,10 @@
       <?php echo form_close(); ?>
         </td>
       <td>
-      <?php echo form_open('student/bewerben'); ?>
+      <?php echo form_open('student/bewerbung_hinzufuegen'); ?>
       <input type="hidden" name="SeminarID" value="<?php echo $seminare['SeminarID']; ?>">
+      <input type="hidden" name="Beschreibung" value="<?php echo $seminare['Beschreibung']; ?>">
+      <input type="hidden" name="MSNotwendig" value="<?php echo $seminare['MSNotwendig']; ?>">
       <button type="submit" class="btn btn-success">Bewerbung</button>
       <?php echo form_close(); ?>
       </td>

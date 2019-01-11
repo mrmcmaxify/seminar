@@ -1,3 +1,3 @@
-<h2>Seminar-Information</h2>
+<h2>Seminar-Beschreibung</h2>
 
 <?php echo $beschreibung; ?>
