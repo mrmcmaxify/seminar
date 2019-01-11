@@ -3,8 +3,9 @@
         public function __construct(){
             $this->load->database();
         }
-        
+        //liest gesamte fristen-tabelle as, sortiert nach ID
         public function get_fristen(){
+            $this->db->order_by('ID', 'ASC');
             $query = $this->db->get('fristen');
             return $query->result_array();
         }
