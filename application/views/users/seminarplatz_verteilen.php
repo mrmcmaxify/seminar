@@ -1,4 +1,4 @@
-<?php var_dump($lehrstuhl); ?>
+<?php // var_dump($lehrstuhl); ?>
 
 
 <h4>Bewerbungen</h4>

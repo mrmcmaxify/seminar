@@ -99,11 +99,11 @@
 
 		public function verteilen_anzeigen(){
             $email=$_SESSION['user_email'];
-            $lehrstuhl=$this->Seminarvergabe_model->get_lehrstuhl($email);
-            $seminare=$this->Seminarvergabe_model->get_seminare($lehrstuhl);
+          //  $lehrstuhl=$this->Seminarvergabe_model->get_lehrstuhl($email);
+          //  $seminare=$this->Seminarvergabe_model->get_seminare($lehrstuhl);
             $data= array(
-                'lehrstuhl'=>$lehrstuhl,
-                'seminarbewerbung'=>$this->Seminarvergabe_model->get_seminare($lehrstuhl),
+               // 'lehrstuhl'=>$lehrstuhl,
+                'seminarbewerbung'=>$this->Seminarvergabe_model->get_seminare($email),
 
 
 

@@ -17,12 +17,13 @@
 
 
         }
-        public function get_seminare($lehrstuhl){
+        public function get_seminare($email){
             $this->db->select('*');
             $this->db->from('seminarbewerbung');
             $this->db->join('seminar', 'seminar.SeminarID = seminarbewerbung.SeminarID', 'inner');
             $this->db->join('student', 'student.E-Mail = seminarbewerbung.E-Mail', 'inner');
-          //  $this->db->where('LehrstuhlName', $lehrstuhl);
+            $this->db->join('lehrstuhl', 'lehrstuhl.LehrstuhlName = seminar.LehrstuhlName', 'inner');
+            $this->db->where('lehrstuhl.E-Mail', $email);
             $query=$this->db->get();
             return $query->result_array();
           
