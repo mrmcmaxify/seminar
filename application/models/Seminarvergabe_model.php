@@ -29,4 +29,18 @@
 
 
         }
+
+        //Gibt die Zuteilung von Studenten und Seminarplatz aus
+        public function get_zuteilung(){
+            $this->db->select('*');
+            $this->db->from('seminarzuteilung');
+            $query=$this->db->get();
+            return $query->result_array();
+        }
+
+        //Löscht die Zuteilung eines Seminarplatzes
+        public function zuteilung_entfernen($email, $id){
+            $this->db->where('E-Mail', $email);
+            return $this->db->where('SeminarID', $id)->delete('seminarzuteilung');
+        }
     }

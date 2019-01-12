@@ -35,6 +35,7 @@
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>lehrstuhl/addstaff">Mitarbeiter anlegen</a>
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>lehrstuhl/seminaranlegen">Seminar anlegen</a>
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>lehrstuhl/verteilen_anzeigen">Seminarplätze verteilen</a>
+      <a class="nav-item nav-link" href="<?php echo base_url(); ?>lehrstuhl/loeschen_anzeigen">Seminarplätze löschen</a>
       <?php endif; ?>
       <!-- Rollennavbar Student -->
       <?php if($this->session->userdata('rolle')==='student') : ?>

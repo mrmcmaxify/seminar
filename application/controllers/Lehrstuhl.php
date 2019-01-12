@@ -115,7 +115,44 @@
 			$this->load->view('users/seminarplatz_verteilen',$data);
 			$this->load->view('templates/footer');
 
-		}
+        }
+        
+        public function loeschen_anzeigen(){
+            $data= array(
+                
+                'seminarzuteilung'=>$this->Seminarvergabe_model->get_zuteilung(),
 
+
+
+
+            );
+            
+            $this->load->view('templates/header');
+			$this->load->view('users/seminarplatz_loeschen', $data);
+			$this->load->view('templates/footer');
+        }
+
+        public function loeschen(){
+			$email=$this->input->post('E-Mail');
+			$id=$this->input->post('SeminarID');
+
+			if($this->Seminarvergabe_model->zuteilung_entfernen($email,$id)){
+				
+				$this->session->set_flashdata('entfernt', 'Zuweisung erfolgreich entfernt!');
+				
+			
+
+				$this->load->view('templates/header');
+				$this->load->view('pages/startseite_lehrstuhl');
+				$this->load->view('templates/footer');
+
+			}else{
+
+				$this->session->set_flashdata('zugewiesen_nicht_entfernt', 'Konnte Zuweisung nicht aufheben, bitte Admin kontaktieren!');
+			}
+		
+
+
+		}
 		
 	}
