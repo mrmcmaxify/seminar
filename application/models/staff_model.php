@@ -16,7 +16,7 @@
                 'e-mail' => $this->input->post('e-mail'),
                 'vorname' => $this->input->post('vorname'),
                 'name' => $this->input->post('name'),
-                'inhaber' =>'2',
+                'inhaber' => '2',
                 'lehrstuhlname' => $this->input->post('lehrstuhlname'),                
             );
 
