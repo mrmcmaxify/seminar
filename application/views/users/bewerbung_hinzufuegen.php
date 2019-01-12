@@ -19,13 +19,15 @@
                     <label>E-Mail:</label>
                     <input type="email" class="form-control" name="e-mail" placeholder="E-Mail-Adresse" value="<?php echo set_value('e-mail'); ?>">
                 </div>
-                <?php if ($msnotwendig === 1): ?>
+                <?php if ($msnotwendig === '1'): ?>
                 <div class="form group">
                     <label>Motivationsschreiben</label>
                     <input type="file"  name="ms" size="20">
                 </div>
                 <?php endif; ?>
                 </br>
+                <input type="hidden" name="SeminarID" value="<?php echo $seminarid; ?>">
+                <input type="hidden" name="MSNotwendig" value="<?php echo $msnotwendig; ?>">
                 <button type="submit" class="btn btn-primary">Bewerben</button>
                 
 
