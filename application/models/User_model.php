@@ -107,4 +107,43 @@
             );
             $this->db->where('E-Mail', $email)->update('benutzeraccount', $data);
         }
+
+        //Fügt dem Log einen Eintrag mit dem Benutzer $email und der $event id hinzu
+        public function add_log($email, $eventid){
+            if($eventid=='1'){
+                $data = array(
+                    'E-Mail' => $email,
+                    'Event-id'=> $eventid,
+                    'Aktion' => 'Anmeldung an Seminar'
+                );
+                $this->db->insert('logfile', $data);    
+            }
+
+            if($eventid=='2'){
+                $data = array(
+                    'E-Mail' => $email,
+                    'Event-id'=> $eventid,
+                    'Aktion' => 'Abmeldung von Seminar'
+                );
+                $this->db->insert('logfile', $data);    
+            }
+
+            if($eventid=='3'){
+                $data = array(
+                    'E-Mail' => $email,
+                    'Event-id'=> $eventid,
+                    'Aktion' => 'Annahme Seminaranmeldung'
+                );
+                $this->db->insert('logfile', $data);    
+            }
+
+            if($eventid=='4'){
+                $data = array(
+                    'E-Mail' => $email,
+                    'Event-id'=> $eventid,
+                    'Aktion' => 'Rücktritt Seminaranmeldung'
+                );
+                $this->db->insert('logfile', $data);    
+            }
+        } 
 }
