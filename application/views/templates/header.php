@@ -131,3 +131,9 @@
 <?php if($this->session->flashdata('fristen_fail')): ?>
   <?php echo '<p class="alert alert-success">'.$this->session->flashdata('fristen_fail').'</p>'; ?>
 <?php endif; ?>
+<?php if($this->session->flashdata('email_success')): ?>
+  <?php echo '<p class="alert alert-success">'.$this->session->flashdata('email_success').'</p>'; ?>
+<?php endif; ?>
+<?php if($this->session->flashdata('email_error')): ?>
+  <?php echo '<p class="alert alert-danger">'.$this->session->flashdata('email_error').'</p>'; ?>
+<?php endif; ?>
