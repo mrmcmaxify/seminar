@@ -90,20 +90,20 @@
             return $this->db->where('E-Mail', $email)->delete('benutzeraccount');
         }
 
-        //Setzt Loginsperre auf 2 = Gesperrt
+        //Setzt Loginsperre auf 1 = Gesperrt
         public function lock_user($email){
             $data = array(
                 'E-Mail' => $email,
-                'Loginsperre' => '2',
+                'Loginsperre' => '1',
             );
             $this->db->where('E-Mail', $email)->update('benutzeraccount', $data);
         }
 
-        //Setzt Loginsperre auf 1 = Nicht gesperrt
+        //Setzt Loginsperre auf 2 = Nicht gesperrt
         public function unlock_user($email){
             $data = array(
                 'E-Mail' => $email,
-                'Loginsperre' => '1',
+                'Loginsperre' => '2',
             );
             $this->db->where('E-Mail', $email)->update('benutzeraccount', $data);
         }
