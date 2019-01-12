@@ -39,7 +39,6 @@
             $this->form_validation->set_rules('password2', 'Passwort bestätigen', 'matches[password]');
             $this->form_validation->set_rules('vorname', 'Vorname', 'required');
             $this->form_validation->set_rules('name', 'Name', 'required');
-            $this->form_validation->set_rules('inhaber', 'Inhaber', 'required');
             $this->form_validation->set_rules('lehrstuhlname', 'Lehrstuhlname', 'required');
        
             if($this->form_validation->run() === FALSE){
@@ -61,6 +60,19 @@
             }
        
         }
+        //Check if e-mail exists
+        public function check_email_exists($email){
+            $this->form_validation->set_message('check_email_exists', 'Diese E-Mail-Adresse ist bereits im System regstriert');
+
+            if($this->user_model->check_email_exists($email)){
+                return true;
+            }else{
+                return false;
+            }
+
+        }
+		
+		// Trägt Studenten in die Seminarzuteilungs-Tabelle ein
 		
 		public function verteilen(){
 			$email=$this->input->post('E-Mail');
@@ -70,18 +82,38 @@
 				
 				$this->session->set_flashdata('zugewiesen', 'Zuweisung erfolgreich!');
 				
-				
+			
 
 				$this->load->view('templates/header');
-				$this->load->view('pages/startseite_lehrstuhl', $data);
+				$this->load->view('pages/startseite_lehrstuhl');
 				$this->load->view('templates/footer');
 
 			}else{
 
 				$this->session->set_flashdata('zugewiesen_nicht', 'Konnte nicht zuweisen, bitte Admin kontaktieren!');
 			}
+		
 
 
+		}
+
+		public function verteilen_anzeigen(){
+            $email=$_SESSION['user_email'];
+            $lehrstuhl=$this->Seminarvergabe_model->get_lehrstuhl($email);
+            $seminare=$this->Seminarvergabe_model->get_seminare($lehrstuhl);
+            $data= array(
+                'lehrstuhl'=>$lehrstuhl,
+                'seminarbewerbung'=>$this->Seminarvergabe_model->get_seminare($lehrstuhl),
+
+
+
+
+            );
+            
+
+			$this->load->view('templates/header');
+			$this->load->view('users/seminarplatz_verteilen',$data);
+			$this->load->view('templates/footer');
 
 		}
 

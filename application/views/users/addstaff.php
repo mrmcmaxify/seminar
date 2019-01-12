@@ -2,7 +2,7 @@
 
 <?php echo validation_errors(); ?>
 
-<?php echo form_open('users/addstaff'); ?>
+<?php echo form_open('lehrstuhl/addstaff'); ?>
     
     <div class="row">
 
@@ -27,10 +27,6 @@
                 <div class="form group">
                     <label>Name</label>
                     <input type="text" class="form-control" name="name" placeholder="Name">
-                </div>
-                <div class="form group">
-                    <label>Inhaber</label>
-                    <input type="text" class="form-control" name="inhaber" placeholder="Inhaber">
                 </div>
                 <div class="form group">
                     <label>Name des Lehrstuhls</label>
