@@ -186,9 +186,9 @@
 			$field  = 'E-Mail';
 			$search = $this->input->post('search');
 			if (!empty($search)) {
-				$data['user'] = $this->admin_model->getLogsWhereLike($field, $search);
+				$data['log'] = $this->admin_model->getLogsWhereLike($field, $search);
 			} else {
-				$data['user'] = $this->admin_model->get_log();
+				$data['log'] = $this->admin_model->get_log();
 			}
 
 			$this->load->view('templates/header');
