@@ -5,4 +5,8 @@
 <p><b>Bisherige Teilnehmerzahl:</b><?php echo $seminar[0]['Ist-Teilnehmerzahl']?>/<?php echo $seminar[0]['Soll-Teilnehmerzahl']?></p>
 
 
-<button type="button" class="btn btn-primary" onClick="history.go(-1);return true;">Zurück</button>
+
+
+<?php echo form_open_multipart('users/goback'); ?>
+<button type="submit" class="btn btn-primary" >Zurück</button>
+<?php echo form_close(); ?>

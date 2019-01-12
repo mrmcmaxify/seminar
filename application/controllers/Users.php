@@ -1,11 +1,9 @@
 <?php
 
     class Users extends CI_Controller{
-
         //Registrierung
         public function register(){
             $data['title']= 'Registrieren';
-
             $this->form_validation->set_rules('e-mail', 'Name', 'required|callback_check_email_exists');
             $this->form_validation->set_rules('password', 'Passwort', 'required|callback_valid_password');
             $this->form_validation->set_rules('password2', 'Passwort bestätigen', 'matches[password]');
@@ -142,7 +140,7 @@
                    );
 
                    $this->session->set_userdata($user_data);
-
+                   
 
                     //Set message
                     $this->session->set_flashdata('user_loggedin', 'Sie sind jetzt eingeloggt!');
@@ -158,8 +156,16 @@
 		
 			            $this->load->view('templates/header');
 			            $this->load->view('pages/startseite_dekan', $data);
-			            $this->load->view('templates/footer');
-
+                        $this->load->view('templates/footer');
+                        
+                    }elseif($user_data['rolle']==='admin'){
+                        $data['seminar']= $this->seminar_model->get_seminare();
+                        $data['fristen']=$this->fristen_model->get_fristen();
+            
+                            $this->load->view('templates/header');
+                            $this->load->view('pages/startseite', $data);
+                            $this->load->view('templates/footer');
+    
                     }else{
                      //Lädt Startseite des jeweiligen Benutzers   
                         redirect('startseite_'.$user_data['rolle']);
@@ -350,6 +356,43 @@
 			$this->load->view('templates/header');
 			$this->load->view('users/seminar_info', $data);
 			$this->load->view('templates/footer');
+        }
+        //Zurück Button für Seminar-Detail-Ansicht
+        public function goback(){
+
+            if(empty($_SESSION['logged_in'])){
+
+                $data['seminar']= $this->seminar_model->get_seminare();
+                $data['fristen']=$this->fristen_model->get_fristen();
+
+                $this->load->view('templates/header');
+                $this->load->view('pages/startseite', $data);
+                $this->load->view('templates/footer');
+                
+
+            }else{
+                
+
+
+                if($_SESSION['rolle']==='dekan'){
+                    $data['seminar']= $this->seminar_model->get_seminare();
+                    $data['fristen']=$this->fristen_model->get_fristen();
+                    $data['ba_ohne']=$this->student_model->get_ba_ohne();
+                    $data['ma_ohne']=$this->student_model->get_ma_ohne();
+        
+    
+                    $this->load->view('templates/header');
+                    $this->load->view('pages/startseite_dekan', $data);
+                    $this->load->view('templates/footer');
+
+                }else{
+                 //Lädt Startseite des jeweiligen Benutzers   
+                    redirect('startseite_'.$_SESSION['rolle']);
+                  }
+
+            }
+
+            
         }
 
         

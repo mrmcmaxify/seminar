@@ -61,4 +61,16 @@
             }
         }
 
+        //gibt alle Logdateien zurück
+        public function get_log(){
+            $query = $this->db->get('logfile');
+            return $query->result_array();
+        }
+
+        //gibt alle Logdateien eines bestimmten $search im $field zurück
+        public function getLogsWhereLike($field, $search){
+            $query = $this->db->like($field, $search)->order_by($field)->get('logfile');
+            return $query->result_array();
+        }
+
     }
