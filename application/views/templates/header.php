@@ -25,9 +25,9 @@
       <?php endif; ?>
       <!-- Rollennavbar Admin -->
       <?php if($this->session->userdata('rolle')==='admin') : ?>
-      <a class="nav-item nav-link" href="<?php echo base_url(); ?>admin/startseite_admin">Startseite Admin</a>
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>admin/add_user">Benutzer hinzufügen</a>
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>admin/search_user">Benutzer bearbeiten</a>
+      <a class="nav-item nav-link" href="<?php echo base_url(); ?>admin/search_log">Logs anzeigen</a>
       <?php endif; ?>
        <!-- Rollennavbar Lehrstuhl -->
        <?php if($this->session->userdata('rolle')==='lehrstuhl') : ?>

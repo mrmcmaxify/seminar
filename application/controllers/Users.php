@@ -140,7 +140,7 @@
                    );
 
                    $this->session->set_userdata($user_data);
-
+                   
 
                     //Set message
                     $this->session->set_flashdata('user_loggedin', 'Sie sind jetzt eingeloggt!');
@@ -156,8 +156,16 @@
 		
 			            $this->load->view('templates/header');
 			            $this->load->view('pages/startseite_dekan', $data);
-			            $this->load->view('templates/footer');
-
+                        $this->load->view('templates/footer');
+                        
+                    }elseif($user_data['rolle']==='admin'){
+                        $data['seminar']= $this->seminar_model->get_seminare();
+                        $data['fristen']=$this->fristen_model->get_fristen();
+            
+                            $this->load->view('templates/header');
+                            $this->load->view('pages/startseite', $data);
+                            $this->load->view('templates/footer');
+    
                     }else{
                      //Lädt Startseite des jeweiligen Benutzers   
                         redirect('startseite_'.$user_data['rolle']);
