@@ -8,11 +8,4 @@
             $query = $this->db->get('fristen');
             return $query->result_array();
         }
-
-        public function get_namen(){
-
-            
-            $query = $this->db->get('fristen');
-            return $query->result_array();
-        }
     }
