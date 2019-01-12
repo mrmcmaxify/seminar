@@ -25,15 +25,15 @@
       <?php endif; ?>
       <!-- Rollennavbar Admin -->
       <?php if($this->session->userdata('rolle')==='admin') : ?>
+      <a class="nav-item nav-link" href="<?php echo base_url(); ?>admin/startseite_admin">Startseite Admin</a>
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>admin/add_user">Benutzer hinzufügen</a>
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>admin/search_user">Benutzer bearbeiten</a>
-      <a class="nav-item nav-link" href="<?php echo base_url(); ?>admin/search_log">Logs anzeigen</a>
       <?php endif; ?>
        <!-- Rollennavbar Lehrstuhl -->
        <?php if($this->session->userdata('rolle')==='lehrstuhl') : ?>
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>startseite_lehrstuhl">Startseite</a>
-      <a class="nav-item nav-link" href="<?php echo base_url(); ?>users/addstaff">Mitarbeiter anlegen</a>
-      <a class="nav-item nav-link" href="<?php echo base_url(); ?>users/seminaranlegen">Seminar anlegen</a>
+      <a class="nav-item nav-link" href="<?php echo base_url(); ?>lehrstuhl/addstaff">Mitarbeiter anlegen</a>
+      <a class="nav-item nav-link" href="<?php echo base_url(); ?>lehrstuhl/seminaranlegen">Seminar anlegen</a>
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>lehrstuhl/verteilen">Seminarplätze verteilen</a>
       <?php endif; ?>
       <!-- Rollennavbar Student -->
@@ -124,10 +124,4 @@
 <?php endif; ?>
 <?php if($this->session->flashdata('zugewiesen_nicht')): ?>
   <?php echo '<p class="alert alert-danger">'.$this->session->flashdata('zugewiesen_nicht').'</p>'; ?>
-<?php endif; ?>
-<?php if($this->session->flashdata('fristen_success')): ?>
-  <?php echo '<p class="alert alert-success">'.$this->session->flashdata('fristen_success').'</p>'; ?>
-<?php endif; ?>
-<?php if($this->session->flashdata('fristen_fail')): ?>
-  <?php echo '<p class="alert alert-success">'.$this->session->flashdata('fristen_fail').'</p>'; ?>
 <?php endif; ?>
