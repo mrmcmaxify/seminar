@@ -118,9 +118,10 @@
         }
         
         public function loeschen_anzeigen(){
+            $email=$_SESSION['user_email'];
             $data= array(
                 
-                'seminarzuteilung'=>$this->Seminarvergabe_model->get_zuteilung(),
+                'seminarzuteilung'=>$this->Seminarvergabe_model->get_zuteilung($email),
 
 
 

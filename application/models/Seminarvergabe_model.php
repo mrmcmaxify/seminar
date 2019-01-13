@@ -7,16 +7,19 @@
         
        
 
-        public function get_lehrstuhl($email){
+      /*  public function get_lehrstuhl($email){
             $this->db->select('LehrstuhlName');
             $this->db->from('lehrstuhl');
             $this->db->where('E-Mail', $email);
             $query=$this->db->get();
             return $query->result_array();
-          
+         
 
 
         }
+        */ 
+
+        // Liefert alle Seminarbewerbungen des jeweiligen (angemeldeten) Lehrstuhls
         public function get_seminare($email){
             $this->db->select('*');
             $this->db->from('seminarbewerbung');
@@ -32,9 +35,12 @@
         }
 
         //Gibt die Zuteilung von Studenten und Seminarplatz aus
-        public function get_zuteilung(){
+        public function get_zuteilung($email){
             $this->db->select('*');
             $this->db->from('seminarzuteilung');
+            $this->db->join('seminar', 'seminar.SeminarID = seminarzuteilung.SeminarID', 'inner');
+            $this->db->join('lehrstuhl', 'lehrstuhl.LehrstuhlName = seminar.LehrstuhlName', 'inner');
+            $this->db->where('lehrstuhl.E-Mail', $email);
             $query=$this->db->get();
             return $query->result_array();
         }
