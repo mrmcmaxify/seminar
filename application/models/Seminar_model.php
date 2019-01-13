@@ -28,7 +28,7 @@
             if ($MSNotwendig === 1){
                 //User data array(seminarbewerbung)
                 $data = array(
-                    'e-mail' => $this->input->post('e-mail'),
+                    'e-mail' => $this->session->userdata('user_email'),
                     'seminarid' => $seminarid,
                     'ms' => $this->input->post('ms')              
                 );
@@ -36,7 +36,7 @@
 
             else{
                 $data = array(
-                    'e-mail' => $this->input->post('e-mail'),
+                    'e-mail' => $this->session->userdata('user_email'),
                     'seminarid' => $seminarid
                 );
             } 
@@ -66,6 +66,20 @@
             $this->db->where('BA/MA', 'MA');
             $query = $this->db->get('seminar');
             return $query->result_array();
+        }
+
+        //Gibt alle Seminare aus, auf die sich ein bestimmter Student noch nicht beworben hat
+        public function get_seminare_not_beworben($email){
+            $this->db->select('*');
+            $this->db->from('seminar');
+            $this->db->join('seminarbewerbung', 'seminar.SeminarID = seminarbewerbung.SeminarID', 'left');
+            $this->db->where_not_in('E-Mail', $email);
+            $this->db->order_by('Seminarname', 'DESC');
+            $query = $this->db->get();
+
+            return $query->result_array();
+
+
         }
         
     }

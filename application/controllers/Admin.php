@@ -209,9 +209,9 @@
 
 
 			// Storing submitted values
-			$sender_email = 'seminarplatzvergabe.uni.passu@gmail.com';
+			$sender_email = 'seminarplatzvergabe.uni.passau@gmail.com';
 			$user_password = 'rfvBGT5%';
-			$username = 'seminarplatzvergabe.uni.passu@gmail.com';
+			$username = 'seminarplatzvergabe.uni.passau@gmail.com';
 			
 			// Load email library and passing configured values to email library
 			$this->load->library('email');
