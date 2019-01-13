@@ -49,6 +49,9 @@
 
 
 
+
+
+
         //Bewerbung eines Studenten für ein Seminar hinzufügen
         public function bewerbung_hinzufuegen(){
             
@@ -56,19 +59,24 @@
             $data1=array(
                 'seminarid'=>$this->input->post('SeminarID'),
                 'beschreibung'=>$this->input->post('Beschreibung'),
-                'msnotwendig'=>$this->input->post('MSNotwendig')
-
+                'msnotwendig'=>$this->input->post('MSNotwendig'),
+                'e-mail'=> $this->session->userdata('user_email')
             );
 
-            
+            /*
+            $this->load->view('templates/header');
+            $this->load->view('users/bewerbung_hinzufuegen', $data1);
+            $this->load->view('templates/footer');
+            */
             $this->form_validation->set_rules('e-mail', 'E-Mail', 'required');
             
-            
-            if($data1['msnotwendig'] === '1'){
+            var_dump($this->form_validation->run());
+            if($data1['msnotwendig'] === 1){
                 if (empty($_FILES['ms']['e-mail'])){
             
                     $this->form_validation->set_rules('ms', 'MS', 'required');
                 }
+
             }
                   
                      
@@ -76,15 +84,12 @@
                 $this->load->view('templates/header');
                 $this->load->view('users/bewerbung_hinzufuegen', $data1);
                 $this->load->view('templates/footer');
-
+                var_dump($this->form_validation->run());
             }
-            
+
             else{
 
-
-
-
-                 if($test['msnotwendig'] === '1'){
+                 if($data1['msnotwendig'] === '1'){
                     //File Upload
                     $config['upload_path']          = './uploads/';                
                     $config['allowed_types']        = 'pdf';
@@ -109,17 +114,21 @@
                     if($data1['msnotwendig'] === '1'){
                         $data = array('upload_data' => $this->upload->data());
                     }
+
                     else{    
                         $this->seminar_model->bewerbung_hinzufuegen($data1['msnotwendig'], $data1['seminarid']);
                         //Set confirm message
                         $this->session->set_flashdata('bewerbung_hinzugefuegt', 'Die Bewerbung wurde hinzugefuegt!');
             
-                        redirect('startseite');
+                        redirect('startseite_student');
                     }
 
                 }
         
             }
     
+        
+        
+        
         }
     }

@@ -9,7 +9,7 @@
 
 <?php echo validation_errors(); ?>
 
-<?php echo form_open_multipart('student/bewerbung_hinzufuegen'); ?>
+<?php echo form_open('student/bewerbung_hinzufuegen'); ?>
     
     <div class="row">
         
@@ -28,6 +28,8 @@
                 </br>
                 <input type="hidden" name="SeminarID" value="<?php echo $seminarid; ?>">
                 <input type="hidden" name="MSNotwendig" value="<?php echo $msnotwendig; ?>">
+                <input type="hidden" name="Beschreibung" value="<?php echo $beschreibung; ?>">
+
                 <button type="submit" class="btn btn-primary">Bewerben</button>
                 
 

@@ -13,7 +13,15 @@
   </thead>
   <tbody>
     <?php 
-     foreach ($seminar as $seminare) : 
+
+
+      $data = $this->seminar_model->get_seminare_beworben($this->session->userdata('user_email'));
+      //var_dump
+      $data1 = $this->seminar_model->get_seminare_not_beworben($this->session->userdata('user_email'));
+      //var_dump($data1);
+     foreach ($seminar as $seminare) :
+      
+
       ?>
     <tr>
       <th scope="row"> <?php echo $seminare['LehrstuhlName']; ?> </th>
@@ -57,7 +65,7 @@
   </thead>
   <tbody>
     <?php 
-     foreach ($seminar as $seminare) : 
+     foreach ($data as $seminare) : 
       ?>
     <tr>
       <th scope="row"> <?php echo $seminare['LehrstuhlName']; ?> </th>
