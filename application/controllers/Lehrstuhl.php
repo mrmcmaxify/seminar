@@ -103,7 +103,7 @@
           //  $seminare=$this->Seminarvergabe_model->get_seminare($lehrstuhl);
             $data= array(
                // 'lehrstuhl'=>$lehrstuhl,
-                'seminarbewerbung'=>$this->Seminarvergabe_model->get_seminare($email),
+                'seminarbewerbung'=>$this->Seminarvergabe_model->get_seminarbewerbung($email),
 
 
 
@@ -150,6 +150,42 @@
 			}else{
 
 				$this->session->set_flashdata('zugewiesen_nicht_entfernt', 'Konnte Zuweisung nicht aufheben, bitte Admin kontaktieren!');
+			}
+		
+
+
+        }
+
+        public function seminar_loeschen_anzeigen(){
+            $email=$_SESSION['user_email'];
+            $data= array(
+                
+                'seminar'=>$this->Seminarvergabe_model->get_seminare($email),
+
+            );
+            
+            $this->load->view('templates/header');
+			$this->load->view('users/seminar_loeschen', $data);
+			$this->load->view('templates/footer');
+        }
+        // Löscht angelegte Seminare aus der Datenbank
+		
+		public function seminar_loeschen(){
+			$id=$this->input->post('SeminarID');
+
+			if($this->Seminarvergabe_model->seminar_entfernen($id)){
+				
+				$this->session->set_flashdata('entfernt', 'Seminar entfernt!');
+				
+			
+
+				$this->load->view('templates/header');
+				$this->load->view('pages/startseite_lehrstuhl');
+				$this->load->view('templates/footer');
+
+			}else{
+
+				$this->session->set_flashdata('nicht_entfernt', 'Konnte Seminar nicht entfernen, bitte Admin kontaktieren!');
 			}
 		
 

@@ -11,6 +11,7 @@
       <th scope="col">Fachsemester</th>
       <th scope="col">BA/MA</th>
       <th scope="col">ECTS</th>
+      <th scope="col">HisQis</th>
       <th scope="col">Zuweisen</th>
       
 
@@ -28,6 +29,7 @@
       <td><?php echo $seminarbewerbungen['Fachsemester']; ?></td>
       <td><?php echo $seminarbewerbungen['BA/MA']; ?></td>
       <td><?php echo $seminarbewerbungen['ECTS']; ?></td>
+      <td><a class="btn btn-default pull-left" href="<?php echo base_url(); ?>users/download/<?php echo $seminarbewerbungen['HisQis']; ?>">Download</a></td>
 
       <td>
       <?php echo form_open('lehrstuhl/verteilen'); ?>

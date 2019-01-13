@@ -20,7 +20,7 @@
         */ 
 
         // Liefert alle Seminarbewerbungen des jeweiligen (angemeldeten) Lehrstuhls
-        public function get_seminare($email){
+        public function get_seminarbewerbung($email){
             $this->db->select('*');
             $this->db->from('seminarbewerbung');
             $this->db->join('seminar', 'seminar.SeminarID = seminarbewerbung.SeminarID', 'inner');
@@ -45,9 +45,26 @@
             return $query->result_array();
         }
 
+        // Liefert alle Seminarbewerbungen des jeweiligen (angemeldeten) Lehrstuhls
+        public function get_seminare($email){
+            $this->db->select('*');
+            $this->db->from('seminar');
+            $this->db->join('lehrstuhl', 'lehrstuhl.LehrstuhlName = seminar.LehrstuhlName', 'inner');
+            $this->db->where('lehrstuhl.E-Mail', $email);
+            $query=$this->db->get();
+            return $query->result_array();
+          
+
+
+        }
         //Löscht die Zuteilung eines Seminarplatzes
         public function zuteilung_entfernen($email, $id){
             $this->db->where('E-Mail', $email);
             return $this->db->where('SeminarID', $id)->delete('seminarzuteilung');
+        }
+
+        //Löscht das Seminar aus der Datenbank
+        public function seminar_entfernen($id){
+            return $this->db->where('SeminarID', $id)->delete('seminar');
         }
     }
