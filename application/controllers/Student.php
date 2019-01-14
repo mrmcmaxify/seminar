@@ -63,11 +63,14 @@
                 'e-mail'=> $this->session->userdata('user_email')
             );
 
-            /*
-            $this->load->view('templates/header');
-            $this->load->view('users/bewerbung_hinzufuegen', $data1);
-            $this->load->view('templates/footer');
-            */
+
+            $anzahlbewerbungen = $this->seminar_model->get_anzahl_bewerbungen($this->session->userdata('user_email'));
+            var_dump($anzahlbewerbungen);
+
+
+            
+            $this->seminar_model->bewerbungen_erhoehen($this->session->userdata('user_email'));
+
             $this->form_validation->set_rules('e-mail', 'E-Mail', 'required');
             
             var_dump($this->form_validation->run());
@@ -88,6 +91,7 @@
             }
 
             else{
+                $this->seminar_model->bewerbungen_erhoehen($this->session->userdata('user_email'));
 
                  if($data1['msnotwendig'] === '1'){
                     //File Upload
@@ -117,6 +121,10 @@
 
                     else{    
                         $this->seminar_model->bewerbung_hinzufuegen($data1['msnotwendig'], $data1['seminarid']);
+                        $this->seminar_model->bewerbungen_erhoehen($this->session->userdata('user_email'));
+                        
+            
+
                         //Set confirm message
                         $this->session->set_flashdata('bewerbung_hinzugefuegt', 'Die Bewerbung wurde hinzugefuegt!');
             
@@ -127,8 +135,34 @@
         
             }
     
-        
-        
-        
         }
+
+        public function bewerbung_loeschen(){
+            $data=array(
+                'seminarid'=>$this->input->post('SeminarID'),
+                'beschreibung'=>$this->input->post('Beschreibung'),
+                'msnotwendig'=>$this->input->post('MSNotwendig'),
+                'e-mail'=> $this->session->userdata('user_email')
+            );
+
+            $data1 =$this->seminar_model->bewerbung_loeschen($data['seminarid'], $data['e-mail']);
+
+            redirect('startseite_student');
+        }
+
+        //Detail-Ansicht für Seminare
+		public function show_seminar(){
+			$id=$this->input->post('SeminarID');
+			$data= array(
+				'seminar'=>$this->seminar_model->get_seminar($id),
+			);
+
+			$this->load->view('templates/header');
+			$this->load->view('pages/show_seminar', $data);
+			$this->load->view('templates/footer');
+
+
+		}
+
+
     }
