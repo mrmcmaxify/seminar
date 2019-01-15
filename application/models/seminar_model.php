@@ -107,5 +107,34 @@
         public function bewerbung_loeschen($seminarid, $email){
             return $this->db->where('SeminarID', $seminarid)->where('E-Mail', $email)->delete('seminarbewerbung');
         }
+
+        //gibt Seminare zurück, die vom Lehrstuhl zugesagt worden sind
+        public function get_seminare_zugesagt($email){
+            $this->db->select('*');
+            $this->db->from('seminarbewerbung');
+            $this->db->join('seminar', 'seminarbewerbung.SeminarID = seminar.SeminarID', 'inner');
+            $this->db->where('E-Mail', $email);
+            $this->db->where('Eingeladen', 1);
+            $this->db->order_by('Seminarname', 'DESC');
+            $query = $this->db->get();
+            return $query->result_array();
+        }
+
+        //fügt ein zugesagtes, angenommenes Seminar hinzu
+        public function seminar_zusagen($seminarid, $email){
+            $data = array(
+                'SeminarID' => $seminarid,
+                'E-Mail' => $email
+            );
+
+            $data1 = array(
+                'ZugesagtAm' => 'NOW()'
+            );
+
+            $this->db->insert('seminarzuteilung', $data);
+            $this->db->where('E-Mail', $email)->where('SeminarID', $seminarid)->update('seminarbewerbung', $data1);
+        }
+
+
         
     }
