@@ -251,6 +251,103 @@
 			}
 			
 		}
+
+		public function semesterzeiten_anzeigen(){
+
+			$data['semester']= $this->admin_model->get_semesterzeiten();	
+			$this->load->view('templates/header');
+			$this->load->view('admin/add_semester', $data);
+			$this->load->view('templates/footer');
+		}
+		//Ändert Fristen und überprüft Änderungen
+		public function semester_edit(){
+
+			$this->form_validation->set_rules('bezeichnung', 'Bezeichnung', 'required|callback_check_semester_exists');
+			$this->form_validation->set_rules('anfang', 'Anfang', 'required');
+			$this->form_validation->set_rules('ende', 'Ende', 'required|callback_check_bigger_semester['.$this->input->post('anfang').']');
+			
+
+			if($this->form_validation->run() === FALSE){
+
+				$data1['semester']= $this->admin_model->get_semesterzeiten();	
+                $this->load->view('templates/header');
+                $this->load->view('admin/add_semester', $data1);
+                $this->load->view('templates/footer');
+
+
+			}
+			else{
+
+				$data= array (
+					'bezeichnung'=>$this->input->post('bezeichnung'),
+					'anfang'=>$this->input->post('anfang'),
+					'ende'=>$this->input->post('ende')
+				);
+				
+				if($this->admin_model->semster_edit($data)){
+
+					$this->session->set_flashdata('semsterzeiten_success', 'Semester wurde eingetragen!');
+
+					$data1['semester']= $this->admin_model->get_semesterzeiten();	
+
+					$this->load->view('templates/header');
+					$this->load->view('admin/add_semester', $data1);
+					$this->load->view('templates/footer');
+
+				}
+				else{
+			
+				$this->session->set_flashdata('semsterzeiten_fail', 'Semester konnte nicht angelegt werden!');
+
+				$data1['semester']= $this->admin_model->get_semsterzeiten();	
+
+				$this->load->view('templates/header');
+				$this->load->view('admin/add_semester', $data1);
+				$this->load->view('templates/footer');
+
+				}
+			}
+		}
+		
+		public function check_bigger_semester($datejetzt, $datevor){
+			if ($datejetzt < $datevor){
+				$this->form_validation->set_message('check_bigger_semester', 'Zeiträume müssen chronologisch korrekt geordnet sein!');
+				return false;       
+      		}else{
+
+				return true;
+			  }
+			}
+
+		public function check_semester_exists($bezeichnung){
+			$this->form_validation->set_message('check_semester_exists', 'Dieses Semster existiert bereits. Bitte vorher löschen.');
+	
+			if($this->admin_model->check_semester_exists($bezeichnung)){
+				return true;
+			}
+			else{
+				return false;
+			}
+	
+		}
+
+		public function delete_semester(){
+			$bezeichnung=$this->input->post('bezeichnung');
+				if($this->admin_model->delete_semester($bezeichnung)){
+					$this->session->set_flashdata('semester_deleted', 'Das Semester wurde gelöscht.');
+				}
+				else{
+					$this->session->set_flashdata('semester_deleted_failed', 'Das Semester konnte nicht gelöscht werden!');
+				}
+				redirect('admin/semesterzeiten_anzeigen');
+			}
+
+			public function delete_semester_index(){
+				$data['bezeichnung']=$this->input->post('bezeichnung');
+				$this->load->view('templates/header');
+				$this->load->view('admin/delete_semester', $data);
+				$this->load->view('templates/footer');
+			}
 }
 
 
