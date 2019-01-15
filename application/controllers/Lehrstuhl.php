@@ -55,7 +55,13 @@
 
                 //Set confirm message
                 $this->session->set_flashdata('staff_added', 'Der Mitarbeiter wurde hinzugefügt!');
-
+                
+                //Versenden der Email mit Benutzername und Passwort
+				$receiver_email=$this->input->post('e-mail');
+				$subject='Benutzerdaten für Seminarplatzvergabe-System';
+				$pw=$this->input->post('password');
+				$message="Ihre Logindaten für das Seminarplatzvegabe-System lauten wie folgt: Benutzername:".$receiver_email." Passwort: ".$pw;
+				$this->Send_Mail($receiver_email, $subject, $message);
                 redirect('startseite');
             }
        
@@ -103,7 +109,7 @@
           //  $seminare=$this->Seminarvergabe_model->get_seminare($lehrstuhl);
             $data= array(
                // 'lehrstuhl'=>$lehrstuhl,
-                'seminarbewerbung'=>$this->Seminarvergabe_model->get_seminare($email),
+                'seminarbewerbung'=>$this->Seminarvergabe_model->get_seminarbewerbung($email),
 
 
 
@@ -154,6 +160,89 @@
 		
 
 
+        }
+
+        public function seminar_loeschen_anzeigen(){
+            $email=$_SESSION['user_email'];
+            $data= array(
+                
+                'seminar'=>$this->Seminarvergabe_model->get_seminare($email),
+
+            );
+            
+            $this->load->view('templates/header');
+			$this->load->view('users/seminar_loeschen', $data);
+			$this->load->view('templates/footer');
+        }
+        // Löscht angelegte Seminare aus der Datenbank
+		
+		public function seminar_loeschen(){
+			$id=$this->input->post('SeminarID');
+
+			if($this->Seminarvergabe_model->seminar_entfernen($id)){
+				
+				$this->session->set_flashdata('entfernt', 'Seminar entfernt!');
+				
+			
+
+				$this->load->view('templates/header');
+				$this->load->view('pages/startseite_lehrstuhl');
+				$this->load->view('templates/footer');
+
+			}else{
+
+				$this->session->set_flashdata('nicht_entfernt', 'Konnte Seminar nicht entfernen, bitte Admin kontaktieren!');
+			}
+		
+
+
+        }
+        public function Send_Mail($receiver_email, $subject, $message) {
+
+
+
+			// Storing submitted values
+			$sender_email = 'seminarplatzvergabe.uni.passau@gmail.com';
+			$user_password = 'rfvBGT5%';
+			$username = 'seminarplatzvergabe.uni.passau@gmail.com';
+			
+			// Load email library and passing configured values to email library
+			$this->load->library('email');
+			// Configure email library
+			$config['protocol'] = 'smtp';
+			$config['smtp_host'] = 'ssl://smtp.googlemail.com';
+			$config['smtp_port'] = 465;
+			$config['smtp_user'] = $sender_email;
+			$config['smtp_pass'] = $user_password;
+			$config['smtp_timeout'] = '7';
+			$config['charset'] = 'utf-8';
+			$config['newline'] = "\r\n";
+			$config['mailtype'] = 'text';
+			$config['validation'] = TRUE;
+			
+
+			// Load email library and passing configured values to email library
+			$this->email->initialize($config);
+	
+			// Sender email address
+			$this->email->from($sender_email, $username);
+			// Receiver email address
+			$this->email->to($receiver_email);
+			// Subject of email
+			$this->email->subject($subject);
+			// Message in email
+			$this->email->message($message);
+
+			echo $this->email->print_debugger();
+	
+			if ($this->email->send()) {
+				$data['message_display'] = 'Email Successfully Send !';
+				$this->session->set_flashdata('email_success', 'Email Successfully Send !');
+			} else {
+				$this->session->set_flashdata('email_error', 'Invalid Gmail Account or Password !');
+				echo $this->email->print_debugger();
+			}
+			
 		}
 		
 	}

@@ -64,22 +64,18 @@
                 'ms' => $this->input->post('ms'),                 
                 );
 
-            //insert seminarbewerbung(seminarbewerbung)
-            return $this->db->insert('seminarbewerbung', $data);
+                //insert seminarbewerbung(seminarbewerbung)
+                return $this->db->insert('seminarbewerbung', $data);
             }
 
-  
-
-}
-
-//Gibt zurück, ob der Student die Höchstanzahl an Seminarbewerbungen sch0n erreicht hat
-//public function get_anzahl_bewerbungen(){
-//    $this->db->select('#Bewerbungen');
-//   $this->db->from('student');
-//    $this->db->where('#Annahmen', '5');
-//    $this->db->join(this->session->userdata('email')='student.e-mail'))
-//    $query = $this->db->get();
-//    return $query->result_array();
-//}
+        //Gibt zurück, ob der Student die Höchstanzahl an Seminarbewerbungen schon erreicht hat
+        public function get_anzahl_bewerbungen($email){
+            $this->db->select('#Bewerbungen');
+            $this->db->from('student');
+            $this->db->where('E-Mail', $email);
+            $query = $this->db->get();
+            return $query->result_array();
+        }
+    }
        
         

@@ -63,14 +63,21 @@
                 'e-mail'=> $this->session->userdata('user_email')
             );
 
-            /*
-            $this->load->view('templates/header');
-            $this->load->view('users/bewerbung_hinzufuegen', $data1);
-            $this->load->view('templates/footer');
-            */
+            $id=$this->input->post('SeminarID');
+			$data= array(
+				'seminar'=>$this->seminar_model->get_seminar($id),
+			);
+
+            $anzahlbewerbungen = $this->seminar_model->get_anzahl_bewerbungen($this->session->userdata('user_email'));
+            
+
+
+            
+            $this->seminar_model->bewerbungen_erhoehen($this->session->userdata('user_email'));
+
             $this->form_validation->set_rules('e-mail', 'E-Mail', 'required');
             
-            var_dump($this->form_validation->run());
+           
             if($data1['msnotwendig'] === 1){
                 if (empty($_FILES['ms']['e-mail'])){
             
@@ -82,12 +89,13 @@
                      
             if($this->form_validation->run() === FALSE){
                 $this->load->view('templates/header');
-                $this->load->view('users/bewerbung_hinzufuegen', $data1);
+                $this->load->view('users/bewerbung_hinzufuegen', $data);
                 $this->load->view('templates/footer');
-                var_dump($this->form_validation->run());
+                
             }
 
             else{
+                $this->seminar_model->bewerbungen_erhoehen($this->session->userdata('user_email'));
 
                  if($data1['msnotwendig'] === '1'){
                     //File Upload
@@ -117,6 +125,10 @@
 
                     else{    
                         $this->seminar_model->bewerbung_hinzufuegen($data1['msnotwendig'], $data1['seminarid']);
+                        $this->seminar_model->bewerbungen_erhoehen($this->session->userdata('user_email'));
+                        $this->user_model->add_log($data1['e-mail'], 1);
+            
+
                         //Set confirm message
                         $this->session->set_flashdata('bewerbung_hinzugefuegt', 'Die Bewerbung wurde hinzugefuegt!');
             
@@ -127,8 +139,56 @@
         
             }
     
-        
-        
-        
         }
+
+        public function bewerbung_loeschen(){
+            $data=array(
+                'seminarid'=>$this->input->post('SeminarID'),
+                'beschreibung'=>$this->input->post('Beschreibung'),
+                'msnotwendig'=>$this->input->post('MSNotwendig'),
+                'e-mail'=> $this->session->userdata('user_email')
+            );
+
+            $data1 =$this->seminar_model->bewerbung_loeschen($data['seminarid'], $data['e-mail']);
+            $this->user_model->add_log($data['e-mail'], 2);
+
+            redirect('startseite_student');
+        }
+
+        //Detail-Ansicht für Seminare
+		public function show_seminar(){
+			$id=$this->input->post('SeminarID');
+			$data= array(
+				'seminar'=>$this->seminar_model->get_seminar($id),
+			);
+
+			$this->load->view('templates/header');
+			$this->load->view('pages/show_seminar', $data);
+			$this->load->view('templates/footer');
+        }
+        
+        //Zugesagtes Seminar ablehnen
+        public function seminar_ablehnen(){
+            $id=$this->input->post('SeminarID');
+			$data= array(
+				'seminar'=>$this->seminar_model->get_seminar($id),
+            );
+            
+            $this->seminar_model->bewerbung_loeschen($data['seminar'][0]['SeminarID'], $this->session->userdata('user_email'));
+            $this->user_model->add_log($this->session->userdata('user_email'), 4);
+
+            redirect('startseite_student');
+
+        }
+
+        //Zugesagtes Seminar zusagen
+        public function seminar_zusagen(){
+            $id=$this->input->post('SeminarID');
+
+            $this->seminar_model->seminar_zusagen($id, $this->session->userdata('user_email'));
+            
+
+            redirect('startseite_student');
+        }
+
     }
