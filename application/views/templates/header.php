@@ -25,9 +25,11 @@
       <?php endif; ?>
       <!-- Rollennavbar Admin -->
       <?php if($this->session->userdata('rolle')==='admin') : ?>
-      <a class="nav-item nav-link" href="<?php echo base_url(); ?>admin/startseite_admin">Startseite Admin</a>
+
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>admin/add_user">Benutzer hinzufügen</a>
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>admin/search_user">Benutzer bearbeiten</a>
+      <a class="nav-item nav-link" href="<?php echo base_url(); ?>admin/semesterzeiten_anzeigen">Semesterzeiten bearbeiten</a>
+      
       <?php endif; ?>
        <!-- Rollennavbar Lehrstuhl -->
        <?php if($this->session->userdata('rolle')==='lehrstuhl') : ?>
@@ -126,7 +128,6 @@
 <?php endif; ?>
 <?php if($this->session->flashdata('zugewiesen_nicht')): ?>
   <?php echo '<p class="alert alert-danger">'.$this->session->flashdata('zugewiesen_nicht').'</p>'; ?>
-<<<<<<< HEAD
 <?php endif; ?>
 <?php if($this->session->flashdata('fristen_success')): ?>
   <?php echo '<p class="alert alert-success">'.$this->session->flashdata('fristen_success').'</p>'; ?>
@@ -139,6 +140,16 @@
 <?php endif; ?>
 <?php if($this->session->flashdata('email_error')): ?>
   <?php echo '<p class="alert alert-danger">'.$this->session->flashdata('email_error').'</p>'; ?>
-=======
->>>>>>> af30f9694a42602477c59ba72009d235979b486d
+<?php endif; ?>
+<?php if($this->session->flashdata('semster_success')): ?>
+  <?php echo '<p class="alert alert-success">'.$this->session->flashdata('semester_success').'</p>'; ?>
+<?php endif; ?>
+<?php if($this->session->flashdata('semester_fail')): ?>
+  <?php echo '<p class="alert alert-danger">'.$this->session->flashdata('semester_fail').'</p>'; ?>
+<?php endif; ?>
+<?php if($this->session->flashdata('semester_deleted')): ?>
+  <?php echo '<p class="alert alert-success">'.$this->session->flashdata('semester_deleted').'</p>'; ?>
+<?php endif; ?>
+<?php if($this->session->flashdata('semester_deleted_failed')): ?>
+  <?php echo '<p class="alert alert-danger">'.$this->session->flashdata('semester_deleted_failed').'</p>'; ?>
 <?php endif; ?>
