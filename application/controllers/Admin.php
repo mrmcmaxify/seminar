@@ -52,6 +52,13 @@
                 //Set confirm message
                 $this->session->set_flashdata('user_added', 'Der Benutzer wurde angelegt.');
 
+				//Versenden der Email mit Benutzername und Passwort
+				$receiver_email=$this->input->post('e-mail');
+				$subject='Benutzerdaten für Seminarplatzvergabe-System';
+				$pw=$this->input->post('password');
+				$message="Ihre Logindaten für das Seminarplatzvegabe-System lauten wie folgt: Benutzername:".$receiver_email." Passwort: ".$pw;
+				$this->Send_Mail($receiver_email, $subject, $message);
+
 				// linkname wird an die view übergeben und dort wird mit ok dieser link aufgerufen (hier wird zurückgeführt)
 				$link['linkname']='admin/add_user';
                 $this->load->view('templates/header');
@@ -178,6 +185,72 @@
 			redirect('admin/search_user');
 		}
 		
+		public function search_log(){
+
+			$data['log']= $this->admin_model->get_log();
+
+
+			$field  = 'E-Mail';
+			$search = $this->input->post('search');
+			if (!empty($search)) {
+				$data['log'] = $this->admin_model->getLogsWhereLike($field, $search);
+			} else {
+				$data['log'] = $this->admin_model->get_log();
+			}
+
+			$this->load->view('templates/header');
+            $this->load->view('admin/search_log', $data);
+			$this->load->view('templates/footer');
+
+		}
+
+		public function Send_Mail($receiver_email, $subject, $message) {
+
+
+
+			// Storing submitted values
+			$sender_email = 'seminarplatzvergabe.uni.passu@gmail.com';
+			$user_password = 'rfvBGT5%';
+			$username = 'seminarplatzvergabe.uni.passu@gmail.com';
+			
+			// Load email library and passing configured values to email library
+			$this->load->library('email');
+			// Configure email library
+			$config['protocol'] = 'smtp';
+			$config['smtp_host'] = 'ssl://smtp.googlemail.com';
+			$config['smtp_port'] = 465;
+			$config['smtp_user'] = $sender_email;
+			$config['smtp_pass'] = $user_password;
+			$config['smtp_timeout'] = '7';
+			$config['charset'] = 'utf-8';
+			$config['newline'] = "\r\n";
+			$config['mailtype'] = 'text';
+			$config['validation'] = TRUE;
+			
+
+			// Load email library and passing configured values to email library
+			$this->email->initialize($config);
+	
+			// Sender email address
+			$this->email->from($sender_email, $username);
+			// Receiver email address
+			$this->email->to($receiver_email);
+			// Subject of email
+			$this->email->subject($subject);
+			// Message in email
+			$this->email->message($message);
+
+			echo $this->email->print_debugger();
+	
+			if ($this->email->send()) {
+				$data['message_display'] = 'Email Successfully Send !';
+				$this->session->set_flashdata('email_success', 'Email Successfully Send !');
+			} else {
+				$this->session->set_flashdata('email_error', 'Invalid Gmail Account or Password !');
+				echo $this->email->print_debugger();
+			}
+			
+		}
 }
 
 

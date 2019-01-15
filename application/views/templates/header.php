@@ -32,9 +32,11 @@
        <!-- Rollennavbar Lehrstuhl -->
        <?php if($this->session->userdata('rolle')==='lehrstuhl') : ?>
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>startseite_lehrstuhl">Startseite</a>
-      <a class="nav-item nav-link" href="<?php echo base_url(); ?>users/addstaff">Mitarbeiter anlegen</a>
-      <a class="nav-item nav-link" href="<?php echo base_url(); ?>users/seminaranlegen">Seminar anlegen</a>
-      <a class="nav-item nav-link" href="<?php echo base_url(); ?>lehrstuhl/verteilen">Seminarplätze verteilen</a>
+      <a class="nav-item nav-link" href="<?php echo base_url(); ?>lehrstuhl/addstaff">Mitarbeiter anlegen</a>
+      <a class="nav-item nav-link" href="<?php echo base_url(); ?>lehrstuhl/seminaranlegen">Seminar anlegen</a>
+      <a class="nav-item nav-link" href="<?php echo base_url(); ?>lehrstuhl/verteilen_anzeigen">Seminarplätze verteilen</a>
+      <a class="nav-item nav-link" href="<?php echo base_url(); ?>lehrstuhl/loeschen_anzeigen">Seminarplätze löschen</a>
+      <a class="nav-item nav-link" href="<?php echo base_url(); ?>lehrstuhl/seminar_loeschen_anzeigen">Seminar löschen</a>
       <?php endif; ?>
       <!-- Rollennavbar Student -->
       <?php if($this->session->userdata('rolle')==='student') : ?>
@@ -124,10 +126,19 @@
 <?php endif; ?>
 <?php if($this->session->flashdata('zugewiesen_nicht')): ?>
   <?php echo '<p class="alert alert-danger">'.$this->session->flashdata('zugewiesen_nicht').'</p>'; ?>
+<<<<<<< HEAD
 <?php endif; ?>
 <?php if($this->session->flashdata('fristen_success')): ?>
   <?php echo '<p class="alert alert-success">'.$this->session->flashdata('fristen_success').'</p>'; ?>
 <?php endif; ?>
 <?php if($this->session->flashdata('fristen_fail')): ?>
   <?php echo '<p class="alert alert-success">'.$this->session->flashdata('fristen_fail').'</p>'; ?>
+<?php endif; ?>
+<?php if($this->session->flashdata('email_success')): ?>
+  <?php echo '<p class="alert alert-success">'.$this->session->flashdata('email_success').'</p>'; ?>
+<?php endif; ?>
+<?php if($this->session->flashdata('email_error')): ?>
+  <?php echo '<p class="alert alert-danger">'.$this->session->flashdata('email_error').'</p>'; ?>
+=======
+>>>>>>> af30f9694a42602477c59ba72009d235979b486d
 <?php endif; ?>

@@ -2,7 +2,7 @@
 
 <?php echo validation_errors(); ?>
 
-<?php echo form_open('users/seminaranlegen'); ?>
+<?php echo form_open('lehrstuhl/seminaranlegen'); ?>
     
     <div class="row">
 
