@@ -136,15 +136,16 @@
 
 		}
 		//Öffnet die Bestätigungsseite zum Löschen des Benutzers mit $email
-		public function delete_user_index($email){
-			$data['email']=$email;
+		public function delete_user_index(){
+			$data['email']=$this->input->post('email');
 			$this->load->view('templates/header');
             $this->load->view('admin/delete_user', $data);
 			$this->load->view('templates/footer');
 		}
 
 		//Löscht den Benutzer mit Array $user
-		public function delete_user($email){
+		public function delete_user(){
+			$email=$this->input->post('email');
 			if($this->user_model->delete_user($email)){
 				$this->session->set_flashdata('user_deleted', 'Der Benutzer wurde gelöscht.');
 			}
@@ -154,29 +155,32 @@
 			redirect('admin/search_user');
 		}
 
-		public function unlock_user($email){
-			$user=$this->user_model->getUserWhereLike('E-Mail', $email);
-			if($user['Loginsperre']='1'){
+		public function unlock_user(){
+			$email=$this->input->post('email');
+			$user=$this->user_model->getUser($email);
+			if($user->Loginsperre=='1'){
 				$this->user_model->unlock_user($email);
 				$this->session->set_flashdata('user_unlocked', 'Der Benutzer wurde entsperrt.');
 			}
-			elseif($user['Loginsperre']='2'){
+			elseif($user->Loginsperre=='2'){
 				$this->session->set_flashdata('user_unlocked_failed', 'Der Benutzer ist nicht gesperrt.');
 			}
 			else{
 				$this->session->set_flashdata('user_lock_error', 'Der Benutzer besitzt keinen gültigen Eintrag bei "Loginsperre" in der Datenbank.');
 			}
 			redirect('admin/search_user');
+			
 		}
 
-		public function lock_user($email){
-			$user=$this->user_model->getUserWhereLike('E-Mail', $email);
+		public function lock_user(){
+			$email=$this->input->post('email');
+			$user=$this->user_model->getUser( $email);
 			
-			if($user['Loginsperre']='2'){
+			if($user->Loginsperre=='2'){
 				$this->user_model->lock_user($email);
 				$this->session->set_flashdata('user_locked', 'Der Benutzer wurde gesperrt.');
 			}
-			elseif($user['Loginsperre']='1'){
+			elseif($user->Loginsperre=='1'){
 				$this->session->set_flashdata('user_unlocked_failed', 'Der Benutzer ist bereits gesperrt.');
 			}
 			else{
