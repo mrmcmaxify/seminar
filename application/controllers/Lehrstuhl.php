@@ -53,7 +53,19 @@
             }else{
               */ 
                 //User data array(seminar)
-            $data1 = array(
+                if (!empty($this->input->post('seminarname'))) {
+                    $data1['seminarname']  = $this->input->post('seminarname');
+                }
+                if (!empty($this->input->post('beschreibung'))) {
+                    $data1['beschreibung']  = $this->input->post('beschreibung');
+                }
+                if (!empty($this->input->post('soll-teilnehmerzahl'))) {
+                    $data1['soll-teilnehmerzahl']  = $this->input->post('soll-teilnehmerzahl');
+                }
+                if (!empty($this->input->post('semester'))) {
+                    $data1['semester']  = $this->input->post('semester');
+                }
+           /* $data1 = array(
                 'seminarname' => $this->input->post('seminarname'),
                 'beschreibung' => $this->input->post('beschreibung'), 
                 'soll-teilnehmerzahl' => $this->input->post('soll-teilnehmerzahl'),
@@ -62,6 +74,7 @@
                 
                               
             ); 
+            */
                 $this->Seminaranlegen_model->seminar_pflegen($data1, $id);
                 //Set confirm message
                 $this->session->set_flashdata('aenderung_gespeichert', 'Die Änderungen wurden gespeichert!');
