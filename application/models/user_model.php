@@ -146,4 +146,11 @@
                 $this->db->insert('logfile', $data);    
             }
         } 
+
+        public function getUser($email){
+            $query = $this->db->where(['e-mail'=>$email])->get('benutzeraccount');
+              if($query->num_rows() > 0){
+                  return $query->row();
+              }
+            }
 }
