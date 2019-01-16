@@ -33,11 +33,11 @@
         
         //Seminar pflegen
         public function seminar_pflegen(){
+            $id=$this->input->post('SeminarID');
             
-            $data['title']= 'Seminar pflegen';
+           /* $data['title']= 'Seminar pflegen';
 
             $this->form_validation->set_rules('seminarname', 'Seminarname');
-            $this->form_validation->set_rules('lehrstuhlname', 'Lehrstuhlname');
             $this->form_validation->set_rules('beschreibung', 'Beschreibung');
             $this->form_validation->set_rules('soll-teilnehmerzahl', 'Soll-Teilnehmerzahl');
             $this->form_validation->set_rules('semester', 'Semester');
@@ -46,18 +46,28 @@
             
             if($this->form_validation->run() === FALSE){
                 $this->load->view('templates/header');
-                $this->load->view('users/seminar_pflegen', $data);
+                $this->load->view('users/seminar_pflegen');
                 $this->load->view('templates/footer');
 
 
             }else{
+              */ 
+                //User data array(seminar)
+            $data1 = array(
+                'seminarname' => $this->input->post('seminarname'),
+                'beschreibung' => $this->input->post('beschreibung'), 
+                'soll-teilnehmerzahl' => $this->input->post('soll-teilnehmerzahl'),
+                'semester' => $this->input->post('semester'),
                 
-                $this->Seminaranlegen_model->seminar_pflegen($id);
+                
+                              
+            ); 
+                $this->Seminaranlegen_model->seminar_pflegen($data1, $id);
                 //Set confirm message
                 $this->session->set_flashdata('aenderung_gespeichert', 'Die Änderungen wurden gespeichert!');
 
                 redirect('startseite');
-            }
+            //}
        
 		}
 		
@@ -279,7 +289,7 @@
             $data= array(
                 
                 'seminar'=>$this->Seminaranlegen_model->get_seminar($id),
-
+                'id'=>$id,
 
 
 

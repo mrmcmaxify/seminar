@@ -1,5 +1,6 @@
 <h2>Seminar pflegen</h2>
 
+ 
 <table class="table">
   <thead class="thead-dark">
     <tr>
@@ -19,7 +20,7 @@
     <?php foreach ($seminar as $seminare) : ?>
     <tr>
       <th scope="row"> <?php echo $seminare['SeminarName']; ?> </th>
-      <td><?php echo $seminare['SeminarID']; ?></td>
+      <td><?php echo $id=$seminare['SeminarID']; ?></td>
       <td><?php echo $seminare['Beschreibung']; ?></td>
       <td><?php echo $seminare['Soll-Teilnehmerzahl']; ?></td>
       <td><?php echo $seminare['Semester']; ?></td>
@@ -29,6 +30,7 @@
 <?php endforeach; ?>
   </tbody>
 </table>
+
 
 <?php echo validation_errors(); ?>
 
@@ -49,13 +51,13 @@
                 </div>
                 </br>
                 <div class="form group">
-                    <label>Teilnehmeranzahl</label>
+                    <label>Teilnehmeranzahl ändern</label>
                     <input type="text" class="form-control" name="soll-teilnehmerzahl" placeholder="Teilnehmeranzahl">
                 </div>
                 </br>
                 
                 <div class="form group">
-                    <label>Angebotenes Semester</label>
+                    <label>Angebotenes Semester ändern</label>
                     <input type="text" class="form-control" name="semester" placeholder="Semester">
                 </div>
                 </br>
@@ -63,6 +65,7 @@
                 
                 
                 </br>
+                <input type="hidden" name="SeminarID" value="<?php echo $id; ?>">
                 <button type="submit" class="btn btn-primary">Änderungen speichern</button>
 
 

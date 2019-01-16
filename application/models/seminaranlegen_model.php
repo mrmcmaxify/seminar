@@ -24,23 +24,13 @@
 
         }
 
-        public function seminar_pflegen($id){
+        public function seminar_pflegen($data1, $id){
            
 
-            //User data array(seminar)
-            $data1 = array(
-               'seminarname' => $this->input->post('seminarname'),
-               'lehrstuhlname' => $this->input->post('lehrstuhlname'),
-               'beschreibung' => $this->input->post('beschreibung'), 
-               'soll-teilnehmerzahl' => $this->input->post('soll-teilnehmerzahl'),
-               'semester' => $this->input->post('semester'),
-               
-               
-                             
-           );
+           
 
            //update seminar(seminar)
-           return $this->db->where('SeminarID', $id)->update('seminar', $data);
+           return $this->db->where('SeminarID', $id)->update('seminar', $data1);
 
           
 
