@@ -8,8 +8,8 @@
       <th scope="col">Beschreibung</th>
       <th scope="col">Teilnehmer</th>
       <th scope="col">maximale Teilnehmeranzahl</th>
-      <th scope="col">Seminar verwalten</th>
-      <th scope="col">Teilnehmer verwalten</th>
+      <th scope="col"></th>
+      <th scope="col"></th>
       
 
     </tr>

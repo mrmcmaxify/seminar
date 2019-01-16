@@ -65,16 +65,7 @@
                 if (!empty($this->input->post('semester'))) {
                     $data1['semester']  = $this->input->post('semester');
                 }
-           /* $data1 = array(
-                'seminarname' => $this->input->post('seminarname'),
-                'beschreibung' => $this->input->post('beschreibung'), 
-                'soll-teilnehmerzahl' => $this->input->post('soll-teilnehmerzahl'),
-                'semester' => $this->input->post('semester'),
-                
-                
-                              
-            ); 
-            */
+           
                 $this->Seminaranlegen_model->seminar_pflegen($data1, $id);
                 //Set confirm message
                 $this->session->set_flashdata('aenderung_gespeichert', 'Die Änderungen wurden gespeichert!');
