@@ -165,7 +165,18 @@
                             $this->load->view('templates/header');
                             $this->load->view('pages/startseite', $data);
                             $this->load->view('templates/footer');
-    
+                    
+                    }elseif($user_data['rolle']==='lehrstuhl'){
+                        $email=$_SESSION['user_email'];
+                        $data= array(
+                            
+                            'seminar'=>$this->Seminarvergabe_model->get_seminare($email),
+            
+                        );
+                        
+                        $this->load->view('templates/header');
+                        $this->load->view('pages/startseite_lehrstuhl', $data);
+                        $this->load->view('templates/footer');
                     }else{
                      //Lädt Startseite des jeweiligen Benutzers   
                         redirect('startseite_'.$user_data['rolle']);
@@ -261,8 +272,8 @@
         
         
              //Download HisQis-Auszug
-    public function download($pdf){
-        if(empty($pdf)){
+            public function download($pdf){
+              if(empty($pdf)){
             $this->session->set_flashdata('download', 'Kein HisQis-Auszug vorhanden!');
             redirect('dekan/startseite_dekan');
 

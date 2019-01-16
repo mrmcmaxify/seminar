@@ -29,6 +29,36 @@
                 redirect('startseite');
             }
        
+        }
+        
+        //Seminar pflegen
+        public function seminar_pflegen(){
+            
+            $data['title']= 'Seminar pflegen';
+
+            $this->form_validation->set_rules('seminarname', 'Seminarname');
+            $this->form_validation->set_rules('lehrstuhlname', 'Lehrstuhlname');
+            $this->form_validation->set_rules('beschreibung', 'Beschreibung');
+            $this->form_validation->set_rules('soll-teilnehmerzahl', 'Soll-Teilnehmerzahl');
+            $this->form_validation->set_rules('semester', 'Semester');
+           
+         
+            
+            if($this->form_validation->run() === FALSE){
+                $this->load->view('templates/header');
+                $this->load->view('users/seminar_pflegen', $data);
+                $this->load->view('templates/footer');
+
+
+            }else{
+                
+                $this->Seminaranlegen_model->seminar_pflegen($id);
+                //Set confirm message
+                $this->session->set_flashdata('aenderung_gespeichert', 'Die Änderungen wurden gespeichert!');
+
+                redirect('startseite');
+            }
+       
 		}
 		
 		public function addstaff(){
@@ -119,6 +149,17 @@
 
 			$this->load->view('templates/header');
 			$this->load->view('users/seminarplatz_verteilen',$data);
+            
+            $data2= array(
+                
+                'seminarzuteilung'=>$this->Seminarvergabe_model->get_zuteilung($email),
+
+
+
+
+            );
+            
+			$this->load->view('users/seminarplatz_loeschen', $data2);
 			$this->load->view('templates/footer');
 
         }
@@ -196,6 +237,57 @@
 		
 
 
+        }
+
+        public function startseite_anzeigen(){
+            $email=$_SESSION['user_email'];
+            $data= array(
+                
+                'seminar'=>$this->Seminarvergabe_model->get_seminare($email),
+
+            );
+            
+            $this->load->view('templates/header');
+			$this->load->view('pages/startseite_lehrstuhl', $data);
+			$this->load->view('templates/footer');
+        }
+
+        public function seminar_bearbeiten(){
+			$id=$this->input->post('SeminarID');
+
+			if($this->Seminarvergabe_model->seminar_entfernen($id)){
+				
+				$this->session->set_flashdata('entfernt', 'Seminar entfernt!');
+				
+			
+
+				$this->load->view('templates/header');
+				$this->load->view('pages/startseite_lehrstuhl');
+				$this->load->view('templates/footer');
+
+			}else{
+
+				$this->session->set_flashdata('nicht_entfernt', 'Konnte Seminar nicht entfernen, bitte Admin kontaktieren!');
+			}
+		
+
+
+        }
+
+        public function seminarpflege_anzeigen(){
+            $id=$this->input->post('SeminarID');
+            $data= array(
+                
+                'seminar'=>$this->Seminaranlegen_model->get_seminar($id),
+
+
+
+
+            );
+            
+            $this->load->view('templates/header');
+			$this->load->view('users/seminar_pflegen', $data);
+			$this->load->view('templates/footer');
         }
         public function Send_Mail($receiver_email, $subject, $message) {
 
