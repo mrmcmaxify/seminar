@@ -67,7 +67,7 @@
             $query = $this->db->get('seminar');
             return $query->result_array();
         }
-        
+
         //Gibt alle Seminare aus, auf die sich ein bestimmter Student noch nicht beworben hat
         public function get_seminare_not_beworben($email){
             $this->db->select('*');
