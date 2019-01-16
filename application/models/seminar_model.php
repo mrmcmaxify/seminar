@@ -28,7 +28,7 @@
             if ($MSNotwendig === 1){
                 //User data array(seminarbewerbung)
                 $data = array(
-                    'e-mail' => $this->session->userdata('user_email'),
+                    'e-mail' => $this->input->post('e-mail'),
                     'seminarid' => $seminarid,
                     'ms' => $this->input->post('ms')              
                 );
