@@ -10,11 +10,26 @@
         }
 
         //Gibt alle Seminare aus, auf die sich ein bestimmter Student beworben hat
-        public function get_seminare_beworben($email){
+        public function get_seminare_beworben($email, $bama){
             $this->db->select('*');
             $this->db->from('seminarbewerbung');
             $this->db->join('seminar', 'seminarbewerbung.SeminarID = seminar.SeminarID', 'inner');
             $this->db->where('E-Mail', $email);
+            $this->db->where('seminar.BA/MA', $bama);
+            $this->db->order_by('Seminarname', 'DESC');
+            $query = $this->db->get();
+            return $query->result_array();
+
+
+        }
+
+        //Gibt alle Seminare aus, auf die sich ein bestimmter Student beworben hat
+        public function get_seminare_beworben1($email, $bama){
+            $this->db->select('*');
+            $this->db->from('seminarbewerbung');
+            $this->db->join('seminar', 'seminarbewerbung.SeminarID = seminar.SeminarID', 'inner');
+            $this->db->where('E-Mail', $email);
+            $this->db->where('seminar.BA/MA', $bama);
             $this->db->order_by('Seminarname', 'DESC');
             $query = $this->db->get();
             return $query->result_array();
@@ -69,11 +84,10 @@
         }
 
         //Gibt alle Seminare aus, auf die sich ein bestimmter Student noch nicht beworben hat
-        public function get_seminare_not_beworben($email){
+        public function get_seminare_not_beworben($email, $bama){
             $this->db->select('*');
             $this->db->from('seminar');
-            $this->db->join('seminarbewerbung', 'seminar.SeminarID = seminarbewerbung.SeminarID', 'left');
-            $this->db->where_not_in('E-Mail', $email);
+            $this->db->where('seminar.BA/MA', $bama);
             $this->db->order_by('Seminarname', 'DESC');
             $query = $this->db->get();
 
@@ -87,6 +101,19 @@
             $this->db->select('#Bewerbung');
             $this->db->from('student');
             $this->db->where('E-Mail', $email);
+            $query = $this->db->get();
+            return $query->result_array();
+        }
+
+        //gibt Seminare zurück, die vom Lehrstuhl zugesagt worden sind
+        public function get_seminare_angemeldet($email, $bama){
+            $this->db->select('*');
+            $this->db->from('seminarbewerbung');
+            $this->db->join('seminar', 'seminarbewerbung.SeminarID = seminar.SeminarID', 'inner');
+            $this->db->where('E-Mail', $email);
+            $this->db->where('seminar.BA/MA', $bama);
+            $this->db->where('Eingeladen', 1);
+            $this->db->order_by('Seminarname', 'DESC');
             $query = $this->db->get();
             return $query->result_array();
         }
@@ -108,13 +135,13 @@
             return $this->db->where('SeminarID', $seminarid)->where('E-Mail', $email)->delete('seminarbewerbung');
         }
 
-        //gibt Seminare zurück, die vom Lehrstuhl zugesagt worden sind
-        public function get_seminare_zugesagt($email){
+         //gibt Seminare zurück, die vom Lehrstuhl zugesagt worden sind
+         public function get_seminare_zugesagt($email, $bama){
             $this->db->select('*');
-            $this->db->from('seminarbewerbung');
-            $this->db->join('seminar', 'seminarbewerbung.SeminarID = seminar.SeminarID', 'inner');
+            $this->db->from('seminarzuteilung');
+            $this->db->join('seminar', 'seminarzuteilung.SeminarID = seminar.SeminarID', 'inner');
             $this->db->where('E-Mail', $email);
-            $this->db->where('Eingeladen', 1);
+            $this->db->where('seminar.BA/MA', $bama);
             $this->db->order_by('Seminarname', 'DESC');
             $query = $this->db->get();
             return $query->result_array();
@@ -133,6 +160,27 @@
 
             $this->db->insert('seminarzuteilung', $data);
             $this->db->where('E-Mail', $email)->where('SeminarID', $seminarid)->update('seminarbewerbung', $data1);
+        }
+
+        //erhöht die Anzahl der #Bewerbungen des Studenten
+        public function zusagen_erhoehen($email, $anzahl){
+
+            $data = array(
+                '#Annahmen' =>  1
+            );
+    
+            $this->db->where('E-Mail', $email)->update('student', $data);
+        }
+
+
+
+        //gibt zurück, ob der eingeloggte Student ein BAchelor- oder Masterstudium absolviert
+        public function get_bama($email){
+            $this->db->select('BA/MA');
+            $this->db->from('student');
+            $this->db->where('E-Mail', $email);
+            $query = $this->db->get();
+            return $query->result_array();
         }
 
 

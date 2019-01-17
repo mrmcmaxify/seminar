@@ -15,7 +15,7 @@
       $test = $this->seminar_model->get_bama($this->session->userdata('user_email'));
       
 
-      $data = $this->seminar_model->get_seminare_beworben($this->session->userdata('user_email'),$test[0]['BA/MA']);
+      $data = $this->seminar_model->get_seminare_beworben1($this->session->userdata('user_email'),$test[0]['BA/MA']);
       //var_dump
       $data1 = $this->seminar_model->get_seminare_not_beworben($this->session->userdata('user_email'),$test[0]['BA/MA'], $data);
       //var_dump($data1);
