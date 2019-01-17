@@ -6,7 +6,7 @@
 			}
 			$data['title'] = ucfirst($page);
 			$data['seminar']= $this->seminar_model->get_seminare();
-			$data['fristen']=$this->fristen_model->get_fristen();
+			$data['fristen']=$this->Fristen_model->get_fristen();
 			
 		
 			
