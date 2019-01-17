@@ -12,12 +12,9 @@
             $frist_ende = $bis['0'];
             $enddatum = $frist_ende['Bis'];
             $heute = date("Y-m-d");
-            echo $startdatum;
-               echo $enddatum;
             if ( ($heute < $startdatum) || ($heute > $enddatum) ) {
                 $this->load->view('templates/header');
                 $this->load->view('pages/ausserhalb_frist');
-               
                 $this->load->view('templates/footer');
             }
             else {
@@ -166,11 +163,34 @@
 		}
 
 		public function verteilen_anzeigen(){
+            $this->load->view('templates/header');
+            $fristname = '1. Auswahlphase';
+            $von = $this->Fristen_model->get_frist_start($fristname);
+            $frist_start = $von['0'];
+            $startdatum = $frist_start['Von'];
+            $bis = $this->Fristen_model->get_frist_ende($fristname);
+            $frist_ende = $bis['0'];
+            $enddatum = $frist_ende['Bis'];
+            $fristname2 = '2. Auswahlphase';
+            $von2 = $this->Fristen_model->get_frist_start($fristname2);
+            $frist_start2 = $von2['0'];
+            $startdatum2 = $frist_start2['Von'];
+            $bis2 = $this->Fristen_model->get_frist_ende($fristname2);
+            $frist_ende2 = $bis2['0'];
+            $enddatum2 = $frist_ende2['Bis'];
+            $heute = date("Y-m-d");
+            if ( ($heute < $startdatum) || ($heute > $enddatum) ) {
+                $this->load->view('pages/ausserhalb_frist');
+               
+            }
+            elseif ( ($heute < $startdatum2) || ($heute > $enddatum2) ) {
+                
+                $this->load->view('pages/ausserhalb_frist');
+            }
+            else {
             $email=$_SESSION['user_email'];
-          //  $lehrstuhl=$this->Seminarvergabe_model->get_lehrstuhl($email);
-          //  $seminare=$this->Seminarvergabe_model->get_seminare($lehrstuhl);
             $data= array(
-               // 'lehrstuhl'=>$lehrstuhl,
+
                 'seminarbewerbung'=>$this->Seminarvergabe_model->get_seminarbewerbung($email),
 
 
@@ -181,7 +201,8 @@
 
 			$this->load->view('templates/header');
 			$this->load->view('users/seminarplatz_verteilen',$data);
-            
+        
+            $email=$_SESSION['user_email'];
             $data2= array(
                 
                 'seminarzuteilung'=>$this->Seminarvergabe_model->get_zuteilung($email),
@@ -192,7 +213,8 @@
             );
             
 			$this->load->view('users/seminarplatz_loeschen', $data2);
-			$this->load->view('templates/footer');
+            $this->load->view('templates/footer');
+        }
 
         }
         
@@ -236,6 +258,20 @@
         }
 
         public function seminar_loeschen_anzeigen(){
+            $fristname = 'Anmeldephase';
+            $von = $this->Fristen_model->get_frist_start($fristname);
+            $frist_start = $von['0'];
+            $startdatum = $frist_start['Von'];
+            $bis = $this->Fristen_model->get_frist_ende($fristname);
+            $frist_ende = $bis['0'];
+            $enddatum = $frist_ende['Bis'];
+            $heute = date("Y-m-d");
+            if ( ($heute < $startdatum) || ($heute > $enddatum) ) {
+                $this->load->view('templates/header');
+                $this->load->view('pages/ausserhalb_frist');
+                $this->load->view('templates/footer');
+            }
+            else {
             $email=$_SESSION['user_email'];
             $data= array(
                 
@@ -245,7 +281,8 @@
             
             $this->load->view('templates/header');
 			$this->load->view('users/seminar_loeschen', $data);
-			$this->load->view('templates/footer');
+            $this->load->view('templates/footer');
+        }
         }
         // Löscht angelegte Seminare aus der Datenbank
 		

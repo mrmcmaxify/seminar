@@ -52,14 +52,5 @@
 
 
         }
-        public function get_fristen(){
-            $this->db->select('Von');
-            $this->db->from('fristen');
-            $this->db->where('Name', 'Anmeldephase');
-            $query=$this->db->get();
-            return $query->result_array();
-          
-
-
-        }
+       
     }
