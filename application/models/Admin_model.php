@@ -73,4 +73,33 @@
             return $query->result_array();
         }
 
+        public function get_semesterzeiten(){
+            $this->db->order_by('bezeichnung', 'ASC');
+            $query = $this->db->get('semesterzeiten');
+            return $query->result_array();
+        }
+        //schreibt neue fristen ind fristen-tabelle
+        public function semster_edit($data){
+            
+            $date1['bezeichnung']=$data['bezeichnung'];
+            $date1['anfang']=$data['anfang'];
+            $date1['ende']=$data['ende'];
+            $this->db->insert('semesterzeiten',$date1);
+            
+            return true;
+        }
+
+        public function delete_semester($bezeichnung){
+            return $this->db->where('bezeichnung', $bezeichnung)->delete('semesterzeiten');
+        }
+
+        public function check_semester_exists($bezeichnung){
+            $query = $this->db->get_where('semesterzeiten', array('bezeichnung' => $bezeichnung));
+            if(empty($query->row_array())){
+                return true;
+            }else{
+                return false;
+            }
+        }
+
     }

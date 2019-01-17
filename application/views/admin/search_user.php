@@ -23,19 +23,30 @@
     <tr>
       <th scope="row"> <?php echo $users['E-Mail']; ?> </th>
       <td><?php echo $users['Rolle']; ?></td>
-      <td><?php if($users['Loginsperre']=='1'){
+      <td><?php if($users['Loginsperre']=='2'){
         echo 'Nicht gesperrt';
       }
-      elseif($users['Loginsperre']=='2'){
+      elseif($users['Loginsperre']=='1'){
         echo 'Gesperrt';
       }
       else{
         echo 'Error';
       }?></td>
       <td><?php echo $users['registriert_am'];?></td>
-      <td><a href="<?php echo base_url();?>admin/delete_user_index/<?php echo $users['E-Mail'];?>" class="btn btn-primary" role="button">Löschen</a>
-      <a href="<?php echo base_url();?>admin/lock_user/<?php echo $users['E-Mail'];?>" class="btn btn-primary" role="button">Sperren</a>
-      <a href="<?php echo base_url();?>admin/unlock_user/<?php echo $users['E-Mail'];?>" class="btn btn-primary" role="button">Entsperren</a></td>
+      <td>
+      <?php echo form_open('admin/delete_user_index'); ?>
+      <input type="hidden" name="email" value="<?php echo $users['E-Mail']; ?>">
+      <button type="submit" class="btn btn-primary">Löschen</button>
+      <?php echo form_close(); ?>
+      <?php echo form_open('admin/lock_user'); ?>
+      <input type="hidden" name="email" value="<?php echo $users['E-Mail']; ?>">
+      <button type="submit" class="btn btn-primary">Sperren</button>
+      <?php echo form_close(); ?>
+      <?php echo form_open('admin/unlock_user'); ?>
+      <input type="hidden" name="email" value="<?php echo $users['E-Mail']; ?>">
+      <button type="submit" class="btn btn-primary">Entsprerren</button>
+      <?php echo form_close(); ?>
+      </td>
     </tr>
 <?php endforeach; ?>
   </tbody>
