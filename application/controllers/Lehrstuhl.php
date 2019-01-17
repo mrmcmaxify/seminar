@@ -4,6 +4,24 @@
 
 		//Seminar anlegen
         public function seminaranlegen(){
+            $fristname = 'Anmeldephase';
+            $von = $this->Fristen_model->get_frist_start($fristname);
+            $frist_start = $von['0'];
+            $startdatum = $frist_start['Von'];
+            $bis = $this->Fristen_model->get_frist_ende($fristname);
+            $frist_ende = $bis['0'];
+            $enddatum = $frist_ende['Bis'];
+            $heute = date("Y-m-d");
+            echo $startdatum;
+               echo $enddatum;
+            if ( ($heute < $startdatum) || ($heute > $enddatum) ) {
+                $this->load->view('templates/header');
+                $this->load->view('pages/ausserhalb_frist');
+               
+                $this->load->view('templates/footer');
+            }
+            else {
+
             $data['title']= 'Seminar anlegen';
 
             $this->form_validation->set_rules('seminarname', 'Seminarname', 'required');
@@ -28,7 +46,7 @@
 
                 redirect('startseite');
             }
-       
+        }
         }
         
         //Seminar pflegen

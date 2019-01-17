@@ -89,7 +89,7 @@ $autoload['drivers'] = array();
 |
 |	$autoload['helper'] = array('url', 'file');
 */
-$autoload['helper'] = array('url', 'form', 'text');
+$autoload['helper'] = array('url', 'form', 'text', 'date');
 
 /*
 | -------------------------------------------------------------------
@@ -132,4 +132,4 @@ $autoload['language'] = array();
 |
 |	$autoload['model'] = array('first_model' => 'first');
 */
-$autoload['model'] = array('seminar_model', 'fristen_model', 'user_model', 'staff_model', 'student_model', 'Seminaranlegen_model', 'admin_model','Seminarvergabe_model');
+$autoload['model'] = array('seminar_model', 'Fristen_model', 'user_model', 'staff_model', 'student_model', 'Seminaranlegen_model', 'admin_model','Seminarvergabe_model');
