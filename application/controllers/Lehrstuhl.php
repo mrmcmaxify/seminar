@@ -91,6 +91,16 @@
 		}
 		
 		public function addstaff(){
+            $email=$_SESSION['user_email'];
+            $get1 = $this->Staff_model->get_lehrstuhl($email);
+            $name = $get1['0'];
+            $lehrstuhlname = $name['LehrstuhlName'];
+            $get2 = $this->Staff_model->get_anzahl_mitarbeiter($lehrstuhlname);
+            $anzahl = $get2['0'];
+            $anzahlmitarbeiter = $anzahl['count(*)'];
+
+            if ($anzahlmitarbeiter < 2) {
+            
             $data['title']= 'Mitarbeiter anlegen';
 
             $this->form_validation->set_rules('e-mail', 'Name', 'required|callback_check_email_exists');
@@ -123,6 +133,11 @@
 				$this->Send_Mail($receiver_email, $subject, $message);
                 redirect('startseite');
             }
+        }
+        else {
+            $this->load->view('templates/header');
+            $this->load->view('pages/mitarbeiteranzahl_zu_hoch');
+        }
        
         }
         //Check if e-mail exists
