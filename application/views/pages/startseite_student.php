@@ -5,7 +5,6 @@
     <tr>
       <th scope="col">Lehrstuhl</th>
       <th scope="col">Seminar</th>
-      <th scope="col">Bachelor/Master</th>
       <th scope="col">Beschreibung</th>
       <th scope="col">Bewerbung</th>
       
@@ -13,22 +12,24 @@
   </thead>
   <tbody>
     <?php 
-
-
-      $data = $this->seminar_model->get_seminare_beworben($this->session->userdata('user_email'));
-      //var_dump
-      $data1 = $this->seminar_model->get_seminare_not_beworben($this->session->userdata('user_email'));
-      //var_dump($data1);
-      $data2 = $this->seminar_model->get_seminare_zugesagt($this->session->userdata('user_email'));    
-      //var_dump($data2);
-     foreach ($seminar as $seminare) :
+      $test = $this->seminar_model->get_bama($this->session->userdata('user_email'));
       
+
+      $data = $this->seminar_model->get_seminare_beworben($this->session->userdata('user_email'),$test[0]['BA/MA']);
+      //var_dump
+      $data1 = $this->seminar_model->get_seminare_not_beworben($this->session->userdata('user_email'),$test[0]['BA/MA'], $data);
+      //var_dump($data1);
+      $data4= $this->seminar_model->get_seminare_not_beworben($this->session->userdata('user_email'),$test[0]['BA/MA'], $data);
+      $data2 = $this->seminar_model->get_seminare_angemeldet($this->session->userdata('user_email'),$test[0]['BA/MA']);    
+      //var_dump($data2);
+      $data3 = $this->seminar_model->get_seminare_zugesagt($this->session->userdata('user_email'),$test[0]['BA/MA']);    
+      //var_dump($data);
+     foreach ($data1 as $seminare) :
 
       ?>
     <tr>
       <th scope="row"> <?php echo $seminare['LehrstuhlName']; ?> </th>
       <td><?php echo $seminare['SeminarName']; ?></td>
-      <td><?php echo $seminare['BA/MA']; ?></td>
       <td>
       <?php echo form_open('student/show_seminar'); ?>
       <input type="hidden" name="SeminarID" value="<?php echo $seminare['SeminarID']; ?>">
@@ -53,13 +54,12 @@
 
 
 
-<h4>Angemeldete Seminare:</h4>
+<h4>Seminarbewerbungen:</h4>
 <table class="table">
   <thead class="thead-dark">
     <tr>
       <th scope="col">Lehrstuhl</th>
       <th scope="col">Seminar</th>
-      <th scope="col">Bachelor/Master</th>
       <th scope="col">Beschreibung</th>
       <th scope="col">Abmeldung</th>
       
@@ -72,7 +72,6 @@
     <tr>
       <th scope="row"> <?php echo $seminare['LehrstuhlName']; ?> </th>
       <td><?php echo $seminare['SeminarName']; ?></td>
-      <td><?php echo $seminare['BA/MA']; ?></td>
       <td>
         <?php echo form_open('student/show_seminar'); ?>
       <input type="hidden" name="SeminarID" value="<?php echo $seminare['SeminarID']; ?>">
@@ -95,13 +94,12 @@
 
 </br></br>
 
-<h4>Zusagen:</h4>
+<h4>Angemeldete Seminare:</h4>
 <table class="table">
   <thead class="thead-dark">
     <tr>
       <th scope="col">Lehrstuhl</th>
       <th scope="col">Seminar</th>
-      <th scope="col">Bachelor/Master</th>
       <th scope="col">Zusage</th>
       <th scope="col">Ablehnung</th>
       
@@ -114,7 +112,6 @@
     <tr>
       <th scope="row"> <?php echo $seminare['LehrstuhlName']; ?> </th>
       <td><?php echo $seminare['SeminarName']; ?></td>
-      <td><?php echo $seminare['BA/MA']; ?></td>
       <td>
         <?php echo form_open('student/seminar_zusagen'); ?>
           <input type="hidden" name="SeminarID" value="<?php echo $seminare['SeminarID']; ?>">
@@ -134,6 +131,38 @@
 </table>
 
 </br></br>
+
+
+
+<h4>Zugesagte Seminare:</h4>
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Lehrstuhl</th>
+      <th scope="col">Seminar</th>
+      <th scope="col">Beschreibung</th>
+      
+    </tr>
+  </thead>
+  <tbody>
+    <?php 
+     foreach ($data3 as $seminare) : 
+      ?>
+    <tr>
+      <th scope="row"> <?php echo $seminare['LehrstuhlName']; ?> </th>
+      <td><?php echo $seminare['SeminarName']; ?></td>
+      <td>
+        <?php echo form_open('student/show_seminar'); ?>
+      <input type="hidden" name="SeminarID" value="<?php echo $seminare['SeminarID']; ?>">
+      <button type="submit" class="btn btn-success">Beschreibung</button>
+      <?php echo form_close(); ?>
+        </td>
+    </tr>
+<?php endforeach; ?>
+
+  </tbody>
+</table>
+
 
 
 
