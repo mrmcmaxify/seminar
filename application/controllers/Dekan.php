@@ -330,7 +330,17 @@
 		}
 		}
 		public function dekanats_mitarbeiter_anlegen(){
-            $email=$_SESSION['user_email'];
+			//Ermitteln, ob angemeldeter Nutzer Dekanatsinhaber ist
+			$email=$_SESSION['user_email'];
+			$get = $this->Staff_model->get_info_inhaber($email);
+			$info = $get['0'];
+			$inhaberinfo = $info['Inhaber'];
+			if ($inhaberinfo <> 1 ) {
+				$this->load->view('templates/header');
+                $this->load->view('pages/kein_inhaber');
+                $this->load->view('templates/footer');
+			}
+			else{
             $get = $this->Staff_model->get_anzahl_dekanats_mitarbeiter();
             $anzahl = $get['0'];
             $anzahlmitarbeiter = $anzahl['count(*)'];
@@ -373,7 +383,7 @@
             $this->load->view('templates/header');
             $this->load->view('pages/dekanat_mitarbeiteranzahl_zu_hoch');
         }
-       
+	}
 		}
 		//Check if e-mail exists
         public function check_email_exists($email){

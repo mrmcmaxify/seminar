@@ -88,4 +88,16 @@
         
         
                 }
+                
+        // Gibt zurück, ob angemeldeter Nutzer Dekanats-Inhaber ist
+        public function get_info_inhaber($email){
+            $this->db->select('Inhaber');
+            $this->db->from('dekanat');
+            $this->db->where('dekanat.E-Mail', $email);
+            $query=$this->db->get();
+            return $query->result_array();
+          
+
+
+        }
     }
