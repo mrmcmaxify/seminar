@@ -41,6 +41,7 @@
       <!-- Rollennavbar Student -->
       <?php if($this->session->userdata('rolle')==='student') : ?>
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>startseite_student">Startseite</a>
+      <a class="nav-item nav-link" href="<?php echo base_url(); ?>daten_aendern">Daten ändern</a>
       <?php endif; ?>
 
       
