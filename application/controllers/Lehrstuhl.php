@@ -188,29 +188,47 @@
 		
 		public function verteilen(){
 			$email=$this->input->post('E-Mail');
-			$id=$this->input->post('SeminarID');
+            $id=$this->input->post('SeminarID');
+            $date = date("Y-m-d");
+            $get = $this->Fristen_model->get_aktuelle_frist($date);
+            $getid = $get['0'];
+            $fristid = $getid['ID'];
 
-			if($this->student_model->zuweisen($email,$id)){
+			if($this->student_model->zuweisen_durch_lehrstuhl($email, $id, $fristid)){
 				
 				$this->session->set_flashdata('zugewiesen', 'Zuweisung erfolgreich!');
 				
-			
+                $email=$_SESSION['user_email'];
+                $data= array(
+                    
+                    'seminar'=>$this->Seminarvergabe_model->get_seminare($email),
+    
+                );
 
 				$this->load->view('templates/header');
-				$this->load->view('pages/startseite_lehrstuhl');
+				$this->load->view('pages/startseite_lehrstuhl', $data);
 				$this->load->view('templates/footer');
 
 			}else{
 
 				$this->session->set_flashdata('zugewiesen_nicht', 'Konnte nicht zuweisen, bitte Admin kontaktieren!');
-			}
-		
+            }
+           /* $email=$_SESSION['user_email'];
+            $data= array(
+                
+                'seminar'=>$this->Seminarvergabe_model->get_seminare($email),
 
+            );
+            $this->load->view('templates/header');
+            $this->load->view('pages/startseite_lehrstuhl', $data);
+            $this->load->view('templates/footer');
+*/
 
 		}
 
 		public function verteilen_anzeigen(){
-            $this->load->view('templates/header');
+           // $this->load->view('templates/header');
+
             $fristname = '1. Auswahlphase';
             $von = $this->Fristen_model->get_frist_start($fristname);
             $frist_start = $von['0'];
@@ -226,13 +244,10 @@
             $frist_ende2 = $bis2['0'];
             $enddatum2 = $frist_ende2['Bis'];
             $heute = date("Y-m-d");
-            if ( ($heute < $startdatum) || ($heute > $enddatum) ) {
+            if ( (($heute < $startdatum) || ($heute > $enddatum)) && (($heute < $startdatum2) || ($heute > $enddatum2)) ) {
                 $this->load->view('pages/ausserhalb_frist');
                
-            }
-            elseif ( ($heute < $startdatum2) || ($heute > $enddatum2) ) {
-                
-                $this->load->view('pages/ausserhalb_frist');
+           
             }
             else {
             $email=$_SESSION['user_email'];
@@ -250,9 +265,13 @@
 			$this->load->view('users/seminarplatz_verteilen',$data);
         
             $email=$_SESSION['user_email'];
+            $date = date("Y-m-d");
+            $get = $this->Fristen_model->get_aktuelle_frist($date);
+            $id = $get['0'];
+            $fristid = $id['ID'];
             $data2= array(
                 
-                'seminarzuteilung'=>$this->Seminarvergabe_model->get_zuteilung($email),
+                'seminarzuteilung'=>$this->Seminarvergabe_model->get_zuteilung($email, $fristid),
 
 
 
@@ -267,9 +286,13 @@
         
         public function loeschen_anzeigen(){
             $email=$_SESSION['user_email'];
+            $date = date("Y-m-d");
+            $get = $this->Fristen_model->get_aktuelle_frist($date);
+            $id = $get['0'];
+            $fristid = $id['ID'];
             $data= array(
                 
-                'seminarzuteilung'=>$this->Seminarvergabe_model->get_zuteilung($email),
+                'seminarzuteilung'=>$this->Seminarvergabe_model->get_zuteilung($email, $fristid),
 
 
 
@@ -289,10 +312,15 @@
 				
 				$this->session->set_flashdata('entfernt', 'Zuweisung erfolgreich entfernt!');
 				
-			
+                $email=$_SESSION['user_email'];
+                $data= array(
+                    
+                    'seminar'=>$this->Seminarvergabe_model->get_seminare($email),
+    
+                );
 
 				$this->load->view('templates/header');
-				$this->load->view('pages/startseite_lehrstuhl');
+				$this->load->view('pages/startseite_lehrstuhl', $data);
 				$this->load->view('templates/footer');
 
 			}else{
@@ -340,10 +368,15 @@
 				
 				$this->session->set_flashdata('entfernt', 'Seminar entfernt!');
 				
-			
+                $email=$_SESSION['user_email'];
+                $data= array(
+                    
+                    'seminar'=>$this->Seminarvergabe_model->get_seminare($email),
+    
+                );
 
 				$this->load->view('templates/header');
-				$this->load->view('pages/startseite_lehrstuhl');
+				$this->load->view('pages/startseite_lehrstuhl', $data);
 				$this->load->view('templates/footer');
 
 			}else{
@@ -375,10 +408,15 @@
 				
 				$this->session->set_flashdata('entfernt', 'Seminar entfernt!');
 				
-			
+                $email=$_SESSION['user_email'];
+                $data= array(
+                    
+                    'seminar'=>$this->Seminarvergabe_model->get_seminare($email),
+    
+                );
 
 				$this->load->view('templates/header');
-				$this->load->view('pages/startseite_lehrstuhl');
+				$this->load->view('pages/startseite_lehrstuhl', $data);
 				$this->load->view('templates/footer');
 
 			}else{

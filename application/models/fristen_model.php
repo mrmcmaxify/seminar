@@ -108,5 +108,15 @@
             $this->db->where('ID','6');
             return $this->db->update('fristen',$date6);
         }
+
+        //Gibt ID der aktuellen Frist zurück
+        public function get_aktuelle_frist($heute){
+            $this->db->select('ID');
+            $this->db->from('fristen');
+            $this->db->where('Von <', $heute);
+            $this->db->where('Bis >', $heute);
+            $query=$this->db->get();
+            return $query->result_array();
+        }
        
     }
