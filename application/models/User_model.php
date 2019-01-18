@@ -113,7 +113,7 @@
             if($eventid=='1'){
                 $data = array(
                     'E-Mail' => $email,
-                    //'Event-id'=> $eventid,
+                    'Event-id'=> $eventid,
                     'Aktion' => 'Anmeldung an Seminar'
                 );
                 $this->db->insert('logfile', $data);    
