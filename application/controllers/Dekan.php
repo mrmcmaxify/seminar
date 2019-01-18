@@ -329,6 +329,111 @@
 
 		}
 		}
+		public function dekanats_mitarbeiter_anlegen(){
+            $email=$_SESSION['user_email'];
+            $get = $this->Staff_model->get_anzahl_dekanats_mitarbeiter();
+            $anzahl = $get['0'];
+            $anzahlmitarbeiter = $anzahl['count(*)'];
+
+            if ($anzahlmitarbeiter < 2) {
+            
+            $data['title']= 'Mitarbeiter anlegen';
+
+            $this->form_validation->set_rules('e-mail', 'Name', 'required|callback_check_email_exists');
+            $this->form_validation->set_rules('password', 'Passwort', 'required');
+            $this->form_validation->set_rules('password2', 'Passwort bestätigen', 'matches[password]');
+            $this->form_validation->set_rules('vorname', 'Vorname', 'required');
+            $this->form_validation->set_rules('name', 'Name', 'required');
+       
+            if($this->form_validation->run() === FALSE){
+                $this->load->view('templates/header');
+                $this->load->view('users/dekanats_mitarbeiter_anlegen', $data);
+                $this->load->view('templates/footer');
+
+
+            }else{
+                //Encrypt password
+                $enc_password = md5($this->input->post('password'));
+
+                $this->Staff_model->addstaff_dekan($enc_password);
+
+                //Set confirm message
+                $this->session->set_flashdata('staff_added', 'Der Mitarbeiter wurde hinzugefügt!');
+                
+                //Versenden der Email mit Benutzername und Passwort
+				$receiver_email=$this->input->post('e-mail');
+				$subject='Benutzerdaten für Seminarplatzvergabe-System';
+				$pw=$this->input->post('password');
+				$message="Ihre Logindaten für das Seminarplatzvegabe-System lauten wie folgt: Benutzername:".$receiver_email." Passwort: ".$pw;
+				$this->Send_Mail($receiver_email, $subject, $message);
+                redirect('startseite');
+            }
+        }
+        else {
+            $this->load->view('templates/header');
+            $this->load->view('pages/dekanat_mitarbeiteranzahl_zu_hoch');
+        }
+       
+		}
+		//Check if e-mail exists
+        public function check_email_exists($email){
+            $this->form_validation->set_message('check_email_exists', 'Diese E-Mail-Adresse ist bereits im System regstriert');
+
+            if($this->user_model->check_email_exists($email)){
+                return true;
+            }else{
+                return false;
+            }
+
+		}
+		public function Send_Mail($receiver_email, $subject, $message) {
+
+
+
+			// Storing submitted values
+			$sender_email = 'seminarplatzvergabe.uni.passau@gmail.com';
+			$user_password = 'rfvBGT5%';
+			$username = 'seminarplatzvergabe.uni.passau@gmail.com';
+			
+			// Load email library and passing configured values to email library
+			$this->load->library('email');
+			// Configure email library
+			$config['protocol'] = 'smtp';
+			$config['smtp_host'] = 'ssl://smtp.googlemail.com';
+			$config['smtp_port'] = 465;
+			$config['smtp_user'] = $sender_email;
+			$config['smtp_pass'] = $user_password;
+			$config['smtp_timeout'] = '7';
+			$config['charset'] = 'utf-8';
+			$config['newline'] = "\r\n";
+			$config['mailtype'] = 'text';
+			$config['validation'] = TRUE;
+			
+
+			// Load email library and passing configured values to email library
+			$this->email->initialize($config);
+	
+			// Sender email address
+			$this->email->from($sender_email, $username);
+			// Receiver email address
+			$this->email->to($receiver_email);
+			// Subject of email
+			$this->email->subject($subject);
+			// Message in email
+			$this->email->message($message);
+
+			echo $this->email->print_debugger();
+	
+			if ($this->email->send()) {
+				$data['message_display'] = 'Email Successfully Send !';
+				$this->session->set_flashdata('email_success', 'Email Successfully Send !');
+			} else {
+				$this->session->set_flashdata('email_error', 'Invalid Gmail Account or Password !');
+				echo $this->email->print_debugger();
+			}
+			
+		}
+		
 	}
 
 

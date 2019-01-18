@@ -24,6 +24,7 @@
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>dekan/fristen_anzeigen">Fristen</a>
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>dekan/reset_index">System zurücksetzen</a>
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>dekan/search_log">Logfile einsehen</a>
+      <a class="nav-item nav-link" href="<?php echo base_url(); ?>dekan/dekanats_mitarbeiter_anlegen">Mitarbeiter anlegen</a>
       <?php endif; ?>
       <!-- Rollennavbar Admin -->
       <?php if($this->session->userdata('rolle')==='admin') : ?>
