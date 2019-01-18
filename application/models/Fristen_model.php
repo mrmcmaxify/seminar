@@ -77,20 +77,36 @@
 
         //Setzt die Fristen zuück
         public function delete_fristen(){
-            $date1['Von']='0000-00-00';
-            $date1['Bis']='0000-00-00';
+
+            $date1['Von']=$data['0000-00-00'];
+            $date1['Bis']=$data['0000-00-00'];
             $this->db->where('ID','1');
             $this->db->update('fristen',$date1);
+
+            $date2['Von']=$data['0000-00-00'];
+            $date2['Bis']=$data['0000-00-00'];
             $this->db->where('ID','2');
-            $this->db->update('fristen',$date1);
+            $this->db->update('fristen',$date2);
+
+            $date3['Von']=$data['0000-00-00'];
+            $date3['Bis']=$data['0000-00-00'];
             $this->db->where('ID','3');
-            $this->db->update('fristen',$date1);
+            $this->db->update('fristen',$date3);
+
+            $date4['Von']=$data['0000-00-00'];
+            $date4['Bis']=$data['0000-00-00'];
             $this->db->where('ID','4');
-            $this->db->update('fristen',$date1);
+            $this->db->update('fristen',$date4);
+
+            $date5['Von']=$data['0000-00-00'];
+            $date5['Bis']=$data['0000-00-00'];
             $this->db->where('ID','5');
-            $this->db->update('fristen',$date1);
+            $this->db->update('fristen',$date5);
+
+            $date6['Von']=$data['0000-00-00'];
+            $date6['Bis']=$data['0000-00-00'];
             $this->db->where('ID','6');
-            return $this->db->update('fristen',$date1);
+            return $this->db->update('fristen',$date6);
         }
        
     }

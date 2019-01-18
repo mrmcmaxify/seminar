@@ -183,7 +183,6 @@
             return $query->result_array();
         }
 
-<<<<<<< HEAD
         //Speichert Seminarinfos in die Statistik
         public function save_seminare($semester){
             $old=$this->db->where('Semester',$semester)->get('seminar')->result_array();
@@ -249,7 +248,6 @@
             $this->db->where('bezeichnung', $semester)->update('semesterzeiten', $data);
         }
 
-=======
         //fügt den neuen VAbschluss dem Benutzer hinzu
         public function abschluss_aendern($email){
             //User data array(student)
@@ -283,5 +281,4 @@
             return $this->db->where('E-Mail', $email)->update('student', $data1);
         }
         
->>>>>>> 6aa41e2f1b871f0b808510675900f6ddd2c84714
     }
