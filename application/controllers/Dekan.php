@@ -262,19 +262,15 @@
 			
 			//reset Prozess
 			$erfolgreich=TRUE;
-			
+			$error='r0';
 			if($cur_semester->reset=='2' && !($startdatum=='000-00-00')){
 				if(!($this->seminar_model->save_seminare($semester))){
 					$erfolgreich=FALSE;
+					$error=$error.'1';
 				}
+
 				$count_ba=$this->seminar_model->count_ba_ohne_zusagen();
 				$count_ma=$this->seminar_model->count_ma_ohne_zusagen();
-				if(is_null($count_ba)){
-					$count_ba=0;
-				}
-				if(is_null($count_ma)){
-					$count_ba=0;
-				}
 
 				$data1=array(
 					'semester'=>$semester,
@@ -283,6 +279,7 @@
 				);
 				if(!($this->seminar_model->save_studenten_statistik($data1))){
 					$erfolgreich=FALSE;
+					$error=$error.'2';
 				}
 
 				$data2=array(
@@ -292,33 +289,38 @@
 				);
 				if(!($this->seminar_model->save_studenten_statistik($data2))){
 					$erfolgreich=FALSE;
+					$error=$error.'3';
 				}
 
 				if($erfolgreich){
 					if(!($this->student_model->delete_students()) || !($this->student_model->delete_users_students())){
 						$erfolgreich=FALSE;
+						$error=$error.'4';
 					}
 					if(!($this->seminar_model->delete_seminare($semester))){
 						$erfolgreich=FALSE;
+						$error=$error.'5';
 					}
 					if(!($this->Fristen_model->delete_fristen())){
 						$erfolgreich=FALSE;
+						$error=$error.'6';
+					}
+					if($erfolgreich){
+						$this->seminar_model->update_reset($semester);
+						$this->session->set_flashdata('reset_success', 'Das System wurde erfolgreich zurückgesetzt!');
+						redirect('dekan/startseite_dekan');
+					}
+	
+					else{
+						$this->session->set_flashdata('reset_failed', 'Bei dem Löschen der Daten trat ein Fehler auf! Bitte kontaktieren Sie den Administrator. Error: '.$error);
+						redirect('dekan/startseite_dekan');
 					}
 				}else{
-					$this->session->set_flashdata('save_failed', 'Speicherung der Statistik fehlgeschlagen! Daten wurden nicht gelöscht. Bitte kontaktieren Sie den Administrator');
-					
+					$this->session->set_flashdata('save_failed', 'Speicherung der Statistik fehlgeschlagen! Daten wurden nicht gelöscht. Bitte kontaktieren Sie den Administrator.  Error: '.$error);
+					redirect('dekan/startseite_dekan');
 				}
 				
-				if($erfolgreich){
-					$this->seminar_model->update_reset($semester);
-					$this->session->set_flashdata('reset_success', 'Das System wurde erfolgreich zurückgesetzt!');
-					redirect('dekan/startseite_dekan');
-				}
-
-				else{
-					$this->session->set_flashdata('reset_failed', 'Bei dem Löschen der Daten trat ein Fehler auf! Bitte kontaktieren Sie den Administrator.');
-					redirect('dekan/startseite_dekan');
-				}
+				
 			}
 			else{
 				$this->session->set_flashdata('reset_done', 'Das System wurde bereits zurückgesetzt!');
