@@ -5,7 +5,7 @@
 		public function startseite_dekan(){
 
 			$data['seminar']= $this->seminar_model->get_seminare();
-			$data['fristen']=$this->fristen_model->get_fristen();
+			$data['fristen']=$this->Fristen_model->get_fristen();
 			$data['ba_ohne']=$this->student_model->get_ba_ohne();
 			$data['ma_ohne']=$this->student_model->get_ma_ohne();
 
@@ -174,7 +174,24 @@
 				return true;
 			  }
       			
+		}
 
+		public function search_log(){
+
+			$data['log']= $this->admin_model->get_log();
+
+
+			$field  = 'E-Mail';
+			$search = $this->input->post('search');
+			if (!empty($search)) {
+				$data['log'] = $this->admin_model->getLogsWhereLike($field, $search);
+			} else {
+				$data['log'] = $this->admin_model->get_log();
+			}
+
+			$this->load->view('templates/header');
+            $this->load->view('users/search_log', $data);
+			$this->load->view('templates/footer');
 
 		}
 	}
