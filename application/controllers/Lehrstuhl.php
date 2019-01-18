@@ -4,6 +4,21 @@
 
 		//Seminar anlegen
         public function seminaranlegen(){
+            $fristname = 'Anmeldephase';
+            $von = $this->Fristen_model->get_frist_start($fristname);
+            $frist_start = $von['0'];
+            $startdatum = $frist_start['Von'];
+            $bis = $this->Fristen_model->get_frist_ende($fristname);
+            $frist_ende = $bis['0'];
+            $enddatum = $frist_ende['Bis'];
+            $heute = date("Y-m-d");
+            if ( ($heute < $startdatum) || ($heute > $enddatum) ) {
+                $this->load->view('templates/header');
+                $this->load->view('pages/ausserhalb_frist');
+                $this->load->view('templates/footer');
+            }
+            else {
+
             $data['title']= 'Seminar anlegen';
 
             $this->form_validation->set_rules('seminarname', 'Seminarname', 'required');
@@ -28,10 +43,64 @@
 
                 redirect('startseite');
             }
+        }
+        }
+        
+        //Seminar pflegen
+        public function seminar_pflegen(){
+            $id=$this->input->post('SeminarID');
+            
+           /* $data['title']= 'Seminar pflegen';
+
+            $this->form_validation->set_rules('seminarname', 'Seminarname');
+            $this->form_validation->set_rules('beschreibung', 'Beschreibung');
+            $this->form_validation->set_rules('soll-teilnehmerzahl', 'Soll-Teilnehmerzahl');
+            $this->form_validation->set_rules('semester', 'Semester');
+           
+         
+            
+            if($this->form_validation->run() === FALSE){
+                $this->load->view('templates/header');
+                $this->load->view('users/seminar_pflegen');
+                $this->load->view('templates/footer');
+
+
+            }else{
+              */ 
+                //User data array(seminar)
+                if (!empty($this->input->post('seminarname'))) {
+                    $data1['seminarname']  = $this->input->post('seminarname');
+                }
+                if (!empty($this->input->post('beschreibung'))) {
+                    $data1['beschreibung']  = $this->input->post('beschreibung');
+                }
+                if (!empty($this->input->post('soll-teilnehmerzahl'))) {
+                    $data1['soll-teilnehmerzahl']  = $this->input->post('soll-teilnehmerzahl');
+                }
+                if (!empty($this->input->post('semester'))) {
+                    $data1['semester']  = $this->input->post('semester');
+                }
+           
+                $this->Seminaranlegen_model->seminar_pflegen($data1, $id);
+                //Set confirm message
+                $this->session->set_flashdata('aenderung_gespeichert', 'Die Änderungen wurden gespeichert!');
+
+                redirect('startseite');
+            //}
        
 		}
 		
 		public function addstaff(){
+            $email=$_SESSION['user_email'];
+            $get1 = $this->Staff_model->get_lehrstuhl($email);
+            $name = $get1['0'];
+            $lehrstuhlname = $name['LehrstuhlName'];
+            $get2 = $this->Staff_model->get_anzahl_mitarbeiter($lehrstuhlname);
+            $anzahl = $get2['0'];
+            $anzahlmitarbeiter = $anzahl['count(*)'];
+
+            if ($anzahlmitarbeiter < 2) {
+            
             $data['title']= 'Mitarbeiter anlegen';
 
             $this->form_validation->set_rules('e-mail', 'Name', 'required|callback_check_email_exists');
@@ -64,6 +133,11 @@
 				$this->Send_Mail($receiver_email, $subject, $message);
                 redirect('startseite');
             }
+        }
+        else {
+            $this->load->view('templates/header');
+            $this->load->view('pages/mitarbeiteranzahl_zu_hoch');
+        }
        
         }
         //Check if e-mail exists
@@ -104,11 +178,34 @@
 		}
 
 		public function verteilen_anzeigen(){
+            $this->load->view('templates/header');
+            $fristname = '1. Auswahlphase';
+            $von = $this->Fristen_model->get_frist_start($fristname);
+            $frist_start = $von['0'];
+            $startdatum = $frist_start['Von'];
+            $bis = $this->Fristen_model->get_frist_ende($fristname);
+            $frist_ende = $bis['0'];
+            $enddatum = $frist_ende['Bis'];
+            $fristname2 = '2. Auswahlphase';
+            $von2 = $this->Fristen_model->get_frist_start($fristname2);
+            $frist_start2 = $von2['0'];
+            $startdatum2 = $frist_start2['Von'];
+            $bis2 = $this->Fristen_model->get_frist_ende($fristname2);
+            $frist_ende2 = $bis2['0'];
+            $enddatum2 = $frist_ende2['Bis'];
+            $heute = date("Y-m-d");
+            if ( ($heute < $startdatum) || ($heute > $enddatum) ) {
+                $this->load->view('pages/ausserhalb_frist');
+               
+            }
+            elseif ( ($heute < $startdatum2) || ($heute > $enddatum2) ) {
+                
+                $this->load->view('pages/ausserhalb_frist');
+            }
+            else {
             $email=$_SESSION['user_email'];
-          //  $lehrstuhl=$this->Seminarvergabe_model->get_lehrstuhl($email);
-          //  $seminare=$this->Seminarvergabe_model->get_seminare($lehrstuhl);
             $data= array(
-               // 'lehrstuhl'=>$lehrstuhl,
+
                 'seminarbewerbung'=>$this->Seminarvergabe_model->get_seminarbewerbung($email),
 
 
@@ -119,7 +216,20 @@
 
 			$this->load->view('templates/header');
 			$this->load->view('users/seminarplatz_verteilen',$data);
-			$this->load->view('templates/footer');
+        
+            $email=$_SESSION['user_email'];
+            $data2= array(
+                
+                'seminarzuteilung'=>$this->Seminarvergabe_model->get_zuteilung($email),
+
+
+
+
+            );
+            
+			$this->load->view('users/seminarplatz_loeschen', $data2);
+            $this->load->view('templates/footer');
+        }
 
         }
         
@@ -163,6 +273,20 @@
         }
 
         public function seminar_loeschen_anzeigen(){
+            $fristname = 'Anmeldephase';
+            $von = $this->Fristen_model->get_frist_start($fristname);
+            $frist_start = $von['0'];
+            $startdatum = $frist_start['Von'];
+            $bis = $this->Fristen_model->get_frist_ende($fristname);
+            $frist_ende = $bis['0'];
+            $enddatum = $frist_ende['Bis'];
+            $heute = date("Y-m-d");
+            if ( ($heute < $startdatum) || ($heute > $enddatum) ) {
+                $this->load->view('templates/header');
+                $this->load->view('pages/ausserhalb_frist');
+                $this->load->view('templates/footer');
+            }
+            else {
             $email=$_SESSION['user_email'];
             $data= array(
                 
@@ -172,7 +296,8 @@
             
             $this->load->view('templates/header');
 			$this->load->view('users/seminar_loeschen', $data);
-			$this->load->view('templates/footer');
+            $this->load->view('templates/footer');
+        }
         }
         // Löscht angelegte Seminare aus der Datenbank
 		
@@ -196,6 +321,57 @@
 		
 
 
+        }
+
+        public function startseite_anzeigen(){
+            $email=$_SESSION['user_email'];
+            $data= array(
+                
+                'seminar'=>$this->Seminarvergabe_model->get_seminare($email),
+
+            );
+            
+            $this->load->view('templates/header');
+			$this->load->view('pages/startseite_lehrstuhl', $data);
+			$this->load->view('templates/footer');
+        }
+
+        public function seminar_bearbeiten(){
+			$id=$this->input->post('SeminarID');
+
+			if($this->Seminarvergabe_model->seminar_entfernen($id)){
+				
+				$this->session->set_flashdata('entfernt', 'Seminar entfernt!');
+				
+			
+
+				$this->load->view('templates/header');
+				$this->load->view('pages/startseite_lehrstuhl');
+				$this->load->view('templates/footer');
+
+			}else{
+
+				$this->session->set_flashdata('nicht_entfernt', 'Konnte Seminar nicht entfernen, bitte Admin kontaktieren!');
+			}
+		
+
+
+        }
+
+        public function seminarpflege_anzeigen(){
+            $id=$this->input->post('SeminarID');
+            $data= array(
+                
+                'seminar'=>$this->Seminaranlegen_model->get_seminar($id),
+                'id'=>$id,
+
+
+
+            );
+            
+            $this->load->view('templates/header');
+			$this->load->view('users/seminar_pflegen', $data);
+			$this->load->view('templates/footer');
         }
         public function Send_Mail($receiver_email, $subject, $message) {
 

@@ -33,11 +33,9 @@
       <?php endif; ?>
        <!-- Rollennavbar Lehrstuhl -->
        <?php if($this->session->userdata('rolle')==='lehrstuhl') : ?>
-      <a class="nav-item nav-link" href="<?php echo base_url(); ?>startseite_lehrstuhl">Startseite</a>
+      <a class="nav-item nav-link" href="<?php echo base_url(); ?>lehrstuhl/startseite_anzeigen">Startseite</a>
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>lehrstuhl/addstaff">Mitarbeiter anlegen</a>
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>lehrstuhl/seminaranlegen">Seminar anlegen</a>
-      <a class="nav-item nav-link" href="<?php echo base_url(); ?>lehrstuhl/verteilen_anzeigen">Seminarplätze verteilen</a>
-      <a class="nav-item nav-link" href="<?php echo base_url(); ?>lehrstuhl/loeschen_anzeigen">Seminarplätze löschen</a>
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>lehrstuhl/seminar_loeschen_anzeigen">Seminar löschen</a>
       <?php endif; ?>
       <!-- Rollennavbar Student -->
