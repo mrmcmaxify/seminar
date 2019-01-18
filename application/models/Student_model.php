@@ -76,6 +76,17 @@
             $query = $this->db->get();
             return $query->result_array();
         }
+
+        //Löscht alle Einträge bei Tabelle student
+        public function delete_students(){
+            return $this->db->empty_table('student');
+        }
+
+        //Löscht alle Einträge bei benutzeraccount mit Rolle student
+        public function delete_users_students(){
+            $this->db->where('Rolle', 'student');
+            return $this->db->delete('benutzeraccount');
+        }
     }
        
         
