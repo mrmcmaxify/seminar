@@ -52,13 +52,21 @@
 		public function zuweisen(){
 			$email=$this->input->post('E-Mail');
 			$id=$this->input->post('SeminarID');
+			$lehrstuhlname=$this->input->post('LehrstuhlName');
 
 			if($this->student_model->zuweisen($email,$id)){
 				
+				//Versenden der Email mit Benutzername und Passwort
+				$receiver_email= $email;
+				$subject='Zuweisung für einen Seminarplatz';
+				$message="Sie wurden vom Dekan zu einem Seminar zugewiesen. SeminarID: ".$id." Lehrstuhlname: ".$lehrstuhlname;
+				$this->Send_Mail($receiver_email, $subject, $message);
+
+
 				$this->session->set_flashdata('zugewiesen', 'Zuweisung erfolgreich!');
 				
 				$data['seminar']= $this->seminar_model->get_seminare();
-				$data['fristen']=$this->fristen_model->get_fristen();
+				$data['fristen']=$this->Fristen_model->get_fristen();
 				$data['ba_ohne']=$this->student_model->get_ba_ohne();
 				$data['ma_ohne']=$this->student_model->get_ma_ohne();
 
@@ -90,7 +98,7 @@
 		//Zeigt Fristen an, enthält Funktionalität zum ändern der Fristen
 		public function fristen_anzeigen(){
 
-			$data['fristen']= $this->fristen_model->get_fristen();	
+			$data['fristen']= $this->Fristen_model->get_fristen();	
 
 			$this->load->view('templates/header');
 			$this->load->view('pages/fristen', $data);
@@ -193,6 +201,54 @@
             $this->load->view('users/search_log', $data);
 			$this->load->view('templates/footer');
 
+		}
+
+		public function Send_Mail($receiver_email, $subject, $message) {
+
+
+
+			// Storing submitted values
+			$sender_email = 'seminarplatzvergabe.uni.passau@gmail.com';
+			$user_password = 'rfvBGT5%';
+			$username = 'seminarplatzvergabe.uni.passau@gmail.com';
+			
+			// Load email library and passing configured values to email library
+			$this->load->library('email');
+			// Configure email library
+			$config['protocol'] = 'smtp';
+			$config['smtp_host'] = 'ssl://smtp.googlemail.com';
+			$config['smtp_port'] = 465;
+			$config['smtp_user'] = $sender_email;
+			$config['smtp_pass'] = $user_password;
+			$config['smtp_timeout'] = '7';
+			$config['charset'] = 'utf-8';
+			$config['newline'] = "\r\n";
+			$config['mailtype'] = 'text';
+			$config['validation'] = TRUE;
+			
+
+			// Load email library and passing configured values to email library
+			$this->email->initialize($config);
+	
+			// Sender email address
+			$this->email->from($sender_email, $username);
+			// Receiver email address
+			$this->email->to($receiver_email);
+			// Subject of email
+			$this->email->subject($subject);
+			// Message in email
+			$this->email->message($message);
+
+			echo $this->email->print_debugger();
+	
+			if ($this->email->send()) {
+				$data['message_display'] = 'Email Successfully Send !';
+				$this->session->set_flashdata('email_success', 'Email Successfully Send !');
+			} else {
+				$this->session->set_flashdata('email_error', 'Invalid Gmail Account or Password !');
+				echo $this->email->print_debugger();
+			}
+			
 		}
 	}
 
