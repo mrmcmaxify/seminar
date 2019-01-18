@@ -23,6 +23,7 @@
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>dekan/startseite_dekan">Startseite</a>
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>dekan/fristen_anzeigen">Fristen</a>
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>dekan/reset_index">System zurücksetzen</a>
+      <a class="nav-item nav-link" href="<?php echo base_url(); ?>dekan/search_log">Logfile einsehen</a>
       <?php endif; ?>
       <!-- Rollennavbar Admin -->
       <?php if($this->session->userdata('rolle')==='admin') : ?>
@@ -42,6 +43,7 @@
       <!-- Rollennavbar Student -->
       <?php if($this->session->userdata('rolle')==='student') : ?>
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>startseite_student">Startseite</a>
+      <a class="nav-item nav-link" href="<?php echo base_url(); ?>daten_aendern">Daten ändern</a>
       <?php endif; ?>
 
       

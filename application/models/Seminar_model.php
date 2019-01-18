@@ -183,6 +183,7 @@
             return $query->result_array();
         }
 
+<<<<<<< HEAD
         //Speichert Seminarinfos in die Statistik
         public function save_seminare($semester){
             $old=$this->db->where('Semester',$semester)->get('seminar')->result_array();
@@ -248,4 +249,39 @@
             $this->db->where('bezeichnung', $semester)->update('semesterzeiten', $data);
         }
 
+=======
+        //fügt den neuen VAbschluss dem Benutzer hinzu
+        public function abschluss_aendern($email){
+            //User data array(student)
+            $data1 = array(
+                'ba/ma' => $this->input->post('ba/ma'),
+            );
+
+            //insert student-vorname(student)
+            return $this->db->where('E-Mail', $email)->update('student', $data1);
+        }
+
+        //fügt den neuen Vornamen dem Benutzer hinzu
+        public function vorname_aendern($email){
+            //User data array(student)
+            $data1 = array(
+                'vorname' => $this->input->post('vorname'),
+            );
+
+            //insert student-vorname(student)
+            return $this->db->where('E-Mail', $email)->update('student', $data1);
+        }
+
+        //fügt den neuen Vornamen dem Benutzer hinzu
+        public function nachname_aendern($email){
+            //User data array(student)
+            $data1 = array(
+                'name' => $this->input->post('name'),
+            );
+
+            //insert student-vorname(student)
+            return $this->db->where('E-Mail', $email)->update('student', $data1);
+        }
+        
+>>>>>>> 6aa41e2f1b871f0b808510675900f6ddd2c84714
     }
