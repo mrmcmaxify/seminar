@@ -183,6 +183,69 @@
             return $query->result_array();
         }
 
+        //Speichert Seminarinfos in die Statistik
+        public function save_seminare($semester){
+            $old=$this->db->where('Semester',$semester)->get('seminar')->result_array();
+            foreach($old as $new) {
+                $data=array(
+                    'SeminarID'=>$new['SeminarID'],
+                    'SeminarName'=>$new['SeminarName'],
+                    'LehrstuhlName'=>$new['LehrstuhlName'],
+                    'Ist_Teilnehmerzahl'=>$new['Ist-Teilnehmerzahl'],
+                    'Soll_Teilnehmerzahl'=>$new['Soll-Teilnehmerzahl'],
+                    'Semester'=>$new['Semester'],
+                    'BA/MA'=>$new['BA/MA']
+                );
+                return $this->db->insert('statistik', $data);
+            }
+        }
 
-        
+        //Gibt Anzahl Bachelorstudenten ohne Seminarzuteilung zurück
+        public function count_ba_ohne_zusagen(){
+            $this->db->select('*')
+                ->from('student')
+                ->where('"student.BA/MA"','BA')
+                ->where('"student.E-Mail" NOT IN (select "E-Mail" from seminarzuteilung)',NULL,FALSE);
+                $query = $this->db->get();
+            echo $query->num_rows();
+        }
+
+        //Gibt Anzahl Masterstudenten ohne Seminarzuteilung zurück
+        public function count_ma_ohne_zusagen(){
+            $this->db->select('*')
+                ->from('student')
+                ->where('"student.BA/MA"','BA')
+                ->where('"student.E-Mail" NOT IN (select "E-Mail" from seminarzuteilung)',NULL,FALSE);
+                $query = $this->db->get();
+            echo $query->num_rows();
+        }
+
+        //Gibt das aktuelle Semester zurück
+        public function getCurSemester($date){
+            $query = $this->db->where('ende >=', $date)->where('anfang <=', $date)->get('semesterzeiten');
+            if($query->num_rows() > 0){
+                return $query->row();
+            }
+
+        }
+       
+        //Speichert die Studentenstatistik
+        public function save_studenten_statistik($data){
+           return $this->db->insert('statistik_studenten', $data);
+        }
+
+        //Löscht alle Seminare des Semsters $semester
+        public function delete_seminare($semester){
+            $this->db->where('Semester', $semester);
+            return $this->db->delete('seminar');
+        }
+
+        //markiert das Semester als geresetet um erneutes resetten zu vermeiden
+        public function update_reset($semester){
+            $data =array(
+                'reset' => '1'
+            );
+            $this->db->where('bezeichnung', $semester)->update('semesterzeiten', $data);
+        }
+
     }

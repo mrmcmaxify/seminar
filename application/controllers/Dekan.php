@@ -5,7 +5,7 @@
 		public function startseite_dekan(){
 
 			$data['seminar']= $this->seminar_model->get_seminare();
-			$data['fristen']=$this->fristen_model->get_fristen();
+			$data['fristen']=$this->Fristen_model->get_fristen();
 			$data['ba_ohne']=$this->student_model->get_ba_ohne();
 			$data['ma_ohne']=$this->student_model->get_ma_ohne();
 
@@ -58,7 +58,7 @@
 				$this->session->set_flashdata('zugewiesen', 'Zuweisung erfolgreich!');
 				
 				$data['seminar']= $this->seminar_model->get_seminare();
-				$data['fristen']=$this->fristen_model->get_fristen();
+				$data['fristen']=$this->Fristen_model->get_fristen();
 				$data['ba_ohne']=$this->student_model->get_ba_ohne();
 				$data['ma_ohne']=$this->student_model->get_ma_ohne();
 
@@ -90,7 +90,7 @@
 		//Zeigt Fristen an, enthält Funktionalität zum ändern der Fristen
 		public function fristen_anzeigen(){
 
-			$data['fristen']= $this->fristen_model->get_fristen();	
+			$data['fristen']= $this->Fristen_model->get_fristen();	
 
 			$this->load->view('templates/header');
 			$this->load->view('pages/fristen', $data);
@@ -114,7 +114,7 @@
 
 			if($this->form_validation->run() === FALSE){
 
-				$data1['fristen']= $this->fristen_model->get_fristen();	
+				$data1['fristen']= $this->Fristen_model->get_fristen();	
                 $this->load->view('templates/header');
                 $this->load->view('pages/fristen', $data1);
                 $this->load->view('templates/footer');
@@ -137,11 +137,11 @@
 					'bis6'=>$this->input->post('Bis6'),
 				);
 			
-			if($this->fristen_model->fristen_edit($data)){
+			if($this->Fristen_model->fristen_edit($data)){
 
 				$this->session->set_flashdata('fristen_success', 'Fristen erfolgreich aktualisiert!');
 
-				$data1['fristen']= $this->fristen_model->get_fristen();	
+				$data1['fristen']= $this->Fristen_model->get_fristen();	
 
 				$this->load->view('templates/header');
 				$this->load->view('pages/fristen', $data1);
@@ -151,7 +151,7 @@
 			
 				$this->session->set_flashdata('fristen_fail', 'Fristen konnten nicht aktualisiert werden!');
 
-				$data1['fristen']= $this->fristen_model->get_fristen();	
+				$data1['fristen']= $this->Fristen_model->get_fristen();	
 
 				$this->load->view('templates/header');
 				$this->load->view('pages/fristen', $data1);
@@ -176,6 +176,139 @@
       			
 
 
+		}
+
+		public function reset_index(){
+			$fristname = 'Zuteilungsphase';
+            $von = $this->Fristen_model->get_frist_start($fristname);
+            $frist_start = $von['0'];
+            $startdatum = $frist_start['Von'];
+            $bis = $this->Fristen_model->get_frist_ende($fristname);
+            $frist_ende = $bis['0'];
+            $enddatum = $frist_ende['Bis'];
+            $heute = date("Y-m-d");
+            if (!($heute>$enddatum) ) {
+                $this->load->view('templates/header');
+                $this->load->view('pages/ausserhalb_frist');
+                $this->load->view('templates/footer');
+            }
+            else {
+			$this->load->view('templates/header');
+			$this->load->view('dekan/reset_index');
+			$this->load->view('templates/footer');
+			}
+		}
+
+		public function reset_warning(){
+			$fristname = 'Zuteilungsphase';
+            $von = $this->Fristen_model->get_frist_start($fristname);
+            $frist_start = $von['0'];
+            $startdatum = $frist_start['Von'];
+            $bis = $this->Fristen_model->get_frist_ende($fristname);
+            $frist_ende = $bis['0'];
+            $enddatum = $frist_ende['Bis'];
+            $heute = date("Y-m-d");
+            if (!($heute>$enddatum) ) {
+                $this->load->view('templates/header');
+                $this->load->view('pages/ausserhalb_frist');
+                $this->load->view('templates/footer');
+            }
+            else {
+			$this->load->view('templates/header');
+			$this->load->view('dekan/reset_warning');
+			$this->load->view('templates/footer');
+			}
+		}
+
+		public function reset(){
+			$fristname = 'Zuteilungsphase';
+            $von = $this->Fristen_model->get_frist_start($fristname);
+            $frist_start = $von['0'];
+            $startdatum = $frist_start['Von'];
+            $bis = $this->Fristen_model->get_frist_ende($fristname);
+            $frist_ende = $bis['0'];
+            $enddatum = $frist_ende['Bis'];
+            $heute = date("Y-m-d");
+            if (!($heute>$enddatum) ) {
+                $this->load->view('templates/header');
+                $this->load->view('pages/ausserhalb_frist');
+                $this->load->view('templates/footer');
+            }
+            else {
+			//Identifikation des aktuellen Semesters
+			$fristname = '1. Auswahlphase';
+			$von = $this->Fristen_model->get_frist_start($fristname);
+			$frist_start = $von['0'];
+			$startdatum = $frist_start['Von'];
+			$cur_semester=$this->seminar_model->getCurSemester($startdatum);
+			$semester=$cur_semester->bezeichnung;	
+			
+			//reset Prozess
+			$erfolgreich=TRUE;
+			
+			if($cur_semester->reset=='2' && !($startdatum=='000-00-00')){
+				if(!($this->seminar_model->save_seminare($semester))){
+					$erfolgreich=FALSE;
+				}
+				$count_ba=$this->seminar_model->count_ba_ohne_zusagen();
+				$count_ma=$this->seminar_model->count_ma_ohne_zusagen();
+				if(is_null($count_ba)){
+					$count_ba=0;
+				}
+				if(is_null($count_ma)){
+					$count_ba=0;
+				}
+
+				$data1=array(
+					'semester'=>$semester,
+					'ba/ma'=>'BA',
+					'kein_seminar'=>$count_ba
+				);
+				if(!($this->seminar_model->save_studenten_statistik($data1))){
+					$erfolgreich=FALSE;
+				}
+
+				$data2=array(
+					'semester'=>$semester,
+					'ba/ma'=>'MA',
+					'kein_seminar'=>$count_ma
+				);
+				if(!($this->seminar_model->save_studenten_statistik($data2))){
+					$erfolgreich=FALSE;
+				}
+
+				if($erfolgreich){
+					if(!($this->student_model->delete_students()) || !($this->student_model->delete_users_students())){
+						$erfolgreich=FALSE;
+					}
+					if(!($this->seminar_model->delete_seminare($semester))){
+						$erfolgreich=FALSE;
+					}
+					if(!($this->Fristen_model->delete_fristen())){
+						$erfolgreich=FALSE;
+					}
+				}else{
+					$this->session->set_flashdata('save_failed', 'Speicherung der Statistik fehlgeschlagen! Daten wurden nicht gelöscht. Bitte kontaktieren Sie den Administrator');
+					
+				}
+				
+				if($erfolgreich){
+					$this->seminar_model->update_reset($semester);
+					$this->session->set_flashdata('reset_success', 'Das System wurde erfolgreich zurückgesetzt!');
+					redirect('dekan/startseite_dekan');
+				}
+
+				else{
+					$this->session->set_flashdata('reset_failed', 'Bei dem Löschen der Daten trat ein Fehler auf! Bitte kontaktieren Sie den Administrator.');
+					redirect('dekan/startseite_dekan');
+				}
+			}
+			else{
+				$this->session->set_flashdata('reset_done', 'Das System wurde bereits zurückgesetzt!');
+				redirect('dekan/startseite_dekan');
+			}
+
+		}
 		}
 	}
 

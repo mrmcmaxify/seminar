@@ -2,8 +2,7 @@
 
 <?php echo validation_errors(); ?>
 
-<?php echo form_open('lehrstuhl/seminaranlegen'); ?>
-    
+<?php echo form_open('lehrstuhl/seminaranlegen'); ?>   
     <div class="row">
 
             <div class="col-md-4 col-md-offset-4">
@@ -36,10 +35,12 @@
                 <label for="nein"> Nein</label>
                 </div>
                 </br>
-                <div class="form group">
+                <select class="form-control" name="semester">
                     <label>Angebotenes Semester</label>
-                    <input type="text" class="form-control" name="semester" placeholder="Semester">
-                </div>
+                        <?php foreach($semester as $semes){ ?>
+                            <option value="<?php echo $semes->bezeichnung; ?>"><?php echo $semes->bezeichnung; ?></option>';
+                        <?php } ?>
+                 </select>
                 </br>
                 <div class="form group">
                 <input type="radio" id="BA" name="BA/MA" value="BA" checked>

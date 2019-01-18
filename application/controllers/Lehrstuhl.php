@@ -20,6 +20,7 @@
             else {
 
             $data['title']= 'Seminar anlegen';
+            $data['semester'] = $this->Fristen_model->getAllSemester();
 
             $this->form_validation->set_rules('seminarname', 'Seminarname', 'required');
             $this->form_validation->set_rules('lehrstuhlname', 'Lehrstuhlname', 'required');
