@@ -203,8 +203,6 @@
 
 		}
 
-<<<<<<< HEAD
-=======
 		public function reset_index(){
 			$fristname = 'Zuteilungsphase';
             $von = $this->Fristen_model->get_frist_start($fristname);
@@ -407,7 +405,6 @@
             }
 
 		}
->>>>>>> 1dcf4cfe633fe3b702cecae7ef637ece7b83dd16
 		public function Send_Mail($receiver_email, $subject, $message) {
 
 
@@ -455,7 +452,6 @@
 			}
 			
 		}
-<<<<<<< HEAD
 
 		public function send_emails(){
 			$this->load->view('templates/header');
@@ -589,9 +585,7 @@
 		
 
 
-=======
 		
->>>>>>> 1dcf4cfe633fe3b702cecae7ef637ece7b83dd16
 	}
 
 
