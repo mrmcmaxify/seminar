@@ -5,6 +5,8 @@
         }
         public function seminaranlegen(){
             
+               
+
              //User data array(seminar)
              $data1 = array(
                 'seminarname' => $this->input->post('seminarname'),
@@ -18,7 +20,7 @@
                 
                               
             );
-
+            
             //insert seminar(seminar)
             return $this->db->insert('seminar', $data1);
 
@@ -48,8 +50,14 @@
             $this->db->where('SeminarID', $id);
             $query=$this->db->get();
             return $query->result_array();
-          
-
+         }
+         // Liefert das ausgewählte Seminar
+         public function get_semesteranfang($bezeichnung){
+            $this->db->select('anfang');
+            $this->db->from('semesterzeiten');
+            $this->db->where('bezeichnung', $bezeichnung);
+            $query=$this->db->get();
+            return $query->result_array();
 
         }
        
