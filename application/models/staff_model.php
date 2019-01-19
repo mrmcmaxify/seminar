@@ -38,6 +38,10 @@
             );
             
 
+        
+
+
+        
              //User data array(lehrstuhl)
              $data1 = array(
                 'e-mail' => $this->input->post('e-mail'),

@@ -274,9 +274,7 @@
             $data1 = array(
                 'name' => $this->input->post('name'),
             );
-
-            //insert student-vorname(student)
-            return $this->db->where('E-Mail', $email)->update('student', $data1);
         }
+
         
     }

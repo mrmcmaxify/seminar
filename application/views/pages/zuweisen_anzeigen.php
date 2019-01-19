@@ -23,6 +23,7 @@
       <?php echo form_open('dekan/zuweisen'); ?>
       <input type="hidden" name="E-Mail" value="<?php echo $email; ?>">
       <input type="hidden" name="SeminarID" value="<?php echo $seminare['SeminarID']; ?>">
+      <input type="hidden" name="LehrstuhlName" value="<?php echo $seminare['LehrstuhlName']; ?>">
       <button type="submit" class="btn btn-primary">Zuweisen</button>
       <?php echo form_close(); ?>
       </td>

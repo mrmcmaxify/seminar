@@ -54,7 +54,126 @@
 
         //Bewerbung eines Studenten für ein Seminar hinzufügen
         public function bewerbung_hinzufuegen(){
-            
+            $fristname = 'Anmeldephase';
+            $von = $this->Fristen_model->get_frist_start($fristname);
+            $frist_start = $von['0'];
+            $startdatum = $frist_start['Von'];
+            $bis = $this->Fristen_model->get_frist_ende($fristname);
+            $frist_ende = $bis['0'];
+            $enddatum = $frist_ende['Bis'];
+            $heute = '2019-02-05';//date("Y-m-d");
+            if ( ($heute < $startdatum) || ($heute > $enddatum) ) {
+                $this->load->view('templates/header');
+                $this->load->view('pages/ausserhalb_frist_student');
+                $this->load->view('templates/footer');
+            }
+            else{
+                $data1=array(
+                    'seminarid'=>$this->input->post('SeminarID'),
+                    'beschreibung'=>$this->input->post('Beschreibung'),
+                    'msnotwendig'=>$this->input->post('MSNotwendig'),
+                    'e-mail'=> $this->session->userdata('user_email')
+                );
+
+                $id=$this->input->post('SeminarID');
+                $data= array(
+                    'seminar'=>$this->seminar_model->get_seminar($id),
+                );
+
+                $anzahlbewerbungen = $this->seminar_model->get_anzahl_bewerbungen($this->session->userdata('user_email'));
+                var_dump($anzahlbewerbungen);
+                if ($anzahlbewerbungen[0]['#Bewerbung'] < 5){
+                    
+                    if($data1['msnotwendig'] === 1){
+
+                        
+                        
+                    
+                        
+                            if (empty($_FILES['ms']['e-mail'])){
+                        
+                                $this->form_validation->set_rules('ms', 'MS', 'required');
+                            }
+
+                       
+                            
+                                
+                        if($this->form_validation->run() === FALSE){
+                            $this->load->view('templates/header');
+                            $this->load->view('users/bewerbung_hinzufuegen', $data);
+                            $this->load->view('templates/footer');
+                            
+                        }
+
+                        else{
+                            
+                            
+                                //File Upload
+                                $config['upload_path']          = './uploads/';                
+                                $config['allowed_types']        = 'pdf';
+                                $config['max_size']             = 2048;
+                                
+
+                                $filename = time().$_FILES['ms']['e-mail'];
+                                $config['file_name'] = $filename;
+                                
+
+                                $this->load->library('upload', $config);
+
+                                if ( ! $this->upload->do_upload('ms'))
+                                {
+                                        $error = array('error' => $this->upload->display_errors());
+                                        
+                                        $this->session->set_flashdata('upload', 'Dateiupload fehlgeschlagen!');
+                                }
+                            
+                                else{
+                            
+                                
+                                    $data = array('upload_data' => $this->upload->data());
+                                
+
+                                   
+                                    $this->seminar_model->bewerbung_hinzufuegen($data1['msnotwendig'], $data1['seminarid']);
+                                    $var = $anzahlbewerbungen[0]['#Bewerbung'];
+                                    $var++;
+                                    
+                                    $anzahlbewerbungen[0]['#Bewerbung'] = $var;
+                                    
+                                    $this->seminar_model->bewerbungen_erhoehen($this->session->userdata('user_email'), $var);
+                                    $this->user_model->add_log($data1['e-mail'], 1);
+                        
+
+                                    //Set confirm message
+                                    $this->session->set_flashdata('bewerbung_hinzugefuegt', 'Die Bewerbung wurde hinzugefuegt!');
+                        
+                                    redirect('startseite_student');
+                                
+
+                                }
+                    
+                        }
+
+                    }
+
+                    else{
+                        $this->load->view('templates/header');
+                        $this->load->view('users/bewerbung_hinzufuegen', $data);
+                        $this->load->view('templates/footer');
+
+                    }
+                }
+
+                else{
+                    $this->load->view('templates/header');
+                    $this->load->view('pages/bewerbungsanzahl_zu_hoch', $data);
+                    $this->load->view('templates/footer');
+                }
+            }
+        }
+
+
+        public function bewerbung_hinzufuegen1(){
 
             $data1=array(
                 'seminarid'=>$this->input->post('SeminarID'),
@@ -63,92 +182,23 @@
                 'e-mail'=> $this->session->userdata('user_email')
             );
 
-            $id=$this->input->post('SeminarID');
-			$data= array(
-				'seminar'=>$this->seminar_model->get_seminar($id),
-			);
-
             $anzahlbewerbungen = $this->seminar_model->get_anzahl_bewerbungen($this->session->userdata('user_email'));
-            var_dump($anzahlbewerbungen);
-            if ($anzahlbewerbungen[0]['#Bewerbung'] < 5){
+            $this->seminar_model->bewerbung_hinzufuegen($data1['msnotwendig'], $data1['seminarid']);
+            $var = $anzahlbewerbungen[0]['#Bewerbung'];
+            $var++;
             
-                $this->form_validation->set_rules('e-mail', 'E-Mail', 'required');
-                
+            $anzahlbewerbungen[0]['#Bewerbung'] = $var;
             
-                if($data1['msnotwendig'] === 1){
-                    if (empty($_FILES['ms']['e-mail'])){
-                
-                        $this->form_validation->set_rules('ms', 'MS', 'required');
-                    }
+            $this->seminar_model->bewerbungen_erhoehen($this->session->userdata('user_email'), $var);
+            $this->user_model->add_log($data1['e-mail'], 1);
 
-                }
-                    
-                        
-                if($this->form_validation->run() === FALSE){
-                    $this->load->view('templates/header');
-                    $this->load->view('users/bewerbung_hinzufuegen', $data);
-                    $this->load->view('templates/footer');
-                    
-                }
 
-                else{
-                    
-                    if($data1['msnotwendig'] === '1'){
-                        //File Upload
-                        $config['upload_path']          = './uploads/';                
-                        $config['allowed_types']        = 'pdf';
-                        $config['max_size']             = 2048;
-                        
+            //Set confirm message
+            $this->session->set_flashdata('bewerbung_hinzugefuegt', 'Die Bewerbung wurde hinzugefuegt!');
 
-                        $filename = time().$_FILES['ms']['e-mail'];
-                        $config['file_name'] = $filename;
-                        
-
-                        $this->load->library('upload', $config);
-
-                        if ( ! $this->upload->do_upload('ms'))
-                        {
-                                $error = array('error' => $this->upload->display_errors());
-                                
-                                $this->session->set_flashdata('upload', 'Dateiupload fehlgeschlagen!');
-                        }
-                    }
-                    else{
-                    
-                        if($data1['msnotwendig'] === '1'){
-                            $data = array('upload_data' => $this->upload->data());
-                        }
-
-                        else{    
-                            $this->seminar_model->bewerbung_hinzufuegen($data1['msnotwendig'], $data1['seminarid']);
-                            $var = $anzahlbewerbungen[0]['#Bewerbung'];
-                            $var++;
-                            
-                            $anzahlbewerbungen[0]['#Bewerbung'] = $var;
-                            
-                            $this->seminar_model->bewerbungen_erhoehen($this->session->userdata('user_email'), $var);
-                            $this->user_model->add_log($data1['e-mail'], 1);
-                
-
-                            //Set confirm message
-                            $this->session->set_flashdata('bewerbung_hinzugefuegt', 'Die Bewerbung wurde hinzugefuegt!');
-                
-                            redirect('startseite_student');
-                        }
-
-                    }
-            
-                }
-
-            }
-
-            else{
-                $this->load->view('templates/header');
-                $this->load->view('pages/bewerbungsanzahl_zu_hoch', $data);
-                $this->load->view('templates/footer');
-            }
-    
+            redirect('startseite_student');
         }
+
 
         public function bewerbung_loeschen(){
             $data=array(
@@ -178,6 +228,24 @@
         
         //Zugesagtes Seminar ablehnen
         public function seminar_ablehnen(){
+
+            $fristname = '1. Annahme-/Rücktrittsphase';
+            $von = $this->Fristen_model->get_frist_start($fristname);
+            $frist_start = $von['0'];
+            $startdatum = $frist_start['Von'];
+            $bis = $this->Fristen_model->get_frist_ende($fristname);
+            $frist_ende = $bis['0'];
+            $enddatum = $frist_ende['Bis'];
+            $heute = '2019-02-09';
+
+            if ( (($heute < $startdatum) || ($heute > $enddatum))) {
+                $this->load->view('templates/header');
+                $this->load->view('pages/ausserhalb_frist_student');
+                $this->load->view('templates/footer');
+            } 
+
+            else{
+
             $id=$this->input->post('SeminarID');
 			$data= array(
 				'seminar'=>$this->seminar_model->get_seminar($id),
@@ -187,11 +255,30 @@
             $this->user_model->add_log($this->session->userdata('user_email'), 4);
 
             redirect('startseite_student');
+        }
 
         }
 
         //Zugesagtes Seminar zusagen
         public function seminar_zusagen(){
+            $fristname = '1. Annahme-/Rücktrittsphase';
+            $von = $this->Fristen_model->get_frist_start($fristname);
+            $frist_start = $von['0'];
+            $startdatum = $frist_start['Von'];
+            $bis = $this->Fristen_model->get_frist_ende($fristname);
+            $frist_ende = $bis['0'];
+            $enddatum = $frist_ende['Bis'];
+            $heute = '2019-02-09';
+
+            
+            if ( (($heute < $startdatum) || ($heute > $enddatum))) {
+                $this->load->view('templates/header');
+                $this->load->view('pages/ausserhalb_frist_student');
+                $this->load->view('templates/footer');
+            } 
+
+            
+            else{
             $id=$this->input->post('SeminarID');
 
             $anzahlzusagen = $this->seminar_model->get_anzahl_zusagen($this->session->userdata('user_email'));
@@ -213,6 +300,7 @@
                 $this->load->view('templates/header');
                 $this->load->view('pages/zusagenanzahl_zu_hoch');
                 $this->load->view('templates/footer');
+            }
             }
         }
 

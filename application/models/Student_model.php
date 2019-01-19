@@ -48,6 +48,7 @@
             );
             $this->db->where('E-Mail', $email);
             $this->db->update('student', $data1);
+            return true;
 
         }
 

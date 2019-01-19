@@ -1,6 +1,7 @@
 <?php  
     class Seminaranlegen_model extends CI_Model{
         public function seminaranlegen(){
+           
             
                
 
