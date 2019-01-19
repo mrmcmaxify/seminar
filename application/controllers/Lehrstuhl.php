@@ -236,6 +236,7 @@
             $enddatum2 = $frist_ende2['Bis'];
             $heute = date("Y-m-d");
             if ( (($heute < $startdatum) || ($heute > $enddatum)) && (($heute < $startdatum2) || ($heute > $enddatum2)) ) {
+                $this->load->view('templates/header');
                 $this->load->view('pages/ausserhalb_frist');
                
            
@@ -250,7 +251,7 @@
 
 
             );
-            
+            var_dump($data);
 
 			$this->load->view('templates/header');
 			$this->load->view('users/seminarplatz_verteilen',$data);
