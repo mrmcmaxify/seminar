@@ -1,6 +1,7 @@
 <?php  
     class Seminaranlegen_model extends CI_Model{
         public function seminaranlegen(){
+           
             
                
 
@@ -22,7 +23,7 @@
             return $this->db->insert('seminar', $data1);
 
            
-        
+
         }
 
         public function seminar_pflegen($data1, $id){

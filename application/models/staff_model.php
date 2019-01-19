@@ -38,10 +38,6 @@
             );
             
 
-        
-
-
-        
              //User data array(lehrstuhl)
              $data1 = array(
                 'e-mail' => $this->input->post('e-mail'),
@@ -70,9 +66,16 @@
 
 
         }
-        
 
-
+                // Liefert die Anzahl bereits registrierter Lehrstuhl-Mitarbeiter
+                public function get_anzahl_mitarbeiter($lehrstuhlname){
+                    $this->db->select('count(*)');
+                    $this->db->from('lehrstuhl');
+                    $this->db->where('LehrstuhlName', $lehrstuhlname);
+                    $query=$this->db->get();
+                    return $query->result_array();
+                }
+                  
         
                 
                 // Liefert die Anzahl bereits registrierter Dekanats-Mitarbeiter
