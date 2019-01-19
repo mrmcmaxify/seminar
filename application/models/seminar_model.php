@@ -274,6 +274,7 @@
             $data1 = array(
                 'name' => $this->input->post('name'),
             );
+        }
 
         
     }

@@ -30,9 +30,6 @@
         
 
 
-<<<<<<< HEAD
-        
-=======
          // Liefert das ausgewählte Seminar
          public function get_seminar($id){
             $this->db->select('*');
@@ -51,5 +48,4 @@
 
         }
        
->>>>>>> 1dcf4cfe633fe3b702cecae7ef637ece7b83dd16
     }
