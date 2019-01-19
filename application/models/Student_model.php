@@ -105,6 +105,16 @@
             $this->db->where('Rolle', 'student');
             return $this->db->delete('benutzeraccount');
         }
+
+        //LÖscht die HisQis Auszüge und Motivationsschreiben
+        public function deleteUploadFiles(){
+            $path = $_SERVER['DOCUMENT_ROOT'].'/seminar/uploads/';
+            $files = glob($path.'*'); // get all file names
+            foreach($files as $file){ // iterate files
+            if(is_file($file))
+                unlink($file);
+            }   
+        }
     }
        
         
