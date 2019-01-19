@@ -64,7 +64,6 @@
             return $query->result_array();
         
 
-
         }
 
                 // Liefert die Anzahl bereits registrierter Lehrstuhl-Mitarbeiter
