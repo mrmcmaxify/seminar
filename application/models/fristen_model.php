@@ -47,28 +47,5 @@
 
         }
 
-        // Gibt Startzeitpunkt der Frist zurück
-        public function get_frist_start($fristname){
-            $this->db->select('Von');
-            $this->db->from('fristen');
-            $this->db->where('Name', $fristname);
-            $query=$this->db->get();
-            return $query->result_array();
-          
-
-
-        }
-        // Gibt Endzeitpunkt der Frist zurück
-        public function get_frist_ende($fristname){
-            $this->db->select('Bis');
-            $this->db->from('fristen');
-            $this->db->where('Name', $fristname);
-            $query=$this->db->get();
-            return $query->result_array();
-          
-
-
-        }
-
        
     }
