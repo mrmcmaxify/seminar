@@ -309,7 +309,7 @@
 						$this->student_model->deleteUploadFiles();
 						$this->seminar_model->update_reset($semester);
 						$this->session->set_flashdata('reset_success', 'Das System wurde erfolgreich zurückgesetzt!');
-						//redirect('dekan/startseite_dekan');
+						redirect('dekan/startseite_dekan');
 					}
 	
 					else{
