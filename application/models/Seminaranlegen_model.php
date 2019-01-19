@@ -1,8 +1,5 @@
 <?php  
     class Seminaranlegen_model extends CI_Model{
-        public function __construct(){
-            $this->load->database();
-        }
         public function seminaranlegen(){
            
             
@@ -26,20 +23,9 @@
             return $this->db->insert('seminar', $data1);
 
            
-        
+
         }
 
-        public function seminar_pflegen($data1, $id){
-           
-
-           
-
-           //update seminar(seminar)
-           return $this->db->where('SeminarID', $id)->update('seminar', $data1);
-
-          
-
-       }
 
         
 
