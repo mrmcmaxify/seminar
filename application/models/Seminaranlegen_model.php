@@ -4,6 +4,7 @@
             $this->load->database();
         }
         public function seminaranlegen(){
+           
             
                
 

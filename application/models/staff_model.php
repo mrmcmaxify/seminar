@@ -62,8 +62,7 @@
             $this->db->where('lehrstuhl.E-Mail', $email);
             $query=$this->db->get();
             return $query->result_array();
-          
-
+        
 
         }
 
