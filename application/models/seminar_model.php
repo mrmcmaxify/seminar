@@ -112,16 +112,17 @@
             $this->db->where('E-Mail', $email);
             $this->db->where('seminar.BA/MA', $bama);
             $this->db->where('Eingeladen', 1);
+            $this->db->where('ZugesagtAm', '0000-00-00');
             $this->db->order_by('Seminarname', 'DESC');
             $query = $this->db->get();
             return $query->result_array();
         }
 
         //erhöht die Anzahl der #Bewerbungen des Studenten
-        public function bewerbungen_erhoehen($email){
+        public function bewerbungen_erhoehen($email, $anzahl){
 
             $data =array(
-                '#Bewerbung' => (int)'#Bewerbung' + 1
+                '#Bewerbung' => $anzahl
             );
             
             
@@ -132,6 +133,15 @@
         //löscht die ausgewählte Bewerbung
         public function bewerbung_loeschen($seminarid, $email){
             return $this->db->where('SeminarID', $seminarid)->where('E-Mail', $email)->delete('seminarbewerbung');
+        }
+
+        //gibt die Anzahl der Zusagen eines Studenten zurück
+        public function get_anzahl_zusagen($email){
+            $this->db->select('#Annahmen');
+            $this->db->from('student');
+            $this->db->where('E-Mail', $email);
+            $query = $this->db->get();
+            return $query->result_array();
         }
 
          //gibt Seminare zurück, die vom Lehrstuhl zugesagt worden sind
@@ -154,7 +164,7 @@
             );
 
             $data1 = array(
-                'ZugesagtAm' => 'NOW()'
+                'ZugesagtAm' => date("Y-m-d")
             );
 
             $this->db->insert('seminarzuteilung', $data);
@@ -165,7 +175,7 @@
         public function zusagen_erhoehen($email, $anzahl){
 
             $data = array(
-                '#Annahmen' =>  1
+                '#Annahmen' =>  $anzahl
             );
     
             $this->db->where('E-Mail', $email)->update('student', $data);
@@ -204,7 +214,7 @@
             return $this->db->where('E-Mail', $email)->update('student', $data1);
         }
 
-        //fügt den neuen Vornamen dem Benutzer hinzu
+        //fügt den neuen Nachnamen dem Benutzer hinzu
         public function nachname_aendern($email){
             //User data array(student)
             $data1 = array(
@@ -213,6 +223,18 @@
 
             //insert student-vorname(student)
             return $this->db->where('E-Mail', $email)->update('student', $data1);
+        }
+
+        //Liefert alle Informationen zu Studenten zurück, die sich für ein Seminar beworben haben
+        public function get_student_bewerbungen(){
+
+            $this->db->select('*');
+            $this->db->from('seminarbewerbung');
+            $this->db->join('student', 'seminarbewerbung.E-mail = student.E-Mail', 'inner');
+            $this->db->group_by('seminarbewerbung.E-mail');
+            $query = $this->db->get();
+            return $query->result_array();
+
         }
         
     }

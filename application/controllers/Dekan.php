@@ -250,6 +250,139 @@
 			}
 			
 		}
+
+		public function send_emails(){
+			$this->load->view('templates/header');
+            $this->load->view('users/send_emails');
+			$this->load->view('templates/footer');
+		}
+
+		public function send_emails_bewerbungsphase1(){
+			$fristname = '1. Annahme-/Rücktrittsphase';
+            $von = $this->Fristen_model->get_frist_start($fristname);
+            $frist_start = $von['0'];
+            $startdatum = $frist_start['Von'];
+            $bis = $this->Fristen_model->get_frist_ende($fristname);
+            $frist_ende = $bis['0'];
+            $enddatum = $frist_ende['Bis'];
+            $heute = '2019-02-09';
+
+            
+            if ( $heute < $startdatum) {
+                $this->load->view('templates/header');
+                $this->load->view('pages/ausserhalb_frist_student');
+                $this->load->view('templates/footer');
+			} 
+			
+			else{
+				$data = $this->seminar_model->get_student_bewerbungen();
+				
+				foreach($data as $studenten):
+					if ($studenten['#Annahmen'] === '0'){
+						var_dump($studenten);
+						//Versenden der Email mit Benutzername und Passwort
+						$receiver_email= $studenten['E-Mail'];
+						$subject='Absage zur Seminarplatzbewerbung nach der 1.Auswahlphase';
+						$message="Sie wurden nach der 1.Auswahlphase von keinem Seminar angenommen. Allerdings besteht die Möglichkeit in den folgenden Phasen einen Platz zu erhalten. Wir melden uns.";
+						$this->Send_Mail($receiver_email, $subject, $message);
+					}
+
+					else{
+						$receiver_email= $studenten['E-Mail'];
+						$subject='Zusage(n) zur Seminarplatzbewerbung nach der 1.Auswahlphase';
+						$message="Sie wurden nach der 1.Auswahlphase von einem oder mehreren Seminaren angenommen. Besuchen Sie so schnell wie möglich das Seminarplatzvergabesystem um zu- bzw. abzusagen.";
+						$this->Send_Mail($receiver_email, $subject, $message);
+					}
+				endforeach;
+				redirect('startseite');
+			}
+			
+		}
+
+
+		public function send_emails_bewerbungsphase2(){
+			$fristname = '2. Annahme-/Rücktrittsphase';
+            $von = $this->Fristen_model->get_frist_start($fristname);
+            $frist_start = $von['0'];
+            $startdatum = $frist_start['Von'];
+            $bis = $this->Fristen_model->get_frist_ende($fristname);
+            $frist_ende = $bis['0'];
+            $enddatum = $frist_ende['Bis'];
+            $heute = '2019-02-13';
+
+            
+            if ( $heute < $startdatum) {
+                $this->load->view('templates/header');
+                $this->load->view('pages/ausserhalb_frist_student');
+                $this->load->view('templates/footer');
+			} 
+			
+			else{
+				$data = $this->seminar_model->get_student_bewerbungen();
+				
+				foreach($data as $studenten):
+					if ($studenten['#Annahmen'] === '0'){
+						var_dump($studenten);
+						//Versenden der Email mit Benutzername und Passwort
+						$receiver_email= $studenten['E-Mail'];
+						$subject='Absage zur Seminarplatzbewerbung nach der 2.Auswahlphase';
+						$message="Sie wurden nach der 2.Auswahlphase von keinem Seminar angenommen. Allerdings besteht die Möglichkeit in der folgenden Phase einen Platz zu erhalten. Wir melden uns.";
+						$this->Send_Mail($receiver_email, $subject, $message);
+					}
+
+					else{
+						$receiver_email= $studenten['E-Mail'];
+						$subject='Zusage(n) zur Seminarplatzbewerbung nach der 2.Auswahlphase';
+						$message="Sie wurden nach der 2.Auswahlphase von einem oder mehreren Seminaren angenommen. Besuchen Sie so schnell wie möglich das Seminarplatzvergabesystem um zu- bzw. abzusagen.";
+						$this->Send_Mail($receiver_email, $subject, $message);
+					}
+				endforeach;
+				redirect('startseite');
+			}
+			
+		}
+
+
+
+		public function send_emails_zuteilungsphase(){
+			$fristname = 'Zuteilungsphase';
+            $von = $this->Fristen_model->get_frist_start($fristname);
+            $frist_start = $von['0'];
+            $startdatum = $frist_start['Von'];
+            $bis = $this->Fristen_model->get_frist_ende($fristname);
+            $frist_ende = $bis['0'];
+            $enddatum = $frist_ende['Bis'];
+            $heute = '2019-02-15';
+
+            
+            if ( $heute < $startdatum) {
+                $this->load->view('templates/header');
+                $this->load->view('pages/ausserhalb_frist_student');
+                $this->load->view('templates/footer');
+			} 
+			
+			else{
+				$data = $this->seminar_model->get_student_bewerbungen();
+				
+				foreach($data as $studenten):
+					if ($studenten['#Annahmen'] === '0'){
+						var_dump($studenten);
+						//Versenden der Email mit Benutzername und Passwort
+						$receiver_email= $studenten['E-Mail'];
+						$subject='Absage zur Seminarplatzbewerbung nach der Zuteilungsphase';
+						$message="Sie wurden nach der Zuteilungsphase von keinem Seminar angenommen. Wir bitten Sie dies zu entschuldigen und hoffen auf mehr Glück im nächsten Semester.";
+						$this->Send_Mail($receiver_email, $subject, $message);
+					}
+
+				endforeach;
+				redirect('startseite');
+			}
+			
+		}
+
+		
+
+
 	}
 
 

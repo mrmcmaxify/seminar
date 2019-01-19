@@ -9,16 +9,13 @@
 
 <?php echo validation_errors(); ?>
 
-<?php echo form_open('student/bewerbung_hinzufuegen'); ?>
+<?php echo form_open('student/bewerbung_hinzufuegen1'); ?>
     
     <div class="row">
         
             <div class="col-md-4 col-md-offset-4">
 
-                <div class="form group">
-                    <label>E-Mail:</label>
-                    <input type="email" class="form-control" name="e-mail" placeholder="E-Mail-Adresse" value="<?php echo set_value('e-mail'); ?>">
-                </div>
+
                 <?php if ($seminar[0]['MSNotwendig'] === '1'): ?>
                 <div class="form group">
                     <label>Motivationsschreiben</label>
@@ -32,11 +29,13 @@
 
                 <button type="submit" class="btn btn-primary">Bewerben</button>
                 
-                <?php echo form_open_multipart('users/goback'); ?>
-                <button type="submit" class="btn btn-primary" >Zurück</button>
-                <?php echo form_close(); ?>
+
 
             </div>
         
         </div>
     <?php echo form_close(); ?>
+
+    <?php echo form_open_multipart('student/startseite_student'); ?>
+                <button type="submit" class="btn btn-primary" >Zurück</button>
+                <?php echo form_close(); ?>
