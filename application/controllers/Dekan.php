@@ -122,7 +122,7 @@
 
 			if($this->form_validation->run() === FALSE){
 
-				$data1['fristen']= $this->fristen_model->get_fristen();	
+				$data1['fristen']= $this->Fristen_model->get_fristen();	
                 $this->load->view('templates/header');
                 $this->load->view('pages/fristen', $data1);
                 $this->load->view('templates/footer');
@@ -145,11 +145,11 @@
 					'bis6'=>$this->input->post('Bis6'),
 				);
 			
-			if($this->fristen_model->fristen_edit($data)){
+			if($this->Fristen_model->fristen_edit($data)){
 
 				$this->session->set_flashdata('fristen_success', 'Fristen erfolgreich aktualisiert!');
 
-				$data1['fristen']= $this->fristen_model->get_fristen();	
+				$data1['fristen']= $this->Fristen_model->get_fristen();	
 
 				$this->load->view('templates/header');
 				$this->load->view('pages/fristen', $data1);
@@ -159,7 +159,7 @@
 			
 				$this->session->set_flashdata('fristen_fail', 'Fristen konnten nicht aktualisiert werden!');
 
-				$data1['fristen']= $this->fristen_model->get_fristen();	
+				$data1['fristen']= $this->Fristen_model->get_fristen();	
 
 				$this->load->view('templates/header');
 				$this->load->view('pages/fristen', $data1);
@@ -203,6 +203,211 @@
 
 		}
 
+<<<<<<< HEAD
+=======
+		public function reset_index(){
+			$fristname = 'Zuteilungsphase';
+            $von = $this->Fristen_model->get_frist_start($fristname);
+            $frist_start = $von['0'];
+            $startdatum = $frist_start['Von'];
+            $bis = $this->Fristen_model->get_frist_ende($fristname);
+            $frist_ende = $bis['0'];
+            $enddatum = $frist_ende['Bis'];
+            $heute = date("Y-m-d");
+            if (!($heute>$enddatum) ) {
+                $this->load->view('templates/header');
+                $this->load->view('pages/ausserhalb_frist');
+                $this->load->view('templates/footer');
+            }
+            else {
+			$this->load->view('templates/header');
+			$this->load->view('dekan/reset_index');
+			$this->load->view('templates/footer');
+			}
+		}
+
+		public function reset_warning(){
+			$fristname = 'Zuteilungsphase';
+            $von = $this->Fristen_model->get_frist_start($fristname);
+            $frist_start = $von['0'];
+            $startdatum = $frist_start['Von'];
+            $bis = $this->Fristen_model->get_frist_ende($fristname);
+            $frist_ende = $bis['0'];
+            $enddatum = $frist_ende['Bis'];
+            $heute = date("Y-m-d");
+            if (!($heute>$enddatum) ) {
+                $this->load->view('templates/header');
+                $this->load->view('pages/ausserhalb_frist');
+                $this->load->view('templates/footer');
+            }
+            else {
+			$this->load->view('templates/header');
+			$this->load->view('dekan/reset_warning');
+			$this->load->view('templates/footer');
+			}
+		}
+
+		public function reset(){
+			$fristname = 'Zuteilungsphase';
+            $von = $this->Fristen_model->get_frist_start($fristname);
+            $frist_start = $von['0'];
+            $startdatum = $frist_start['Von'];
+            $bis = $this->Fristen_model->get_frist_ende($fristname);
+            $frist_ende = $bis['0'];
+            $enddatum = $frist_ende['Bis'];
+            $heute = date("Y-m-d");
+            if (!($heute>$enddatum) ) {
+                $this->load->view('templates/header');
+                $this->load->view('pages/ausserhalb_frist');
+                $this->load->view('templates/footer');
+            }
+            else {
+			//Identifikation des aktuellen Semesters
+			$fristname = '1. Auswahlphase';
+			$von = $this->Fristen_model->get_frist_start($fristname);
+			$frist_start = $von['0'];
+			$startdatum = $frist_start['Von'];
+			$cur_semester=$this->seminar_model->getCurSemester($startdatum);
+			$semester=$cur_semester->bezeichnung;	
+			
+			//reset Prozess
+			$erfolgreich=TRUE;
+			$error='r0';
+			if($cur_semester->reset=='2' && !($startdatum=='000-00-00')){
+				if(!($this->seminar_model->save_seminare($semester))){
+					$erfolgreich=FALSE;
+					$error=$error.'1';
+				}
+
+				$count_ba=$this->seminar_model->count_ba_ohne_zusagen();
+				$count_ma=$this->seminar_model->count_ma_ohne_zusagen();
+
+				$data1=array(
+					'semester'=>$semester,
+					'ba/ma'=>'BA',
+					'kein_seminar'=>$count_ba
+				);
+				if(!($this->seminar_model->save_studenten_statistik($data1))){
+					$erfolgreich=FALSE;
+					$error=$error.'2';
+				}
+
+				$data2=array(
+					'semester'=>$semester,
+					'ba/ma'=>'MA',
+					'kein_seminar'=>$count_ma
+				);
+				if(!($this->seminar_model->save_studenten_statistik($data2))){
+					$erfolgreich=FALSE;
+					$error=$error.'3';
+				}
+
+				if($erfolgreich){
+					if(!($this->student_model->delete_students()) || !($this->student_model->delete_users_students())){
+						$erfolgreich=FALSE;
+						$error=$error.'4';
+					}
+					if(!($this->seminar_model->delete_seminare($semester))){
+						$erfolgreich=FALSE;
+						$error=$error.'5';
+					}
+					if(!($this->Fristen_model->delete_fristen())){
+						$erfolgreich=FALSE;
+						$error=$error.'6';
+					}
+					if($erfolgreich){
+						$this->student_model->deleteUploadFiles();
+						$this->seminar_model->update_reset($semester);
+						$this->session->set_flashdata('reset_success', 'Das System wurde erfolgreich zurückgesetzt!');
+						redirect('dekan/startseite_dekan');
+					}
+	
+					else{
+						$this->session->set_flashdata('reset_failed', 'Bei dem Löschen der Daten trat ein Fehler auf! Bitte kontaktieren Sie den Administrator. Error: '.$error);
+						redirect('dekan/startseite_dekan');
+					}
+				}else{
+					$this->session->set_flashdata('save_failed', 'Speicherung der Statistik fehlgeschlagen! Daten wurden nicht gelöscht. Bitte kontaktieren Sie den Administrator.  Error: '.$error);
+					redirect('dekan/startseite_dekan');
+				}
+				
+				
+			}
+			else{
+				$this->session->set_flashdata('reset_done', 'Das System wurde bereits zurückgesetzt!');
+				redirect('dekan/startseite_dekan');
+			}
+
+		}
+		}
+		public function dekanats_mitarbeiter_anlegen(){
+			//Ermitteln, ob angemeldeter Nutzer Dekanatsinhaber ist
+			$email=$_SESSION['user_email'];
+			$get = $this->Staff_model->get_info_inhaber($email);
+			$info = $get['0'];
+			$inhaberinfo = $info['Inhaber'];
+			if ($inhaberinfo <> 1 ) {
+				$this->load->view('templates/header');
+                $this->load->view('pages/kein_inhaber');
+                $this->load->view('templates/footer');
+			}
+			else{
+            $get = $this->Staff_model->get_anzahl_dekanats_mitarbeiter();
+            $anzahl = $get['0'];
+            $anzahlmitarbeiter = $anzahl['count(*)'];
+
+            if ($anzahlmitarbeiter < 2) {
+            
+            $data['title']= 'Mitarbeiter anlegen';
+
+            $this->form_validation->set_rules('e-mail', 'Name', 'required|callback_check_email_exists');
+            $this->form_validation->set_rules('password', 'Passwort', 'required');
+            $this->form_validation->set_rules('password2', 'Passwort bestätigen', 'matches[password]');
+            $this->form_validation->set_rules('vorname', 'Vorname', 'required');
+            $this->form_validation->set_rules('name', 'Name', 'required');
+       
+            if($this->form_validation->run() === FALSE){
+                $this->load->view('templates/header');
+                $this->load->view('users/dekanats_mitarbeiter_anlegen', $data);
+                $this->load->view('templates/footer');
+
+
+            }else{
+                //Encrypt password
+                $enc_password = md5($this->input->post('password'));
+
+                $this->Staff_model->addstaff_dekan($enc_password);
+
+                //Set confirm message
+                $this->session->set_flashdata('staff_added', 'Der Mitarbeiter wurde hinzugefügt!');
+                
+                //Versenden der Email mit Benutzername und Passwort
+				$receiver_email=$this->input->post('e-mail');
+				$subject='Benutzerdaten für Seminarplatzvergabe-System';
+				$pw=$this->input->post('password');
+				$message="Ihre Logindaten für das Seminarplatzvegabe-System lauten wie folgt: Benutzername:".$receiver_email." Passwort: ".$pw;
+				$this->Send_Mail($receiver_email, $subject, $message);
+                redirect('startseite');
+            }
+        }
+        else {
+            $this->load->view('templates/header');
+            $this->load->view('pages/dekanat_mitarbeiteranzahl_zu_hoch');
+        }
+	}
+		}
+		//Check if e-mail exists
+        public function check_email_exists($email){
+            $this->form_validation->set_message('check_email_exists', 'Diese E-Mail-Adresse ist bereits im System regstriert');
+
+            if($this->user_model->check_email_exists($email)){
+                return true;
+            }else{
+                return false;
+            }
+
+		}
+>>>>>>> 1dcf4cfe633fe3b702cecae7ef637ece7b83dd16
 		public function Send_Mail($receiver_email, $subject, $message) {
 
 
@@ -250,6 +455,7 @@
 			}
 			
 		}
+<<<<<<< HEAD
 
 		public function send_emails(){
 			$this->load->view('templates/header');
@@ -383,6 +589,9 @@
 		
 
 
+=======
+		
+>>>>>>> 1dcf4cfe633fe3b702cecae7ef637ece7b83dd16
 	}
 
 

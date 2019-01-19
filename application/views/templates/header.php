@@ -22,8 +22,10 @@
       <?php if($this->session->userdata('rolle')==='dekan') : ?>
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>dekan/startseite_dekan">Startseite</a>
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>dekan/fristen_anzeigen">Fristen</a>
+      <a class="nav-item nav-link" href="<?php echo base_url(); ?>dekan/reset_index">System zurücksetzen</a>
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>dekan/search_log">Logfile einsehen</a>
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>dekan/send_emails">E-Mails versenden</a>
+      <a class="nav-item nav-link" href="<?php echo base_url(); ?>dekan/dekanats_mitarbeiter_anlegen">Mitarbeiter anlegen</a>
       <?php endif; ?>
       <!-- Rollennavbar Admin -->
       <?php if($this->session->userdata('rolle')==='admin') : ?>
@@ -153,4 +155,16 @@
 <?php endif; ?>
 <?php if($this->session->flashdata('semester_deleted_failed')): ?>
   <?php echo '<p class="alert alert-danger">'.$this->session->flashdata('semester_deleted_failed').'</p>'; ?>
+<?php endif; ?>
+<?php if($this->session->flashdata('save_failed')): ?>
+  <?php echo '<p class="alert alert-danger">'.$this->session->flashdata('save_failed').'</p>'; ?>
+<?php endif; ?>
+<?php if($this->session->flashdata('reset_success')): ?>
+  <?php echo '<p class="alert alert-success">'.$this->session->flashdata('reset_success').'</p>'; ?>
+<?php endif; ?>
+<?php if($this->session->flashdata('reset_failed')): ?>
+  <?php echo '<p class="alert alert-danger">'.$this->session->flashdata('reset_failed').'</p>'; ?>
+<?php endif; ?>
+<?php if($this->session->flashdata('reset_done')): ?>
+  <?php echo '<p class="alert alert-danger">'.$this->session->flashdata('reset_done').'</p>'; ?>
 <?php endif; ?>

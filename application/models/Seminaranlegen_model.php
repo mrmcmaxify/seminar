@@ -1,7 +1,11 @@
 <?php  
     class Seminaranlegen_model extends CI_Model{
+        public function __construct(){
+            $this->load->database();
+        }
         public function seminaranlegen(){
-           
+            
+               
 
              //User data array(seminar)
              $data1 = array(
@@ -16,17 +20,45 @@
                 
                               
             );
-
+            
             //insert seminar(seminar)
             return $this->db->insert('seminar', $data1);
 
            
-
+        
         }
 
+        public function seminar_pflegen($data1, $id){
+           
+
+           
+
+           //update seminar(seminar)
+           return $this->db->where('SeminarID', $id)->update('seminar', $data1);
+
+          
+
+       }
 
         
 
 
-        
+         // Liefert das ausgewählte Seminar
+         public function get_seminar($id){
+            $this->db->select('*');
+            $this->db->from('seminar');
+            $this->db->where('SeminarID', $id);
+            $query=$this->db->get();
+            return $query->result_array();
+         }
+         // Liefert das ausgewählte Seminar
+         public function get_semesteranfang($bezeichnung){
+            $this->db->select('anfang');
+            $this->db->from('semesterzeiten');
+            $this->db->where('bezeichnung', $bezeichnung);
+            $query=$this->db->get();
+            return $query->result_array();
+
+        }
+       
     }

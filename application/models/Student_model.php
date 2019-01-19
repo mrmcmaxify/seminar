@@ -39,10 +39,28 @@
             $data = array(
                 'E-Mail' => $email,
                 'SeminarID' => $id,
-                
             );
         
             $this->db->insert('Seminarzuteilung', $data);
+
+            $data1 = array(
+                '#Annahmen' => '1',
+            );
+            $this->db->where('E-Mail', $email);
+            $this->db->update('student', $data1);
+            return true;
+
+        }
+
+        //Trägt Studenten, die vom Lehrstuhl zugewiesen wurden, in Seminarzuteilung ein und Setzt #Annahmen +1
+        public function zuweisen_durch_lehrstuhl($email, $id, $fristid){
+            $data2 = array(
+                'E-Mail' => $email,
+                'SeminarID' => $id,
+                'PhasenID' => $fristid,
+            );
+        
+            $this->db->insert('Seminarzuteilung', $data2);
 
             $data1 = array(
                 '#Annahmen' => '1',
@@ -76,6 +94,27 @@
             $this->db->where('E-Mail', $email);
             $query = $this->db->get();
             return $query->result_array();
+        }
+
+        //Löscht alle Einträge bei Tabelle student
+        public function delete_students(){
+            return $this->db->empty_table('student');
+        }
+
+        //Löscht alle Einträge bei benutzeraccount mit Rolle student
+        public function delete_users_students(){
+            $this->db->where('Rolle', 'student');
+            return $this->db->delete('benutzeraccount');
+        }
+
+        //LÖscht die HisQis Auszüge und Motivationsschreiben
+        public function deleteUploadFiles(){
+            $path = $_SERVER['DOCUMENT_ROOT'].'/seminar/uploads/';
+            $files = glob($path.'*'); // get all file names
+            foreach($files as $file){ // iterate files
+            if(is_file($file))
+                unlink($file);
+            }   
         }
     }
        

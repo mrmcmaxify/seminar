@@ -135,6 +135,145 @@
             $this->db->where('E-Mail', $email)->where('SeminarID', $seminarid)->update('seminarbewerbung', $data1);
         }
 
+        //erhöht die Anzahl der #Bewerbungen des Studenten
+        public function zusagen_erhoehen($email, $anzahl){
+
+            $data = array(
+                '#Annahmen' =>  1
+            );
+    
+            $this->db->where('E-Mail', $email)->update('student', $data);
+        }
+
+
+
+        //gibt zurück, ob der eingeloggte Student ein BAchelor- oder Masterstudium absolviert
+        public function get_bama($email){
+            $this->db->select('BA/MA');
+            $this->db->from('student');
+            $this->db->where('E-Mail', $email);
+            $query = $this->db->get();
+            return $query->result_array();
+        }
+
+        //Speichert Seminarinfos in die Statistik
+        public function save_seminare($semester){
+            $old=$this->db->where('Semester',$semester)->get('seminar')->result_array();
+            $success=FALSE;
+            foreach($old as $new) {
+                $data=array(
+                    'SeminarID'=>$new['SeminarID'],
+                    'SeminarName'=>$new['SeminarName'],
+                    'LehrstuhlName'=>$new['LehrstuhlName'],
+                    'Ist_Teilnehmerzahl'=>$new['Ist-Teilnehmerzahl'],
+                    'Soll_Teilnehmerzahl'=>$new['Soll-Teilnehmerzahl'],
+                    'Semester'=>$new['Semester'],
+                    'BA/MA'=>$new['BA/MA']
+                );
+                $this->db->insert('statistik', $data);
+                $success=TRUE;
+            }
+            return $success;
+        }
+
+        //Gibt Anzahl Bachelorstudenten ohne Seminarzuteilung zurück
+        public function count_ba_ohne_zusagen(){
+            $emails = [];
+            $query1 = $this->db->select('E-Mail')->get('seminarzuteilung')->result_array();
+
+            if(count($query1) > 0){
+                foreach($query1 as $row){
+                    $emails[] = $row['E-Mail'];
+                }
+            }
+
+            $this->db->select('*');
+            if(!empty($emails)){
+                $this->db->where_not_in('E-mail',$emails);
+                $this->db->where('BA/MA','BA');
+            }
+            $query2 = $this->db->get('student');
+            return $query2->num_rows();
+    
+        }
+
+        //Gibt Anzahl Masterstudenten ohne Seminarzuteilung zurück
+        public function count_ma_ohne_zusagen(){
+            $emails = [];
+            $query1 = $this->db->select('E-Mail')->get('seminarzuteilung')->result_array();
+
+            if(count($query1) > 0){
+                foreach($query1 as $row){
+                    $emails[] = $row['E-Mail'];
+                }
+            }
+
+            $this->db->select('*');
+            if(!empty($emails)){
+                $this->db->where_not_in('E-mail',$emails);
+                $this->db->where('BA/MA','MA');
+            }
+            $query2 = $this->db->get('student');
+            return $query2->num_rows();
+    
+        }
+
+        //Gibt das aktuelle Semester zurück
+        public function getCurSemester($date){
+            $query = $this->db->where('ende >=', $date)->where('anfang <=', $date)->get('semesterzeiten');
+            if($query->num_rows() > 0){
+                return $query->row();
+            }
+
+        }
+       
+        //Speichert die Studentenstatistik
+        public function save_studenten_statistik($data){
+           return $this->db->insert('statistik_studenten', $data);
+        }
+
+        //Löscht alle Seminare des Semsters $semester
+        public function delete_seminare($semester){
+            $this->db->where('Semester', $semester);
+            return $this->db->delete('seminar');
+        }
+
+        //markiert das Semester als geresetet um erneutes resetten zu vermeiden
+        public function update_reset($semester){
+            $data =array(
+                'reset' => '1'
+            );
+            $this->db->where('bezeichnung', $semester)->update('semesterzeiten', $data);
+        }
+
+        //fügt den neuen VAbschluss dem Benutzer hinzu
+        public function abschluss_aendern($email){
+            //User data array(student)
+            $data1 = array(
+                'ba/ma' => $this->input->post('ba/ma'),
+            );
+
+            //insert student-vorname(student)
+            return $this->db->where('E-Mail', $email)->update('student', $data1);
+        }
+
+        //fügt den neuen Vornamen dem Benutzer hinzu
+        public function vorname_aendern($email){
+            //User data array(student)
+            $data1 = array(
+                'vorname' => $this->input->post('vorname'),
+            );
+
+            //insert student-vorname(student)
+            return $this->db->where('E-Mail', $email)->update('student', $data1);
+        }
+
+        //fügt den neuen Vornamen dem Benutzer hinzu
+        public function nachname_aendern($email){
+            //User data array(student)
+            $data1 = array(
+                'name' => $this->input->post('name'),
+            );
 
         
     }
