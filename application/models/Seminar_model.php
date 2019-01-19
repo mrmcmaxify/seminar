@@ -91,19 +91,6 @@
             return $query->result_array();
         }
 
-        //gibt Seminare zurück, die vom Lehrstuhl zugesagt worden sind
-        public function get_seminare_angemeldet($email, $bama){
-            $this->db->select('*');
-            $this->db->from('seminarbewerbung');
-            $this->db->join('seminar', 'seminarbewerbung.SeminarID = seminar.SeminarID', 'inner');
-            $this->db->where('E-Mail', $email);
-            $this->db->where('seminar.BA/MA', $bama);
-            $this->db->where('Eingeladen', 1);
-            $this->db->order_by('Seminarname', 'DESC');
-            $query = $this->db->get();
-            return $query->result_array();
-        }
-
         //erhöht die Anzahl der #Bewerbungen des Studenten
         public function bewerbungen_erhoehen($email){
 
