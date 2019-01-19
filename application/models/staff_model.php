@@ -24,9 +24,9 @@
             $this->db->insert('benutzeraccount', $data);
             return $this->db->insert('lehrstuhl', $data1);
 
-           
-
         }
+
+        
         public function addstaff_dekan($enc_password){
             //User data array(benutzeraccount)
             $data = array(
@@ -38,6 +38,10 @@
             );
             
 
+        
+
+
+        
              //User data array(lehrstuhl)
              $data1 = array(
                 'e-mail' => $this->input->post('e-mail'),
@@ -52,8 +56,8 @@
 
            
 
+        
         }
-
 
         // Liefert den Namen des Lehrstuhls der angemeldeten Person
         public function get_lehrstuhl($email){
@@ -62,7 +66,6 @@
             $this->db->where('lehrstuhl.E-Mail', $email);
             $query=$this->db->get();
             return $query->result_array();
-
 
         }
 
