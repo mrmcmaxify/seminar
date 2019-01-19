@@ -213,16 +213,7 @@
 
 				$this->session->set_flashdata('zugewiesen_nicht', 'Konnte nicht zuweisen, bitte Admin kontaktieren!');
             }
-           /* $email=$_SESSION['user_email'];
-            $data= array(
-                
-                'seminar'=>$this->Seminarvergabe_model->get_seminare($email),
-
-            );
-            $this->load->view('templates/header');
-            $this->load->view('pages/startseite_lehrstuhl', $data);
-            $this->load->view('templates/footer');
-*/
+        
 
 		}
 
