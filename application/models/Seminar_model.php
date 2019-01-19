@@ -23,20 +23,6 @@
 
         }
 
-        //Gibt alle Seminare aus, auf die sich ein bestimmter Student beworben hat
-        public function get_seminare_beworben1($email, $bama){
-            $this->db->select('*');
-            $this->db->from('seminarbewerbung');
-            $this->db->join('seminar', 'seminarbewerbung.SeminarID = seminar.SeminarID', 'inner');
-            $this->db->where('E-Mail', $email);
-            $this->db->where('seminar.BA/MA', $bama);
-            $this->db->order_by('Seminarname', 'DESC');
-            $query = $this->db->get();
-            return $query->result_array();
-
-
-        }
-
         // Liest seminarbewerbungen ein
         public function bewerbung_hinzufuegen($MSNotwendig, $seminarid){
     
@@ -302,8 +288,5 @@
                 'name' => $this->input->post('name'),
             );
 
-            //insert student-vorname(student)
-            return $this->db->where('E-Mail', $email)->update('student', $data1);
-        }
         
     }
