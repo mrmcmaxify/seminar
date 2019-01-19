@@ -73,10 +73,10 @@
                     $this->db->where('LehrstuhlName', $lehrstuhlname);
                     $query=$this->db->get();
                     return $query->result_array();
+                }
                   
         
-        
-                }
+                
                 // Liefert die Anzahl bereits registrierter Dekanats-Mitarbeiter
                 public function get_anzahl_dekanats_mitarbeiter(){
                     $this->db->select('count(*)');
