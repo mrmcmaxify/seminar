@@ -149,7 +149,7 @@
                     //Lädt spezifische Daten für Dekan Startseite
                     if($user_data['rolle']==='dekan'){
                         $data['seminar']= $this->seminar_model->get_seminare();
-                        $data['fristen']=$this->fristen_model->get_fristen();
+                        $data['fristen']=$this->Fristen_model->get_fristen();
                         $data['ba_ohne']=$this->student_model->get_ba_ohne();
                         $data['ma_ohne']=$this->student_model->get_ma_ohne();
 			
@@ -160,7 +160,7 @@
                         
                     }elseif($user_data['rolle']==='admin'){
                         $data['seminar']= $this->seminar_model->get_seminare();
-                        $data['fristen']=$this->fristen_model->get_fristen();
+                        $data['fristen']=$this->Fristen_model->get_fristen();
             
                             $this->load->view('templates/header');
                             $this->load->view('pages/startseite', $data);
@@ -291,7 +291,7 @@
 //Bewerbung für ein Seminar
         public function bewerben(){
             $data['seminar']= $this->seminar_model->get_seminare();
-			$data['fristen']= $this->fristen_model->get_fristen();
+			$data['fristen']= $this->Fristen_model->get_fristen();
 			
 		
 			
@@ -304,7 +304,7 @@
         //Beschreibung des Seminars anzeigen
         public function seminar_info(){
             $data['seminar']= $this->seminar_model->get_seminare();
-			$data['fristen']= $this->fristen_model->get_fristen();
+			$data['fristen']= $this->Fristen_model->get_fristen();
 			
 		
 			
@@ -318,7 +318,7 @@
             if(empty($_SESSION['logged_in'])){
 
                 $data['seminar']= $this->seminar_model->get_seminare();
-                $data['fristen']=$this->fristen_model->get_fristen();
+                $data['fristen']=$this->Fristen_model->get_fristen();
 
                 $this->load->view('templates/header');
                 $this->load->view('pages/startseite', $data);
@@ -331,7 +331,7 @@
 
                 if($_SESSION['rolle']==='dekan'){
                     $data['seminar']= $this->seminar_model->get_seminare();
-                    $data['fristen']=$this->fristen_model->get_fristen();
+                    $data['fristen']=$this->Fristen_model->get_fristen();
                     $data['ba_ohne']=$this->student_model->get_ba_ohne();
                     $data['ma_ohne']=$this->student_model->get_ma_ohne();
         

@@ -216,4 +216,73 @@
             }
         }
 
+        //Studenten-Abschluss ändern
+        public function abschluss_aendern(){
+            $data['title']= 'Abschluss ändern';
+            $this->form_validation->set_rules('ba/ma', 'BA/MA', 'required');
+
+            if($this->form_validation->run() === FALSE){
+                $this->load->view('templates/header');
+                $this->load->view('daten_aendern', $data);
+                $this->load->view('templates/footer');
+            }
+
+            else{
+                //Aufruf register methode
+                $this->seminar_model->abschluss_aendern($this->session->userdata('user_email'));
+
+                //Set confirm message
+                $this->session->set_flashdata('user_registered', 'Sie haben Ihren Abschluss geändert!');
+
+                redirect('startseite_student');
+            }
+            
+        }
+
+        //Studenten-Vornamen ändern
+        public function vorname_aendern(){
+            $data['title']= 'Vorname ändern';
+            $this->form_validation->set_rules('vorname', 'Vorname', 'required');
+
+            if($this->form_validation->run() === FALSE){
+                $this->load->view('templates/header');
+                $this->load->view('daten_aendern', $data);
+                $this->load->view('templates/footer');
+            }
+
+            else{
+                //Aufruf register methode
+                $this->seminar_model->vorname_aendern($this->session->userdata('user_email'));
+
+                //Set confirm message
+                $this->session->set_flashdata('user_registered', 'Sie haben Ihren Vornamen geändert!');
+
+                redirect('startseite_student');
+            }
+            
+        }
+
+        //Studenten-Nachnamen ändern
+        public function nachname_aendern(){
+            $data['title']= 'Nachname ändern';
+            $this->form_validation->set_rules('name', 'Name', 'required');
+
+            if($this->form_validation->run() === FALSE){
+                $this->load->view('templates/header');
+                $this->load->view('pages/daten_aendern', $data);
+                $this->load->view('templates/footer');
+            }
+
+            else{
+                //Aufruf register methode
+                $this->seminar_model->nachname_aendern($this->session->userdata('user_email'));
+
+                //Set confirm message
+                $this->session->set_flashdata('user_registered', 'Sie haben Ihren Nachnamen geändert!');
+
+                redirect('startseite_student');
+            }
+            
+        }
+
     }

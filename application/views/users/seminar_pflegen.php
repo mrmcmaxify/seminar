@@ -55,11 +55,13 @@
                     <input type="text" class="form-control" name="soll-teilnehmerzahl" placeholder="Teilnehmeranzahl">
                 </div>
                 </br>
+                <select class="form-control" name="semester">
+                    <label>Angebotenes Semester</label>
+                        <?php foreach($semester as $semes){ ?>
+                            <option value="<?php echo $semes->bezeichnung; ?>"><?php echo $semes->bezeichnung; ?></option>';
+                        <?php } ?>
+                 </select>
                 
-                <div class="form group">
-                    <label>Angebotenes Semester ändern</label>
-                    <input type="text" class="form-control" name="semester" placeholder="Semester">
-                </div>
                 </br>
                
                 
