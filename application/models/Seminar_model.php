@@ -22,6 +22,20 @@
 
         }
 
+        //Gibt alle Seminare aus, auf die sich ein bestimmter Student beworben hat
+        public function get_seminare_beworben1($email, $bama){
+            $this->db->select('*');
+            $this->db->from('seminarbewerbung');
+            $this->db->join('seminar', 'seminarbewerbung.SeminarID = seminar.SeminarID', 'inner');
+            $this->db->where('E-Mail', $email);
+            $this->db->where('seminar.BA/MA', $bama);
+            $this->db->order_by('Seminarname', 'DESC');
+            $query = $this->db->get();
+            return $query->result_array();
+
+
+        }
+
         // Liest seminarbewerbungen ein
         public function bewerbung_hinzufuegen($MSNotwendig, $seminarid){
     
@@ -72,8 +86,7 @@
         public function get_seminare_not_beworben($email, $bama){
             $this->db->select('*');
             $this->db->from('seminar');
-            $this->db->join('seminarbewerbung', 'seminar.SeminarID = seminarbewerbung.SeminarID', 'left');
-            $this->db->where_not_in('E-Mail', $email);
+            $this->db->where('seminar.BA/MA', $bama);
             $this->db->order_by('Seminarname', 'DESC');
             $query = $this->db->get();
 
@@ -91,11 +104,25 @@
             return $query->result_array();
         }
 
+        //gibt Seminare zurück, die vom Lehrstuhl zugesagt worden sind
+        public function get_seminare_angemeldet($email, $bama){
+            $this->db->select('*');
+            $this->db->from('seminarbewerbung');
+            $this->db->join('seminar', 'seminarbewerbung.SeminarID = seminar.SeminarID', 'inner');
+            $this->db->where('E-Mail', $email);
+            $this->db->where('seminar.BA/MA', $bama);
+            $this->db->where('Eingeladen', 1);
+            $this->db->where('ZugesagtAm', '0000-00-00');
+            $this->db->order_by('Seminarname', 'DESC');
+            $query = $this->db->get();
+            return $query->result_array();
+        }
+
         //erhöht die Anzahl der #Bewerbungen des Studenten
-        public function bewerbungen_erhoehen($email){
+        public function bewerbungen_erhoehen($email, $anzahl){
 
             $data =array(
-                '#Bewerbung' => (int)'#Bewerbung' + 1
+                '#Bewerbung' => $anzahl
             );
             
             
@@ -108,7 +135,16 @@
             return $this->db->where('SeminarID', $seminarid)->where('E-Mail', $email)->delete('seminarbewerbung');
         }
 
-        //gibt Seminare zurück, die vom Lehrstuhl zugesagt worden sind
+        //gibt die Anzahl der Zusagen eines Studenten zurück
+        public function get_anzahl_zusagen($email){
+            $this->db->select('#Annahmen');
+            $this->db->from('student');
+            $this->db->where('E-Mail', $email);
+            $query = $this->db->get();
+            return $query->result_array();
+        }
+
+         //gibt Seminare zurück, die vom Lehrstuhl zugesagt worden sind
          public function get_seminare_zugesagt($email, $bama){
             $this->db->select('*');
             $this->db->from('seminarzuteilung');
@@ -128,7 +164,7 @@
             );
 
             $data1 = array(
-                'ZugesagtAm' => 'NOW()'
+                'ZugesagtAm' => date("Y-m-d")
             );
 
             $this->db->insert('seminarzuteilung', $data);
@@ -139,7 +175,7 @@
         public function zusagen_erhoehen($email, $anzahl){
 
             $data = array(
-                '#Annahmen' =>  1
+                '#Annahmen' =>  $anzahl
             );
     
             $this->db->where('E-Mail', $email)->update('student', $data);
@@ -268,13 +304,29 @@
             return $this->db->where('E-Mail', $email)->update('student', $data1);
         }
 
-        //fügt den neuen Vornamen dem Benutzer hinzu
+      
+
+        //fügt den neuen Nachnamen dem Benutzer hinzu
         public function nachname_aendern($email){
             //User data array(student)
             $data1 = array(
                 'name' => $this->input->post('name'),
             );
+
+            //insert student-vorname(student)
+            return $this->db->where('E-Mail', $email)->update('student', $data1);
         }
 
+        //Liefert alle Informationen zu Studenten zurück, die sich für ein Seminar beworben haben
+        public function get_student_bewerbungen(){
+
+            $this->db->select('*');
+            $this->db->from('seminarbewerbung');
+            $this->db->join('student', 'seminarbewerbung.E-mail = student.E-Mail', 'inner');
+            $this->db->group_by('seminarbewerbung.E-mail');
+            $query = $this->db->get();
+            return $query->result_array();
+
+        }
         
     }
