@@ -39,7 +39,7 @@
         // Liest seminarbewerbungen ein
         public function bewerbung_hinzufuegen($MSNotwendig, $seminarid){
     
-            if ($MSNotwendig === 1){
+            if ($MSNotwendig === '1'){
                 //User data array(seminarbewerbung)
                 $data = array(
                     'e-mail' => $this->session->userdata('user_email'),
