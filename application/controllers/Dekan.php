@@ -107,6 +107,18 @@
 		//Ändert Fristen und überprüft Änderungen
 		public function fristen_edit(){
 
+
+			$fristname = 'Anmeldephase';
+            $von = $this->Fristen_model->get_frist_start($fristname);
+            $frist_start = $von['0'];
+            $startdatum = $frist_start['Von'];
+            $bis = $this->Fristen_model->get_frist_ende($fristname);
+            $frist_ende = $bis['0'];
+            $enddatum = $frist_ende['Bis'];
+            $heute = date("Y-m-d");
+            if (($heute < $startdatum)||($startdatum === '0000-00-00')){
+
+
 			$this->form_validation->set_rules('Von1', 'Anmeldephase', 'required');
 			$this->form_validation->set_rules('Bis1', 'Anmeldephase', 'required|callback_check_bigger['.$this->input->post('Von1').']');
 			$this->form_validation->set_rules('Von2', '1. Auswahlphase', 'required|callback_check_bigger['.$this->input->post('Bis1').']');
@@ -172,6 +184,13 @@
 		}
 
 		}
+
+		else{
+			$this->load->view('templates/header');
+			$this->load->view('pages/ausserhalb_frist_student');
+			$this->load->view('templates/footer');
+		}
+	}
 		//Callback Funktion, überprüft ob vorige Frist kleiner ist, siehe Formvalidation
 		public function check_bigger($datejetzt, $datevor){
 			if ($datejetzt < $datevor){
