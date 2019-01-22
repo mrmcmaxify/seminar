@@ -169,3 +169,6 @@
 <?php if($this->session->flashdata('reset_done')): ?>
   <?php echo '<p class="alert alert-danger">'.$this->session->flashdata('reset_done').'</p>'; ?>
 <?php endif; ?>
+<?php if($this->session->flashdata('user_is_locked')): ?>
+  <?php echo '<p class="alert alert-danger">'.$this->session->flashdata('user_is_locked').'</p>'; ?>
+<?php endif; ?>
