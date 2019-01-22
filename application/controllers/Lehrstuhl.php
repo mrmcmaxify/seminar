@@ -527,6 +527,15 @@
 			    return FALSE;
 		    }
 		    return TRUE;
-	}
+    }
+    
+    //Download CSV Datei
+    public function csv(){
+        $report = $this->my_model->index();
+        $new_report = $this->dbutil->csv_from_result($report);
+        /*  Now use it to write file. write_file helper function will do it */
+        write_file('csv_file.csv',$new_report);
+        /*  Done    */
+    }
 		
 	}
