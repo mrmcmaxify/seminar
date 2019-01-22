@@ -24,7 +24,7 @@
       //var_dump($data2);
       $data3 = $this->seminar_model->get_seminare_zugesagt($this->session->userdata('user_email'),$test[0]['BA/MA']);    
       //var_dump($data);
-     foreach ($data as $seminare) :
+     foreach ($data1 as $seminare) :
 
       ?>
     <tr>

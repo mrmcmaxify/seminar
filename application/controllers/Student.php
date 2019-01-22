@@ -208,10 +208,26 @@
                 'e-mail'=> $this->session->userdata('user_email')
             );
 
-            $data1 =$this->seminar_model->bewerbung_loeschen($data['seminarid'], $data['e-mail']);
-            $this->user_model->add_log($data['e-mail'], 2);
+            $this->load->view('templates/header');
+            $this->load->view('users/bewerbung_loeschen', $data);
+            $this->load->view('templates/footer');
+
+        }
+
+        public function bewerbung_loeschen1(){
+
+            $data=array(
+                'seminarid'=>$this->input->post('SeminarID'),
+                'beschreibung'=>$this->input->post('Beschreibung'),
+                'msnotwendig'=>$this->input->post('MSNotwendig'),
+                'e-mail'=> $this->session->userdata('user_email')
+            );
+            
+            $data1 =$this->seminar_model->bewerbung_loeschen($data['seminarid'], $this->session->userdata('user_email'));
+            $this->user_model->add_log($data['beschreibung'], 2);
 
             redirect('startseite_student');
+            
         }
 
         //Detail-Ansicht für Seminare
@@ -245,6 +261,22 @@
             } 
 
             else{
+                $data=array(
+                    'seminarid'=>$this->input->post('SeminarID'),
+                    'beschreibung'=>$this->input->post('Beschreibung'),
+                    'msnotwendig'=>$this->input->post('MSNotwendig'),
+                    'e-mail'=> $this->session->userdata('user_email')
+                );
+
+                $this->load->view('templates/header');
+                $this->load->view('users/seminar_ablehnen', $data);
+                $this->load->view('templates/footer');
+
+        }
+
+        }
+
+        public function seminar_ablehnen1(){
 
             $id=$this->input->post('SeminarID');
 			$data= array(
@@ -255,8 +287,6 @@
             $this->user_model->add_log($this->session->userdata('user_email'), 4);
 
             redirect('startseite_student');
-        }
-
         }
 
         //Zugesagtes Seminar zusagen
