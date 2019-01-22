@@ -27,6 +27,7 @@
             $this->db->join('student', 'student.E-Mail = seminarbewerbung.E-Mail', 'inner');
             $this->db->join('lehrstuhl', 'lehrstuhl.LehrstuhlName = seminar.LehrstuhlName', 'inner');
             $this->db->where('lehrstuhl.E-Mail', $email);
+            $this->db->where('Eingeladen', '0');
             $query=$this->db->get();
             return $query->result_array();
           

@@ -92,6 +92,13 @@
             );
             $this->db->where('E-Mail', $email);
             $this->db->update('student', $data1);
+
+            $data3 = array(
+                'Eingeladen' => '1',
+            );
+            $this->db->where('E-Mail', $email);
+            $this->db->where('SeminarID', $id);
+            $this->db->update('seminarbewerbung', $data3);
             return true;
 
         }
