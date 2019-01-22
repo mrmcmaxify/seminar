@@ -24,48 +24,116 @@
 
 		//Fügt Benutzer mit Rolle Lehrstuhl oder Dekan hinzu
 		public function add_user(){
+
+			
             $data['title']= 'Add User';
 
-            $this->form_validation->set_rules('e-mail', 'Name', 'required|callback_admin_check_email_exists');
+            $this->form_validation->set_rules('e-mail', 'Name', 'required|callback_admin_check_email_exists|valid_email|callback_email_check');
             $this->form_validation->set_rules('password', 'Passwort', 'required|callback_valid_password');
             $this->form_validation->set_rules('password2', 'Passwort bestätigen', 'matches[password]');
             $this->form_validation->set_rules('vorname', 'Vorname', 'required');
             $this->form_validation->set_rules('name', 'Name', 'required');
             $this->form_validation->set_rules('rolle', 'Rolle', 'required');
 			$this->form_validation->set_rules('inhaber', 'Inhaber', 'required');
-			$this->form_validation->set_rules('lehrstuhlname', 'LehrstuhlName');
+			if($this->input->post('rolle')=='lehrstuhl'){
+				$this->form_validation->set_rules('lehrstuhlname', 'LehrstuhlName', 'required');
+			}
 			
-            if($this->form_validation->run() === FALSE){
-                $this->load->view('templates/header');
-                $this->load->view('admin/add_user', $data);
-                $this->load->view('templates/footer');
 
-
-            }else{
-                //Encrypt password
-                $enc_password = md5($this->input->post('password'));
-
-                
-                //Aufruf register methode
-                $this->admin_model->add_user($enc_password);
-
-                //Set confirm message
-                $this->session->set_flashdata('user_added', 'Der Benutzer wurde angelegt.');
-
-				//Versenden der Email mit Benutzername und Passwort
-				$receiver_email=$this->input->post('e-mail');
-				$subject='Benutzerdaten für Seminarplatzvergabe-System';
-				$pw=$this->input->post('password');
-				$message="Ihre Logindaten für das Seminarplatzvegabe-System lauten wie folgt: Benutzername:".$receiver_email." Passwort: ".$pw;
-				$this->Send_Mail($receiver_email, $subject, $message);
-
-				// linkname wird an die view übergeben und dort wird mit ok dieser link aufgerufen (hier wird zurückgeführt)
-				$link['linkname']='admin/add_user';
-                $this->load->view('templates/header');
-            	$this->load->view('pages/ok', $link);
+			if($this->form_validation->run() === FALSE){
+				$this->load->view('templates/header');
+				$this->load->view('admin/add_user', $data);
 				$this->load->view('templates/footer');
-            }
+			}
+			//Überprüft Anzahl Benutzerkonten für Lehrstuhl 
+			else{
+				$anzahlmitarbeiter;
+				$fehler=FALSE;
+				if($this->input->post('rolle')=='lehrstuhl'){
+					$lehrstuhlname=$this->input->post('lehrstuhlname');
+					$get2=$this->Staff_model->get_anzahl_mitarbeiter($lehrstuhlname);
+					$anzahl1 = $get2['0'];
+					$anzahlmitarbeiter = $anzahl1['count(*)'];
+					$get3=$this->Staff_model->get_anzahl_inhaber($lehrstuhlname);
+					$anzahl2 = $get3['0'];
+					$anzahlinhaber = $anzahl2['count(*)'];
+					if($anzahlinhaber=='0' && $this->input->post('inhaber')=='2'){
+						$this->load->view('templates/header');
+						$this->load->view('admin/inhaber_fehlt');
+						$this->load->view('templates/footer');
+						$fehler=TRUE;
+						}
+					elseif($anzahlinhaber>'0' && $this->input->post('inhaber')=='1'){
+						$this->load->view('templates/header');
+						$this->load->view('admin/inhaber_zu_hoch');
+						$this->load->view('templates/footer');
+						$fehler=TRUE;
+					}
+				}
+
+				//Überprüft Anzahl Benutzerkonten für Dekan
+				if($this->input->post('rolle')=='dekan'){
+					$get2=$this->Staff_model->get_anzahl_mitarbeiter_dekan();
+					$anzahl1 = $get2['0'];
+					$anzahlmitarbeiter = $anzahl1['count(*)'];
+					$get3=$this->Staff_model->get_anzahl_inhaber_dekan();
+					$anzahl2 = $get3['0'];
+					$anzahlinhaber = $anzahl2['count(*)'];
+					if($anzahlinhaber=='0' && $this->input->post('inhaber')=='2'){
+						$this->load->view('templates/header');
+						$this->load->view('admin/inhaber_fehlt');
+						$this->load->view('templates/footer');
+						$fehler=TRUE;
+						}
+					elseif($anzahlinhaber>'0' && $this->input->post('inhaber')=='1'){
+						$this->load->view('templates/header');
+						$this->load->view('admin/inhaber_zu_hoch');
+						$this->load->view('templates/footer');
+						$fehler=TRUE;
+					}
+				}
+				
+				if ($anzahlmitarbeiter < 2 && !$fehler) {
+					
+				
+					//Encrypt password
+					$enc_password = md5($this->input->post('password'));
+
+					
+					//Aufruf register methode
+					$this->admin_model->add_user($enc_password);
+
+					//Set confirm message
+					$this->session->set_flashdata('user_added', 'Der Benutzer wurde angelegt.');
+
+					//Versenden der Email mit Benutzername und Passwort
+					$receiver_email=$this->input->post('e-mail');
+					$subject='Benutzerdaten für Seminarplatzvergabe-System';
+					$pw=$this->input->post('password');
+					$message="Ihre Logindaten für das Seminarplatzvegabe-System lauten wie folgt: Benutzername:".$receiver_email." Passwort: ".$pw;
+					$this->Send_Mail($receiver_email, $subject, $message);
+
+					// linkname wird an die view übergeben und dort wird mit ok dieser link aufgerufen (hier wird zurückgeführt)
+					$link['linkname']='admin/add_user';
+					$this->load->view('templates/header');
+					$this->load->view('pages/ok', $link);
+					$this->load->view('templates/footer');
+				}
+				elseif(!$fehler) {
+					$this->load->view('templates/header');
+					$this->load->view('admin/mitarbeiteranzahl_zu_hoch');
+					$this->load->view('templates/footer');
+				}
+			}	
+			
        
+		}
+		
+		//Überprüft ob die Email zur Uni gehört
+        public function email_check($email) {
+			$this->form_validation->set_message('email_check', 'Die E-Mail-Adresse muss mit @uni-passau.de enden.');
+			return strpos($email, '@uni-passau.de') !== false;
+			
         }
 
         //Überprüft ob Passwort den Anforderungen entspricht(Zahlen, kleine und große Buchstaben, Sonderzeichen)

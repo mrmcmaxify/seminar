@@ -91,7 +91,15 @@
             $query = $this->db->get();
 
             return $query->result_array();
+            $emails = [];
 
+                foreach($query1 as $row){
+                    $emails[] = $row['SeminarID'];
+                }
+            }
+            
+
+                $this->db->where('BA/MA',$bama);
 
         }
 

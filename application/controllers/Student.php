@@ -74,17 +74,17 @@
                     'msnotwendig'=>$this->input->post('MSNotwendig'),
                     'e-mail'=> $this->session->userdata('user_email')
                 );
-
+                
                 $id=$this->input->post('SeminarID');
                 $data= array(
                     'seminar'=>$this->seminar_model->get_seminar($id),
                 );
 
                 $anzahlbewerbungen = $this->seminar_model->get_anzahl_bewerbungen($this->session->userdata('user_email'));
-                var_dump($anzahlbewerbungen);
+            
                 if ($anzahlbewerbungen[0]['#Bewerbung'] < 5){
                     
-                    if($data1['msnotwendig'] === 1){
+                    if($data1['msnotwendig'] === '1'){
 
                         
                         
@@ -117,7 +117,7 @@
                                 $filename = time().$_FILES['ms']['e-mail'];
                                 $config['file_name'] = $filename;
                                 
-
+                            
                                 $this->load->library('upload', $config);
 
                                 if ( ! $this->upload->do_upload('ms'))
@@ -129,7 +129,7 @@
                             
                                 else{
                             
-                                
+                                    
                                     $data = array('upload_data' => $this->upload->data());
                                 
 
@@ -208,10 +208,26 @@
                 'e-mail'=> $this->session->userdata('user_email')
             );
 
-            $data1 =$this->seminar_model->bewerbung_loeschen($data['seminarid'], $data['e-mail']);
-            $this->user_model->add_log($data['e-mail'], 2);
+            $this->load->view('templates/header');
+            $this->load->view('users/bewerbung_loeschen', $data);
+            $this->load->view('templates/footer');
+
+        }
+
+        public function bewerbung_loeschen1(){
+
+            $data=array(
+                'seminarid'=>$this->input->post('SeminarID'),
+                'beschreibung'=>$this->input->post('Beschreibung'),
+                'msnotwendig'=>$this->input->post('MSNotwendig'),
+                'e-mail'=> $this->session->userdata('user_email')
+            );
+            
+            $data1 =$this->seminar_model->bewerbung_loeschen($data['seminarid'], $this->session->userdata('user_email'));
+            $this->user_model->add_log($data['beschreibung'], 2);
 
             redirect('startseite_student');
+            
         }
 
         //Detail-Ansicht für Seminare
@@ -245,6 +261,22 @@
             } 
 
             else{
+                $data=array(
+                    'seminarid'=>$this->input->post('SeminarID'),
+                    'beschreibung'=>$this->input->post('Beschreibung'),
+                    'msnotwendig'=>$this->input->post('MSNotwendig'),
+                    'e-mail'=> $this->session->userdata('user_email')
+                );
+
+                $this->load->view('templates/header');
+                $this->load->view('users/seminar_ablehnen', $data);
+                $this->load->view('templates/footer');
+
+        }
+
+        }
+
+        public function seminar_ablehnen1(){
 
             $id=$this->input->post('SeminarID');
 			$data= array(
@@ -255,8 +287,6 @@
             $this->user_model->add_log($this->session->userdata('user_email'), 4);
 
             redirect('startseite_student');
-        }
-
         }
 
         //Zugesagtes Seminar zusagen
@@ -287,7 +317,7 @@
             if($var < 3){
 
                 $var++;
-                var_dump($var);
+                
                 
                 
                 $this->seminar_model->seminar_zusagen($id, $this->session->userdata('user_email'));

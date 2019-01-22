@@ -9,6 +9,10 @@
             return $query->result_array();
         }
 
+        public function get_seminare_query(){
+            return $query = $this->db->get('seminar');
+        }
+
         //Gibt alle Seminare aus, auf die sich ein bestimmter Student beworben hat
         public function get_seminare_beworben($email){
             $this->db->select('*');
@@ -39,7 +43,7 @@
         // Liest seminarbewerbungen ein
         public function bewerbung_hinzufuegen($MSNotwendig, $seminarid){
     
-            if ($MSNotwendig === 1){
+            if ($MSNotwendig === '1'){
                 //User data array(seminarbewerbung)
                 $data = array(
                     'e-mail' => $this->session->userdata('user_email'),
@@ -91,7 +95,25 @@
             $query = $this->db->get();
 
             return $query->result_array();
+            */
+            $emails = [];
+            $query1 = $this->db->select('SeminarID')->where('E-Mail', $email)->get('seminarbewerbung')->result_array();
 
+            if(count($query1) > 0){
+                foreach($query1 as $row){
+                    $emails[] = $row['SeminarID'];
+                }
+            }
+            
+
+            $this->db->select('*');
+            if(!empty($emails)){
+                $this->db->where_not_in('SeminarID',$emails);
+                $this->db->where('BA/MA',$bama);
+            }
+            $query2 = $this->db->get('seminar');
+            return $query2->result_array();
+    
 
         }
 

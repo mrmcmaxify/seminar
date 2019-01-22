@@ -135,12 +135,11 @@
             
             $data['title']= 'Mitarbeiter anlegen';
 
-            $this->form_validation->set_rules('e-mail', 'Name', 'required|callback_check_email_exists');
-            $this->form_validation->set_rules('password', 'Passwort', 'required');
+            $this->form_validation->set_rules('e-mail', 'Name', 'required|valid_email|callback_check_email_exists|callback_email_check');
+            $this->form_validation->set_rules('password', 'Passwort', 'required|callback_valid_password');
             $this->form_validation->set_rules('password2', 'Passwort bestätigen', 'matches[password]');
             $this->form_validation->set_rules('vorname', 'Vorname', 'required');
             $this->form_validation->set_rules('name', 'Name', 'required');
-            $this->form_validation->set_rules('lehrstuhlname', 'Lehrstuhlname', 'required');
        
             if($this->form_validation->run() === FALSE){
                 $this->load->view('templates/header');
@@ -152,7 +151,7 @@
                 //Encrypt password
                 $enc_password = md5($this->input->post('password'));
 
-                $this->staff_model->addstaff($enc_password);
+                $this->Staff_model->addstaff($enc_password, $lehrstuhlname);
 
                 //Set confirm message
                 $this->session->set_flashdata('staff_added', 'Der Mitarbeiter wurde hinzugefügt!');
@@ -169,8 +168,17 @@
         else {
             $this->load->view('templates/header');
             $this->load->view('pages/mitarbeiteranzahl_zu_hoch');
+            $this->load->view('templates/footer');
         }
        
+        }
+
+        public function email_check($email) {
+
+            $this->form_validation->set_message('email_check', 'Die E-Mail-Adresse muss mit @uni-passau.de enden.');
+            return strpos($email, '@uni-passau.de') !== false;
+            
+            
         }
         //Check if e-mail exists
         public function check_email_exists($email){
@@ -251,7 +259,7 @@
 
 
             );
-            var_dump($data);
+            
 
 			$this->load->view('templates/header');
 			$this->load->view('users/seminarplatz_verteilen',$data);
@@ -481,6 +489,53 @@
 				echo $this->email->print_debugger();
 			}
 			
-		}
+        }
+        
+        //Überprüft ob Passwort den Anforderungen entspricht(Zahlen, kleine und große Buchstaben, Sonderzeichen)
+        public function valid_password($password = ''){
+		    $password = trim($password);
+		    $regex_lowercase = '/[a-z]/';
+		    $regex_uppercase = '/[A-Z]/';
+		    $regex_number = '/[0-9]/';
+		    $regex_special = '/[!@#$%^&*()\-_=+{};:,<.>§~]/';
+		    if (empty($password)){
+			    $this->form_validation->set_message('valid_password', 'Ein {field} wird benötigt.');
+			    return FALSE;
+		    }
+		    if (preg_match_all($regex_lowercase, $password) < 1){
+			    $this->form_validation->set_message('valid_password', 'Das {field} muss mindesten einen Kleinbuchstaben bestehen.');
+			    return FALSE;
+		    }
+		    if (preg_match_all($regex_uppercase, $password) < 1){
+			    $this->form_validation->set_message('valid_password', 'Das {field} muss mindesten einen Großbuchstaben bestehen.');
+			    return FALSE;
+		    }
+		    if (preg_match_all($regex_number, $password) < 1){
+			    $this->form_validation->set_message('valid_password', 'Das {field} muss mindesten eine Zahl enthalten.');
+			    return FALSE;
+		    }
+		    if (preg_match_all($regex_special, $password) < 1){
+			    $this->form_validation->set_message('valid_password', 'Das {field} muss mindesten ein Sonderzeichen enthalten.' . ' ' . htmlentities('!@#$%^&*()\-_=+{};:,<.>§~'));
+			    return FALSE;
+		    }
+		    if (strlen($password) < 8){
+			    $this->form_validation->set_message('valid_password', 'Das {field} muss aus mindesten 8 Zeichen bestehen.');
+			    return FALSE;
+		    }
+		    if (strlen($password) > 32){
+			    $this->form_validation->set_message('valid_password', 'Das {field} kann nicht größer als 32 Zeichen sein.');
+			    return FALSE;
+		    }
+		    return TRUE;
+    }
+    
+    //Download CSV Datei
+    public function csv(){
+        $report = $this->my_model->index();
+        $new_report = $this->dbutil->csv_from_result($report);
+        /*  Now use it to write file. write_file helper function will do it */
+        write_file('csv_file.csv',$new_report);
+        /*  Done    */
+    }
 		
 	}

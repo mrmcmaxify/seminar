@@ -1,4 +1,7 @@
 <h4>Angebotene Seminare:</h4>
+
+<a href="<?php echo base_url(); ?>dekan/csv_seminare" class="btn btn-primary" role="button">Download Seminarliste</a>
+
 <table class="table">
   <thead class="thead-dark">
     <tr>
@@ -35,6 +38,9 @@
 <!-- Zeigt Einträge aus Student mit BA/MA=ba und #Annahmen=0 -->
 
 <h4>Bachelor Studenten ohne Seminarplatz:</h4>
+
+<a href="<?php echo base_url(); ?>dekan/csv_studenten_ba" class="btn btn-primary" role="button">Download Studentenliste</a>
+
 <table class="table">
   <thead class="thead-dark">
     <tr>
@@ -80,6 +86,9 @@
 <!-- Zeigt Einträge aus Student mit BA/MA=ma und #Annahmen=0 -->
 
 <h4>Master Studenten ohne Seminarplatz:</h4>
+
+<a href="<?php echo base_url(); ?>dekan/csv_studenten_ma" class="btn btn-primary" role="button">Download Studentenliste</a>
+
 <table class="table">
   <thead class="thead-dark">
     <tr>

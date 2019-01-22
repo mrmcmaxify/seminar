@@ -33,6 +33,7 @@
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>admin/add_user">Benutzer hinzufügen</a>
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>admin/search_user">Benutzer bearbeiten</a>
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>admin/semesterzeiten_anzeigen">Semesterzeiten bearbeiten</a>
+      <a class="nav-item nav-link" href="<?php echo base_url(); ?>admin/search_log">Log anzeigen</a>
       
       <?php endif; ?>
        <!-- Rollennavbar Lehrstuhl -->
@@ -167,4 +168,7 @@
 <?php endif; ?>
 <?php if($this->session->flashdata('reset_done')): ?>
   <?php echo '<p class="alert alert-danger">'.$this->session->flashdata('reset_done').'</p>'; ?>
+<?php endif; ?>
+<?php if($this->session->flashdata('user_is_locked')): ?>
+  <?php echo '<p class="alert alert-danger">'.$this->session->flashdata('user_is_locked').'</p>'; ?>
 <?php endif; ?>

@@ -4,7 +4,7 @@
         //Registrierung
         public function register(){
             $data['title']= 'Registrieren';
-            $this->form_validation->set_rules('e-mail', 'Name', 'required|callback_check_email_exists');
+            $this->form_validation->set_rules('e-mail', 'Name', 'required|valid_email|callback_check_email_exists|callback_email_check');
             $this->form_validation->set_rules('password', 'Passwort', 'required|callback_valid_password');
             $this->form_validation->set_rules('password2', 'Passwort bestätigen', 'matches[password]');
             $this->form_validation->set_rules('vorname', 'Vorname', 'required');
@@ -67,6 +67,14 @@
        
         }
 
+        //Überprüft ob die Email zur Uni gehört
+        public function email_check($email) {
+
+            $this->form_validation->set_message('email_check', 'Die E-Mail-Adresse muss mit @gw.uni-passau.de enden.');
+            return strpos($email, '@gw.uni-passau.de') !== false;
+            
+        }
+
         //Überprüft ob Passwort den Anforderungen entspricht(Zahlen, kleine und große Buchstaben, Sonderzeichen)
         public function valid_password($password = ''){
 		    $password = trim($password);
@@ -119,76 +127,84 @@
                 $this->load->view('templates/footer');
 
 
-            }else{
+            }
+            else{
                 
                 //Get e-mail
                 $email = $this->input->post('e-mail');
-                //Get and encrypt password
-                $password = md5($this->input->post('password'));
+                $user = $this->user_model->getUser($email);
+                $sperre=$user->Loginsperre;
+                if($sperre=='2'){
+                    //Get and encrypt password
+                    $password = md5($this->input->post('password'));
 
-                //Login user
-                $user_rolle = $this->user_model->login($email, $password);
-
-                if($user_rolle){
-                    //Create session
-                   $user_data = array(
-                    'user_email' => $email,
-                    'rolle' => $user_rolle,
-                    'logged_in' => true
-
-
-                   );
-
-                   $this->session->set_userdata($user_data);
-                   
-
-                    //Set message
-                    $this->session->set_flashdata('user_loggedin', 'Sie sind jetzt eingeloggt!');
+                    //Login user
+                    $user_rolle = $this->user_model->login($email, $password);
+                    
+                    if($user_rolle){
+                        //Create session
+                    $user_data = array(
+                        'user_email' => $email,
+                        'rolle' => $user_rolle,
+                        'logged_in' => true
 
 
-                    //Lädt spezifische Daten für Dekan Startseite
-                    if($user_data['rolle']==='dekan'){
-                        $data['seminar']= $this->seminar_model->get_seminare();
-                        $data['fristen']=$this->Fristen_model->get_fristen();
-                        $data['ba_ohne']=$this->student_model->get_ba_ohne();
-                        $data['ma_ohne']=$this->student_model->get_ma_ohne();
-			
-		
-			            $this->load->view('templates/header');
-			            $this->load->view('pages/startseite_dekan', $data);
-                        $this->load->view('templates/footer');
-                        
-                    }elseif($user_data['rolle']==='admin'){
-                        $data['seminar']= $this->seminar_model->get_seminare();
-                        $data['fristen']=$this->Fristen_model->get_fristen();
+                    );
+
+                    $this->session->set_userdata($user_data);
+                    
+
+                        //Set message
+                        $this->session->set_flashdata('user_loggedin', 'Sie sind jetzt eingeloggt!');
+
+
+                        //Lädt spezifische Daten für Dekan Startseite
+                        if($user_data['rolle']==='dekan'){
+                            $data['seminar']= $this->seminar_model->get_seminare();
+                            $data['fristen']=$this->Fristen_model->get_fristen();
+                            $data['ba_ohne']=$this->student_model->get_ba_ohne();
+                            $data['ma_ohne']=$this->student_model->get_ma_ohne();
+                
             
                             $this->load->view('templates/header');
-                            $this->load->view('pages/startseite', $data);
+                            $this->load->view('pages/startseite_dekan', $data);
                             $this->load->view('templates/footer');
-                    
-                    }elseif($user_data['rolle']==='lehrstuhl'){
-                        $email=$_SESSION['user_email'];
-                        $data= array(
                             
-                            'seminar'=>$this->Seminarvergabe_model->get_seminare($email),
-            
-                        );
+                        }elseif($user_data['rolle']==='admin'){
+                            $data['seminar']= $this->seminar_model->get_seminare();
+                            $data['fristen']=$this->Fristen_model->get_fristen();
+                
+                                $this->load->view('templates/header');
+                                $this->load->view('pages/startseite', $data);
+                                $this->load->view('templates/footer');
                         
-                        $this->load->view('templates/header');
-                        $this->load->view('pages/startseite_lehrstuhl', $data);
-                        $this->load->view('templates/footer');
-                    }else{
-                     //Lädt Startseite des jeweiligen Benutzers   
-                        redirect('startseite_'.$user_data['rolle']);
-                      }
-
+                        }elseif($user_data['rolle']==='lehrstuhl'){
+                            $email=$_SESSION['user_email'];
+                            $data= array(
+                                
+                                'seminar'=>$this->Seminarvergabe_model->get_seminare($email),
+                
+                            );
+                            
+                            $this->load->view('templates/header');
+                            $this->load->view('pages/startseite_lehrstuhl', $data);
+                            $this->load->view('templates/footer');
+                        }else{
+                        //Lädt Startseite des jeweiligen Benutzers   
+                            redirect('startseite_'.$user_data['rolle']);
+                        }
                     
+                        
                 }else{
                     $this->session->set_flashdata('login_failed', 'Login fehlgeschlagen');
 
                     redirect('users/login');
 
                 }
+            }else{
+                $this->session->set_flashdata('user_is_locked', 'Ihr Benutzeraccount ist gesperrt. Bitte wenden Sie sich an den Administrator.');
+                redirect('users/login');
+            }
 
                 
             }

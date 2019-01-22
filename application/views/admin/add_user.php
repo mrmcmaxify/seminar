@@ -36,9 +36,9 @@
                 </div>
                 </br>
                 <div class="form group">
-                <input type="radio" id="noinhaber" name="inhaber" value="1" checked>
+                <input type="radio" id="noinhaber" name="inhaber" value="2" checked>
                 <label for="noinhaber"> Mitarbeiter</label> 
-                <input type="radio" id="inhaber" name="inhaber" value="2">
+                <input type="radio" id="inhaber" name="inhaber" value="1">
                 <label for="ma"> Inhaber</label>
                 </div>
                 </br>
