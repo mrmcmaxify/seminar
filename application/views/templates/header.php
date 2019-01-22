@@ -33,6 +33,7 @@
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>admin/add_user">Benutzer hinzufügen</a>
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>admin/search_user">Benutzer bearbeiten</a>
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>admin/semesterzeiten_anzeigen">Semesterzeiten bearbeiten</a>
+      <a class="nav-item nav-link" href="<?php echo base_url(); ?>admin/search_log">Log anzeigen</a>
       
       <?php endif; ?>
        <!-- Rollennavbar Lehrstuhl -->
