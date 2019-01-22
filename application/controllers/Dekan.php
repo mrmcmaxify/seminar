@@ -377,7 +377,7 @@
             
             $data['title']= 'Mitarbeiter anlegen';
 
-            $this->form_validation->set_rules('e-mail', 'Name', 'required|callback_check_email_exists');
+            $this->form_validation->set_rules('e-mail', 'Name', 'required|callback_check_email_exists|valid_email|callback_email_check');
             $this->form_validation->set_rules('password', 'Passwort', 'required');
             $this->form_validation->set_rules('password2', 'Passwort bestätigen', 'matches[password]');
             $this->form_validation->set_rules('vorname', 'Vorname', 'required');
@@ -413,6 +413,12 @@
         }
 	}
 		}
+		public function email_check($email) {
+			$this->form_validation->set_message('email_check', 'Die E-Mail-Adresse muss mit @uni-passau.de enden.');
+			return strpos($email, '@uni-passau.de') !== false;
+			
+        }
+
 		//Check if e-mail exists
         public function check_email_exists($email){
             $this->form_validation->set_message('check_email_exists', 'Diese E-Mail-Adresse ist bereits im System regstriert');

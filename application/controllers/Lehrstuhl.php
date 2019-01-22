@@ -135,12 +135,11 @@
             
             $data['title']= 'Mitarbeiter anlegen';
 
-            $this->form_validation->set_rules('e-mail', 'Name', 'required|callback_check_email_exists');
+            $this->form_validation->set_rules('e-mail', 'Name', 'required|valid_email|callback_check_email_exists|callback_email_check');
             $this->form_validation->set_rules('password', 'Passwort', 'required');
             $this->form_validation->set_rules('password2', 'Passwort bestätigen', 'matches[password]');
             $this->form_validation->set_rules('vorname', 'Vorname', 'required');
             $this->form_validation->set_rules('name', 'Name', 'required');
-            $this->form_validation->set_rules('lehrstuhlname', 'Lehrstuhlname', 'required');
        
             if($this->form_validation->run() === FALSE){
                 $this->load->view('templates/header');
@@ -152,7 +151,7 @@
                 //Encrypt password
                 $enc_password = md5($this->input->post('password'));
 
-                $this->staff_model->addstaff($enc_password);
+                $this->Staff_model->addstaff($enc_password, $lehrstuhlname);
 
                 //Set confirm message
                 $this->session->set_flashdata('staff_added', 'Der Mitarbeiter wurde hinzugefügt!');
@@ -169,8 +168,17 @@
         else {
             $this->load->view('templates/header');
             $this->load->view('pages/mitarbeiteranzahl_zu_hoch');
+            $this->load->view('templates/footer');
         }
        
+        }
+
+        public function email_check($email) {
+
+            $this->form_validation->set_message('email_check', 'Die E-Mail-Adresse muss mit @uni-passau.de enden.');
+            return strpos($email, '@uni-passau.de') !== false;
+            
+            
         }
         //Check if e-mail exists
         public function check_email_exists($email){

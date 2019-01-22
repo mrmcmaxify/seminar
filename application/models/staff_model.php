@@ -1,6 +1,6 @@
 <?php  
     class Staff_model extends CI_Model{
-        public function addstaff($enc_password){
+        public function addstaff($enc_password, $lehrstuhlname){
             //User data array(benutzeraccount)
             $data = array(
                 'e-mail' => $this->input->post('e-mail'),
@@ -17,7 +17,7 @@
                 'vorname' => $this->input->post('vorname'),
                 'name' => $this->input->post('name'),
                 'inhaber' => '2',
-                'lehrstuhlname' => $this->input->post('lehrstuhlname'),                
+                'lehrstuhlname' => $lehrstuhlname,                
             );
 
             //insert user(benutzeraccount)
@@ -75,9 +75,21 @@
                     $this->db->from('lehrstuhl');
                     $this->db->where('LehrstuhlName', $lehrstuhlname);
                     $query=$this->db->get();
+                    return $query->result_array();       
+                }
+
+                public function get_anzahl_mitarbeiter_dekan(){
+                    $this->db->select('count(*)');
+                    $this->db->from('dekanat');
+                    $query=$this->db->get();
+                    return $query->result_array();     
+                }
+
+                public function get_dekan(){
+                    $this->db->select('*');
+                    $this->db->from('dekanat');
+                    $query=$this->db->get();
                     return $query->result_array();
-   
-        
         
                 }
                   
@@ -107,5 +119,22 @@
           
 
 
+        }
+
+        public function get_anzahl_inhaber($lehrstuhlname){
+            $this->db->select('count(*)');
+            $this->db->from('lehrstuhl');
+            $this->db->where('LehrstuhlName', $lehrstuhlname);
+            $this->db->where('Inhaber', '1');
+            $query=$this->db->get();
+            return $query->result_array();       
+        }
+
+        public function get_anzahl_inhaber_dekan(){
+            $this->db->select('count(*)');
+            $this->db->from('dekanat');
+            $this->db->where('Inhaber', '1');
+            $query=$this->db->get();
+            return $query->result_array();       
         }
     }
