@@ -9,6 +9,10 @@
             return $query->result_array();
         }
 
+        public function get_seminare_query(){
+            return $query = $this->db->get('seminar');
+        }
+
         //Gibt alle Seminare aus, auf die sich ein bestimmter Student beworben hat
         public function get_seminare_beworben($email){
             $this->db->select('*');

@@ -378,7 +378,7 @@
             $data['title']= 'Mitarbeiter anlegen';
 
             $this->form_validation->set_rules('e-mail', 'Name', 'required|callback_check_email_exists|valid_email|callback_email_check');
-            $this->form_validation->set_rules('password', 'Passwort', 'required');
+            $this->form_validation->set_rules('password', 'Passwort', 'required|callback_valid_password');
             $this->form_validation->set_rules('password2', 'Passwort bestätigen', 'matches[password]');
             $this->form_validation->set_rules('vorname', 'Vorname', 'required');
             $this->form_validation->set_rules('name', 'Name', 'required');
@@ -606,7 +606,74 @@
 			}
 			
 		}
+		//Überprüft ob Passwort den Anforderungen entspricht(Zahlen, kleine und große Buchstaben, Sonderzeichen)
+        public function valid_password($password = ''){
+		    $password = trim($password);
+		    $regex_lowercase = '/[a-z]/';
+		    $regex_uppercase = '/[A-Z]/';
+		    $regex_number = '/[0-9]/';
+		    $regex_special = '/[!@#$%^&*()\-_=+{};:,<.>§~]/';
+		    if (empty($password)){
+			    $this->form_validation->set_message('valid_password', 'Ein {field} wird benötigt.');
+			    return FALSE;
+		    }
+		    if (preg_match_all($regex_lowercase, $password) < 1){
+			    $this->form_validation->set_message('valid_password', 'Das {field} muss mindesten einen Kleinbuchstaben bestehen.');
+			    return FALSE;
+		    }
+		    if (preg_match_all($regex_uppercase, $password) < 1){
+			    $this->form_validation->set_message('valid_password', 'Das {field} muss mindesten einen Großbuchstaben bestehen.');
+			    return FALSE;
+		    }
+		    if (preg_match_all($regex_number, $password) < 1){
+			    $this->form_validation->set_message('valid_password', 'Das {field} muss mindesten eine Zahl enthalten.');
+			    return FALSE;
+		    }
+		    if (preg_match_all($regex_special, $password) < 1){
+			    $this->form_validation->set_message('valid_password', 'Das {field} muss mindesten ein Sonderzeichen enthalten.' . ' ' . htmlentities('!@#$%^&*()\-_=+{};:,<.>§~'));
+			    return FALSE;
+		    }
+		    if (strlen($password) < 8){
+			    $this->form_validation->set_message('valid_password', 'Das {field} muss aus mindesten 8 Zeichen bestehen.');
+			    return FALSE;
+		    }
+		    if (strlen($password) > 32){
+			    $this->form_validation->set_message('valid_password', 'Das {field} kann nicht größer als 32 Zeichen sein.');
+			    return FALSE;
+		    }
+		    return TRUE;
+	}
 
+	//Download CSV Datei Seminare Startseite
+    public function csv_seminare(){
+		$this->load->dbutil();
+		$this->load->helper('file');
+		$this->load->helper('download');
+		
+		$report = $this->seminar_model->get_seminare_query();
+		var_dump($report);
+        $new_report = $this->dbutil->csv_from_result($report);
+        force_download('Angebotene_Seminare.csv',$new_report);
+	}
+	
+	//Download CSV Datei Studenten Startseite
+    public function csv_studenten_ba(){
+		$this->load->dbutil();
+		$this->load->helper('file');
+        $this->load->helper('download');
+		$report = $this->student_model->get_ba_ohne_query();
+        $new_report = $this->dbutil->csv_from_result($report);
+        force_download('BA_Studenten_ohne_Seminar.csv',$new_report);
+	}
+	
+	public function csv_studenten_ma(){
+		$this->load->dbutil();
+		$this->load->helper('file');
+        $this->load->helper('download');
+        $report = $this->student_model->get_ma_ohne_query();
+        $new_report = $this->dbutil->csv_from_result($report);
+        force_download('MA_Studenten_ohne_Seminar.csv',$new_report);
+    }
 		
 
 
