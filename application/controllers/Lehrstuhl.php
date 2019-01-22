@@ -259,7 +259,7 @@
 
 
             );
-            var_dump($data);
+            
 
 			$this->load->view('templates/header');
 			$this->load->view('users/seminarplatz_verteilen',$data);

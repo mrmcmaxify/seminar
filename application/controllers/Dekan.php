@@ -644,6 +644,36 @@
 		    return TRUE;
 	}
 
+	//Download CSV Datei Seminare Startseite
+    public function csv_seminare(){
+		$this->load->dbutil();
+		$this->load->helper('file');
+		$this->load->helper('download');
+		
+		$report = $this->seminar_model->get_seminare_query();
+		var_dump($report);
+        $new_report = $this->dbutil->csv_from_result($report);
+        force_download('Angebotene_Seminare.csv',$new_report);
+	}
+	
+	//Download CSV Datei Studenten Startseite
+    public function csv_studenten_ba(){
+		$this->load->dbutil();
+		$this->load->helper('file');
+        $this->load->helper('download');
+		$report = $this->student_model->get_ba_ohne_query();
+        $new_report = $this->dbutil->csv_from_result($report);
+        force_download('BA_Studenten_ohne_Seminar.csv',$new_report);
+	}
+	
+	public function csv_studenten_ma(){
+		$this->load->dbutil();
+		$this->load->helper('file');
+        $this->load->helper('download');
+        $report = $this->student_model->get_ma_ohne_query();
+        $new_report = $this->dbutil->csv_from_result($report);
+        force_download('MA_Studenten_ohne_Seminar.csv',$new_report);
+    }
 		
 
 
