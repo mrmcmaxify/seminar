@@ -28,10 +28,6 @@
                     <label>Name</label>
                     <input type="text" class="form-control" name="name" placeholder="Name">
                 </div>
-                <div class="form group">
-                    <label>Name des Lehrstuhls</label>
-                    <input type="text" class="form-control" name="lehrstuhlname" placeholder="LehrstuhlName">
-                </div>
                 
                 </br>
                 <button type="submit" class="btn btn-primary">Mitarbeiter hinzufügen</button>

@@ -4,7 +4,7 @@
         //Registrierung
         public function register(){
             $data['title']= 'Registrieren';
-            $this->form_validation->set_rules('e-mail', 'Name', 'required|callback_check_email_exists');
+            $this->form_validation->set_rules('e-mail', 'Name', 'required|valid_email|callback_check_email_exists|callback_email_check');
             $this->form_validation->set_rules('password', 'Passwort', 'required|callback_valid_password');
             $this->form_validation->set_rules('password2', 'Passwort bestätigen', 'matches[password]');
             $this->form_validation->set_rules('vorname', 'Vorname', 'required');
@@ -65,6 +65,14 @@
                 
             }
        
+        }
+
+        //Überprüft ob die Email zur Uni gehört
+        public function email_check($email) {
+
+            $this->form_validation->set_message('email_check', 'Die E-Mail-Adresse muss mit @gw.uni-passau.de enden.');
+            return strpos($email, '@gw.uni-passau.de') !== false;
+            
         }
 
         //Überprüft ob Passwort den Anforderungen entspricht(Zahlen, kleine und große Buchstaben, Sonderzeichen)
