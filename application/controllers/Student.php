@@ -74,14 +74,14 @@
                     'msnotwendig'=>$this->input->post('MSNotwendig'),
                     'e-mail'=> $this->session->userdata('user_email')
                 );
-                var_dump($data1);
+                
                 $id=$this->input->post('SeminarID');
                 $data= array(
                     'seminar'=>$this->seminar_model->get_seminar($id),
                 );
 
                 $anzahlbewerbungen = $this->seminar_model->get_anzahl_bewerbungen($this->session->userdata('user_email'));
-                var_dump($anzahlbewerbungen);
+            
                 if ($anzahlbewerbungen[0]['#Bewerbung'] < 5){
                     
                     if($data1['msnotwendig'] === '1'){
@@ -117,7 +117,7 @@
                                 $filename = time().$_FILES['ms']['e-mail'];
                                 $config['file_name'] = $filename;
                                 
-                            var_dump($config);
+                            
                                 $this->load->library('upload', $config);
 
                                 if ( ! $this->upload->do_upload('ms'))
@@ -129,7 +129,7 @@
                             
                                 else{
                             
-                                    var_dump($data1);
+                                    
                                     $data = array('upload_data' => $this->upload->data());
                                 
 
@@ -317,7 +317,7 @@
             if($var < 3){
 
                 $var++;
-                var_dump($var);
+                
                 
                 
                 $this->seminar_model->seminar_zusagen($id, $this->session->userdata('user_email'));

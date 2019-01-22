@@ -187,7 +187,7 @@
 
 		else{
 			$this->load->view('templates/header');
-			$this->load->view('pages/ausserhalb_frist_student');
+			$this->load->view('pages/ausserhalb_frist_dekan');
 			$this->load->view('templates/footer');
 		}
 	}
@@ -497,7 +497,7 @@
             
             if ( $heute < $startdatum) {
                 $this->load->view('templates/header');
-                $this->load->view('pages/ausserhalb_frist_student');
+                $this->load->view('pages/ausserhalb_frist_dekan');
                 $this->load->view('templates/footer');
 			} 
 			
@@ -535,12 +535,12 @@
             $bis = $this->Fristen_model->get_frist_ende($fristname);
             $frist_ende = $bis['0'];
             $enddatum = $frist_ende['Bis'];
-            $heute = '2019-02-13';
+            $heute = '2019-01-13';
 
             
             if ( $heute < $startdatum) {
                 $this->load->view('templates/header');
-                $this->load->view('pages/ausserhalb_frist_student');
+                $this->load->view('pages/ausserhalb_frist_dekan');
                 $this->load->view('templates/footer');
 			} 
 			
@@ -584,7 +584,7 @@
             
             if ( $heute < $startdatum) {
                 $this->load->view('templates/header');
-                $this->load->view('pages/ausserhalb_frist_student');
+                $this->load->view('pages/ausserhalb_frist_dekan');
                 $this->load->view('templates/footer');
 			} 
 			
