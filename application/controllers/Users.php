@@ -128,7 +128,7 @@
 
                 //Login user
                 $user_rolle = $this->user_model->login($email, $password);
-
+                
                 if($user_rolle){
                     //Create session
                    $user_data = array(
