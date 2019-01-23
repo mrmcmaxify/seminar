@@ -179,10 +179,11 @@
         }
 
         //fügt ein zugesagtes, angenommenes Seminar hinzu
-        public function seminar_zusagen($seminarid, $email){
+        public function seminar_zusagen($seminarid, $email, $phasenid){
             $data = array(
                 'SeminarID' => $seminarid,
-                'E-Mail' => $email
+                'E-Mail' => $email,
+                'PhasenID' => $phasenid
             );
 
             $data1 = array(
