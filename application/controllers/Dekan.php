@@ -492,7 +492,7 @@
             $bis = $this->Fristen_model->get_frist_ende($fristname);
             $frist_ende = $bis['0'];
             $enddatum = $frist_ende['Bis'];
-            $heute = '2019-02-09';
+            $heute = date("Y-m-d");
 
             
             if ( $heute < $startdatum) {
@@ -535,7 +535,7 @@
             $bis = $this->Fristen_model->get_frist_ende($fristname);
             $frist_ende = $bis['0'];
             $enddatum = $frist_ende['Bis'];
-            $heute = '2019-01-13';
+            $heute = date("Y-m-d");
 
             
             if ( $heute < $startdatum) {
@@ -579,7 +579,7 @@
             $bis = $this->Fristen_model->get_frist_ende($fristname);
             $frist_ende = $bis['0'];
             $enddatum = $frist_ende['Bis'];
-            $heute = '2019-02-15';
+            $heute = date("Y-m-d");
 
             
             if ( $heute < $startdatum) {

@@ -1,5 +1,9 @@
 
-<h4>Verfügbare Seminare:</h4>
+ <?php $zeiten = $this->Fristen_model->get_fristen(); ?>
+
+
+<h4>Verfügbare Seminare: </h4>
+<p>Anmeldung von <?php echo $zeiten[0]['Von'] ?> bis <?php echo $zeiten[0]['Bis']; ?> möglich</p>
 <table class="table">
   <thead class="thead-dark">
     <tr>
@@ -13,10 +17,9 @@
   <tbody>
     <?php 
       $test = $this->seminar_model->get_bama($this->session->userdata('user_email'));
-      
-
+    
       $data = $this->seminar_model->get_seminare_beworben1($this->session->userdata('user_email'),$test[0]['BA/MA']);
-      //var_dump
+      //var_dump($data);
       $data1 = $this->seminar_model->get_seminare_not_beworben($this->session->userdata('user_email'),$test[0]['BA/MA'], $data);
       //var_dump($data1);
       $data2 = $this->seminar_model->get_seminare_angemeldet($this->session->userdata('user_email'),$test[0]['BA/MA']);    
@@ -54,6 +57,7 @@
 
 
 <h4>Seminarbewerbungen:</h4>
+<p>Rücktritt von <?php echo $zeiten[0]['Von'] ?> bis <?php echo $zeiten[0]['Bis']; ?> möglich</p>
 <table class="table">
   <thead class="thead-dark">
     <tr>
@@ -93,7 +97,8 @@
 
 </br></br>
 
-<h4>Angemeldete Seminare:</h4>
+<h4>Angemeldete Seminare: </h4>
+<p>  Annahme/Ablehnung in der 1. Annahmephase von <?php echo $zeiten[2]['Von'] ?> bis <?php echo $zeiten[2]['Bis']; ?>, sowie in der 2.Annahmephase von <?php echo $zeiten[4]['Von'] ?> bis <?php echo $zeiten[4]['Bis']; ?> möglich </p>
 <table class="table">
   <thead class="thead-dark">
     <tr>
