@@ -63,6 +63,12 @@
         
         //Löscht die Zuteilung eines Seminarplatzes
         public function zuteilung_entfernen($email, $id){
+            $data = array(
+                'Eingeladen' => '0',
+            );
+            $this->db->where('E-Mail', $email);
+            $this->db->where('SeminarID', $id);
+            $this->db->update('seminarbewerbung', $data);
 
             $this->db->where('E-Mail', $email);
             return $this->db->where('SeminarID', $id)->delete('seminarzuteilung');
