@@ -278,7 +278,22 @@
 
             );
             
-			$this->load->view('users/seminarplatz_loeschen', $data2);
+            $this->load->view('users/seminarplatz_loeschen', $data2);
+            
+            $email=$_SESSION['user_email'];
+    
+            $data= array(
+                
+                'seminarzuteilung'=>$this->Seminarvergabe_model->get_verteilung_gesamt($email),
+
+
+
+
+            );
+            
+            
+			$this->load->view('users/seminarplaetze_anzeigen', $data);
+			
             $this->load->view('templates/footer');
         }
 
@@ -330,6 +345,9 @@
 		
 
 
+        }
+        public function vergebene_seminarplaetze_anzeigen(){
+           
         }
 
         public function seminar_loeschen_anzeigen(){
