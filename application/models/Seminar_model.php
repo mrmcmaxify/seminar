@@ -95,7 +95,7 @@
             $query = $this->db->get();
 
             return $query->result_array();
-            */
+            
             $emails = [];
             $query1 = $this->db->select('SeminarID')->where('E-Mail', $email)->get('seminarbewerbung')->result_array();
 
