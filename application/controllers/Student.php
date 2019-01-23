@@ -61,7 +61,7 @@
             $bis = $this->Fristen_model->get_frist_ende($fristname);
             $frist_ende = $bis['0'];
             $enddatum = $frist_ende['Bis'];
-            $heute = '2019-02-05';//date("Y-m-d");
+            $heute = date("Y-m-d");
             if ( ($heute < $startdatum) || ($heute > $enddatum) ) {
                 $this->load->view('templates/header');
                 $this->load->view('pages/ausserhalb_frist_student');
@@ -252,7 +252,7 @@
             $bis = $this->Fristen_model->get_frist_ende($fristname);
             $frist_ende = $bis['0'];
             $enddatum = $frist_ende['Bis'];
-            $heute = '2019-02-09';
+            $heute = date("Y-m-d");
 
             if ( (($heute < $startdatum) || ($heute > $enddatum))) {
                 $this->load->view('templates/header');
@@ -298,7 +298,7 @@
             $bis = $this->Fristen_model->get_frist_ende($fristname);
             $frist_ende = $bis['0'];
             $enddatum = $frist_ende['Bis'];
-            $heute = '2019-02-09';
+            $heute = date("Y-m-d");
 
             
             if ( (($heute < $startdatum) || ($heute > $enddatum))) {
