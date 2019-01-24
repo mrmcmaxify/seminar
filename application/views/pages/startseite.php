@@ -20,7 +20,7 @@
       <th scope="row"> <?php echo $seminare['LehrstuhlName']; ?> </th>
       <td><?php echo $seminare['SeminarName']; ?></td>
       <td>
-      <?php echo form_open('dekan/show_seminar'); ?>
+      <?php echo form_open('users/show_seminar'); ?>
       <input type="hidden" name="SeminarID" value="<?php echo $seminare['SeminarID']; ?>">
       <button type="submit" class="btn btn-primary">Beschreibung</button>
       <?php echo form_close(); ?>
