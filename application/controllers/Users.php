@@ -202,7 +202,7 @@
 
                 }
             }else{
-                $this->session->set_flashdata('user_is_locked', 'Ihr Benutzeraccount ist gesperrt. Bitte wenden Sie sich an den Administrator.');
+                $this->session->set_flashdata('user_is_locked', 'Diese E-Mail existiert nicht im System oder Ihr Benutzeraccount ist gesperrt. Bitte wenden Sie sich an den Administrator.');
                 redirect('users/login');
             }
 

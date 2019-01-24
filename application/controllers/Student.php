@@ -1,7 +1,17 @@
 <?php
 
     class Student extends CI_Controller{
-
+        function __construct(){
+			parent::__construct();
+			if($this->session->userdata('rolle') == 'student' && $this->session->userdata('logged_in') == true){
+			}
+			elseif($this->session->userdata('logged_in') == true){
+				redirect('users/logout');
+			}
+			else{
+				redirect('users/login');
+			}
+		}
 
         //Aufruf der Startseite vom Student
 		public function startseite_student(){

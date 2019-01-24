@@ -2,6 +2,17 @@
 
     class Dekan extends CI_Controller{
 		//Zeigt Startseite des Dekans an
+		function __construct(){
+			parent::__construct();
+			if($this->session->userdata('rolle') == 'dekan' && $this->session->userdata('logged_in') == true){
+			}
+			elseif($this->session->userdata('logged_in') == true){
+				redirect('users/logout');
+			}
+			else{
+				redirect('users/login');
+			}
+		}
 		public function startseite_dekan(){
 
 			$data['seminar']= $this->seminar_model->get_seminare();

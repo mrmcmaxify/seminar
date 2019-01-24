@@ -1,6 +1,17 @@
 <?php
 
     class Lehrstuhl extends CI_Controller{
+        function __construct(){
+			parent::__construct();
+			if($this->session->userdata('rolle') == 'lehrstuhl' && $this->session->userdata('logged_in') == true){
+			}
+			elseif($this->session->userdata('logged_in') == true){
+				redirect('users/logout');
+			}
+			else{
+				redirect('users/login');
+			}
+		}
 
 		//Seminar anlegen - Semesterüberprüfung nocht nicht geschehen
         public function seminaranlegen(){
