@@ -20,14 +20,13 @@
     
       $data = $this->seminar_model->get_seminare_beworben1($this->session->userdata('user_email'),$test[0]['BA/MA']);
       //var_dump($data);
-      $data1 = $this->seminar_model->get_seminare_not_beworben($this->session->userdata('user_email'),$test[0]['BA/MA'], $data);
+      $data1 = $this->seminar_model->get_seminare_not_beworben($this->session->userdata('user_email'),$test[0]['BA/MA']);
       //var_dump($data1);
       $data2 = $this->seminar_model->get_seminare_angemeldet($this->session->userdata('user_email'),$test[0]['BA/MA']);    
       //var_dump($data2);
       $data3 = $this->seminar_model->get_seminare_zugesagt($this->session->userdata('user_email'),$test[0]['BA/MA']);    
       //var_dump($data);
      foreach ($data1 as $seminare) :
-
       ?>
     <tr>
       <th scope="row"> <?php echo $seminare['LehrstuhlName']; ?> </th>
