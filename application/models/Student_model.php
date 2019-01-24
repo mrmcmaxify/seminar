@@ -85,7 +85,7 @@
                 'PhasenID' => $fristid,
             );
         
-            $this->db->insert('Seminarzuteilung', $data2);
+            $this->db->insert('seminarzuteilung', $data2);
 
             $data1 = array(
                 '#Annahmen' => '1',
