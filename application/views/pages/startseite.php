@@ -15,7 +15,7 @@
 
  
 
-    <?php var_dump($_SERVER); foreach ($seminar as $seminare) : ?>
+    <?php foreach ($seminar as $seminare) : ?>
     <tr>
       <th scope="row"> <?php echo $seminare['LehrstuhlName']; ?> </th>
       <td><?php echo $seminare['SeminarName']; ?></td>
