@@ -289,7 +289,22 @@
 
             );
             
-			$this->load->view('users/seminarplatz_loeschen', $data2);
+            $this->load->view('users/seminarplatz_loeschen', $data2);
+            
+            $email=$_SESSION['user_email'];
+    
+            $data= array(
+                
+                'seminarzuteilung'=>$this->Seminarvergabe_model->get_verteilung_gesamt($email),
+
+
+
+
+            );
+            
+            
+			$this->load->view('users/seminarplaetze_anzeigen', $data);
+			
             $this->load->view('templates/footer');
         }
 
@@ -341,6 +356,9 @@
 		
 
 
+        }
+        public function vergebene_seminarplaetze_anzeigen(){
+           
         }
 
         public function seminar_loeschen_anzeigen(){
@@ -542,11 +560,13 @@
     
     //Download CSV Datei
     public function csv(){
-        $report = $this->my_model->index();
-        $new_report = $this->dbutil->csv_from_result($report);
-        /*  Now use it to write file. write_file helper function will do it */
-        write_file('csv_file.csv',$new_report);
-        /*  Done    */
-    }
+            $email=$_SESSION['user_email'];
+            $this->load->dbutil();
+            $this->load->helper('file');
+            $this->load->helper('download');
+            $report = $this->Seminarvergabe_model->get_verteilung_gesamt_query($email);
+            $new_report = $this->dbutil->csv_from_result($report);
+            force_download('Zuteilungsliste.csv',$new_report);
+        }
 		
 	}

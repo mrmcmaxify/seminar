@@ -88,14 +88,14 @@
 
         //Gibt alle Seminare aus, auf die sich ein bestimmter Student noch nicht beworben hat
         public function get_seminare_not_beworben($email, $bama){
-            /*$this->db->select('*');
+            $this->db->select('*');
             $this->db->from('seminar');
             $this->db->where('seminar.BA/MA', $bama);
             $this->db->order_by('Seminarname', 'DESC');
             $query = $this->db->get();
 
             return $query->result_array();
-            */
+            
             $emails = [];
             $query1 = $this->db->select('SeminarID')->where('E-Mail', $email)->get('seminarbewerbung')->result_array();
 
@@ -179,10 +179,11 @@
         }
 
         //fügt ein zugesagtes, angenommenes Seminar hinzu
-        public function seminar_zusagen($seminarid, $email){
+        public function seminar_zusagen($seminarid, $email, $phasenid){
             $data = array(
                 'SeminarID' => $seminarid,
-                'E-Mail' => $email
+                'E-Mail' => $email,
+                'PhasenID' => $phasenid
             );
 
             $data1 = array(

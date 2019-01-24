@@ -71,7 +71,7 @@
             $bis = $this->Fristen_model->get_frist_ende($fristname);
             $frist_ende = $bis['0'];
             $enddatum = $frist_ende['Bis'];
-            $heute = '2019-02-05';//date("Y-m-d");
+            $heute = date("Y-m-d");
             if ( ($heute < $startdatum) || ($heute > $enddatum) ) {
                 $this->load->view('templates/header');
                 $this->load->view('pages/ausserhalb_frist_student');
@@ -262,15 +262,18 @@
             $bis = $this->Fristen_model->get_frist_ende($fristname);
             $frist_ende = $bis['0'];
             $enddatum = $frist_ende['Bis'];
-            $heute = '2019-02-09';
 
-            if ( (($heute < $startdatum) || ($heute > $enddatum))) {
-                $this->load->view('templates/header');
-                $this->load->view('pages/ausserhalb_frist_student');
-                $this->load->view('templates/footer');
-            } 
+            $fristname1 = '2. Annahme-/Rücktrittsphase';
+            $von1 = $this->Fristen_model->get_frist_start($fristname1);
+            $frist_start1 = $von1['0'];
+            $startdatum1 = $frist_start1['Von'];
+            $bis1 = $this->Fristen_model->get_frist_ende($fristname1);
+            $frist_ende1 = $bis1['0'];
+            $enddatum1 = $frist_ende1['Bis'];
 
-            else{
+            $heute = date("Y-m-d");
+
+            if ( (($heute >= $startdatum) && ($heute <= $enddatum))||(($heute >= $startdatum1) && ($heute <= $enddatum1))) {
                 $data=array(
                     'seminarid'=>$this->input->post('SeminarID'),
                     'beschreibung'=>$this->input->post('Beschreibung'),
@@ -281,7 +284,13 @@
                 $this->load->view('templates/header');
                 $this->load->view('users/seminar_ablehnen', $data);
                 $this->load->view('templates/footer');
+            } 
 
+            else{
+                
+                $this->load->view('templates/header');
+                $this->load->view('pages/ausserhalb_frist_student');
+                $this->load->view('templates/footer');
         }
 
         }
@@ -308,39 +317,55 @@
             $bis = $this->Fristen_model->get_frist_ende($fristname);
             $frist_ende = $bis['0'];
             $enddatum = $frist_ende['Bis'];
-            $heute = '2019-02-09';
+
+            $fristname1 = '2. Annahme-/Rücktrittsphase';
+            $von1 = $this->Fristen_model->get_frist_start($fristname1);
+            $frist_start1 = $von1['0'];
+            $startdatum1 = $frist_start1['Von'];
+            $bis1 = $this->Fristen_model->get_frist_ende($fristname1);
+            $frist_ende1 = $bis1['0'];
+            $enddatum1 = $frist_ende1['Bis'];
+
+            $heute = date("Y-m-d");
 
             
-            if ( (($heute < $startdatum) || ($heute > $enddatum))) {
-                $this->load->view('templates/header');
-                $this->load->view('pages/ausserhalb_frist_student');
-                $this->load->view('templates/footer');
+            if ( (($heute >= $startdatum) && ($heute <= $enddatum))||(($heute >= $startdatum1) && ($heute <= $enddatum1))) {
+                $id=$this->input->post('SeminarID');
+
+                $anzahlzusagen = $this->seminar_model->get_anzahl_zusagen($this->session->userdata('user_email'));
+    
+                $var = $anzahlzusagen[0]['#Annahmen'];
+                if($var < 3){
+    
+                    $var++;
+                    
+                    if (($heute >= $startdatum) && ($heute <= $enddatum)){
+                    
+                        $this->seminar_model->seminar_zusagen($id, $this->session->userdata('user_email'), 2);
+                    }
+                    else{
+                        $this->seminar_model->seminar_zusagen($id, $this->session->userdata('user_email'), 4);
+                    }
+                    $this->seminar_model->zusagen_erhoehen($this->session->userdata('user_email'), $var);
+                    $this->user_model->add_log($this->session->userdata('user_email'), 3);
+    
+                    redirect('startseite_student');
+                    }
+                    
+                else{
+                    $this->load->view('templates/header');
+                    $this->load->view('pages/zusagenanzahl_zu_hoch');
+                    $this->load->view('templates/footer');
+                }
             } 
 
             
             else{
-            $id=$this->input->post('SeminarID');
 
-            $anzahlzusagen = $this->seminar_model->get_anzahl_zusagen($this->session->userdata('user_email'));
-
-            $var = $anzahlzusagen[0]['#Annahmen'];
-            if($var < 3){
-
-                $var++;
-                
-                
-                
-                $this->seminar_model->seminar_zusagen($id, $this->session->userdata('user_email'));
-                $this->seminar_model->zusagen_erhoehen($this->session->userdata('user_email'), $var);
-                $this->user_model->add_log($this->session->userdata('user_email'), 3);
-
-                redirect('startseite_student');
-                }
-            else{
                 $this->load->view('templates/header');
-                $this->load->view('pages/zusagenanzahl_zu_hoch');
+                $this->load->view('pages/ausserhalb_frist_student');
                 $this->load->view('templates/footer');
-            }
+           
             }
         }
 
