@@ -700,32 +700,7 @@
 		$this->load->view('pages/statistiken_einsehen', $data);
 		$this->load->view('templates/footer');
 
-	/*	$data2= array(
-			
-			'statistiken'=>$this->seminar_model->get_statistik_ma_ohne(),
 
-
-
-
-		);
-		
-		$this->load->view('templates/header');
-		$this->load->view('pages/statistiken_einsehen', $data2);
-		$this->load->view('templates/footer');
-
-		$data3= array(
-			
-			'statistiken'=>$this->seminar_model->get_statistik_ba_ohne(),
-
-
-
-
-		);
-		
-		$this->load->view('templates/header');
-		$this->load->view('pages/statistiken_einsehen', $data3);
-		$this->load->view('templates/footer');
-		*/
 	}
 
 
