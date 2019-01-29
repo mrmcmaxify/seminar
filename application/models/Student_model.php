@@ -148,6 +148,26 @@
                 unlink($file);
             }   
         }
+         //Liest Statistik über Masterstudenten ohne Seminarplatz aus
+         public function get_statistik_ma_ohne(){
+            
+            $this->db->select('*');
+            $this->db->from('statistik_studenten');
+            $this->db->where('BA/MA', 'MA');
+            $query = $this->db->get();
+            return $query->result_array();
+        }
+
+        //Liest Statistik über Bachelorstudenten ohne Seminarplatz aus
+        public function get_statistik_ba_ohne(){
+            
+            $this->db->select('*');
+            $this->db->from('statistik_studenten');
+            $this->db->where('BA/MA', 'BA');
+            $query = $this->db->get();
+            return $query->result_array();
+        }
+    
     }
        
         

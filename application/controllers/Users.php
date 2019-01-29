@@ -3,6 +3,20 @@
     class Users extends CI_Controller{
         //Registrierung
         public function register(){
+            $fristname = 'Anmeldephase';
+            $von = $this->Fristen_model->get_frist_start($fristname);
+            $frist_start = $von['0'];
+            $startdatum = $frist_start['Von'];
+            $bis = $this->Fristen_model->get_frist_ende($fristname);
+            $frist_ende = $bis['0'];
+            $enddatum = $frist_ende['Bis'];
+            $heute = date("Y-m-d");
+            if ( ($heute < $startdatum) || ($heute > $enddatum) ) {
+                $this->load->view('templates/header');
+                $this->load->view('pages/ausserhalb_frist');
+                $this->load->view('templates/footer');
+            }
+            else {
             $data['title']= 'Registrieren';
             $this->form_validation->set_rules('e-mail', 'Name', 'required|valid_email|callback_check_email_exists|callback_email_check');
             $this->form_validation->set_rules('password', 'Passwort', 'required|callback_valid_password');
@@ -64,6 +78,7 @@
                 }
                 
             }
+        }
        
         }
 

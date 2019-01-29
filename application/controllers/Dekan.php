@@ -685,7 +685,24 @@
         $new_report = $this->dbutil->csv_from_result($report);
         force_download('MA_Studenten_ohne_Seminar.csv',$new_report);
     }
+	public function statistiken_anzeigen(){
 		
+		$data= array(
+			
+			'statistiken'=>$this->seminar_model->get_statistik_seminar(),
+			'statistiken_ma'=>$this->student_model->get_statistik_ma_ohne(),
+			'statistiken_ba'=>$this->student_model->get_statistik_ba_ohne(),
+
+
+		);
+		
+		$this->load->view('templates/header');
+		$this->load->view('pages/statistiken_einsehen', $data);
+		$this->load->view('templates/footer');
+
+
+	}
+
 
 
 		

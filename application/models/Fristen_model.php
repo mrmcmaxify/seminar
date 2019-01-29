@@ -113,8 +113,8 @@
         public function get_aktuelle_frist($heute){
             $this->db->select('ID');
             $this->db->from('fristen');
-            $this->db->where('Von <', $heute);
-            $this->db->where('Bis >', $heute);
+            $this->db->where('Von <=', $heute);
+            $this->db->where('Bis >=', $heute);
             $query=$this->db->get();
             return $query->result_array();
         }

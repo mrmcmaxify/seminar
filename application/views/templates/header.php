@@ -26,6 +26,7 @@
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>dekan/search_log">Logfile einsehen</a>
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>dekan/send_emails">E-Mails versenden</a>
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>dekan/dekanats_mitarbeiter_anlegen">Mitarbeiter anlegen</a>
+      <a class="nav-item nav-link" href="<?php echo base_url(); ?>dekan/statistiken_anzeigen">Statistiken einsehen</a>
       <?php endif; ?>
       <!-- Rollennavbar Admin -->
       <?php if($this->session->userdata('rolle')==='admin') : ?>
