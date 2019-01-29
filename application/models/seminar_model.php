@@ -332,14 +332,31 @@
 
         //Liefert alle Informationen zu Studenten zurück, die sich für ein Seminar beworben haben
         public function get_student_bewerbungen(){
-
+            
             $this->db->select('*');
             $this->db->from('seminarbewerbung');
             $this->db->join('student', 'seminarbewerbung.E-mail = student.E-Mail', 'inner');
             $this->db->group_by('seminarbewerbung.E-mail');
             $query = $this->db->get();
             return $query->result_array();
+        }
 
+        //erhöht die Anzahl an Teilnehmern im Seminar 
+        public function teilnehmer_erhoehen($seminarid, $anzahl){
+            $data = array(
+                'Ist-Teilnehmerzahl' => $anzahl
+            );
+
+            $this->db->where('SeminarID', $seminarid)->update('seminar', $data);
+        }
+
+        //gibt die Anzahl der Teilnehmer eines Seminars zurück
+        public function get_anzahl_teilnehmer($seminarid){
+            $this->db->select('Ist-Teilnehmerzahl');
+            $this->db->from('seminar');
+            $this->db->where('SeminarID', $seminarid);
+            $query = $this->db->get();
+            return $query->result_array();
         }
         
     }

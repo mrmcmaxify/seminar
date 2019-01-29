@@ -348,6 +348,11 @@
                     }
                     $this->seminar_model->zusagen_erhoehen($this->session->userdata('user_email'), $var);
                     $this->user_model->add_log($this->session->userdata('user_email'), 3);
+                    $anzahlteilnehmer = $this->seminar_model->get_anzahl_teilnehmer($id);
+                    $var1 = $anzahlteilnehmer[0]['Ist-Teilnehmerzahl'];
+                    $var1++;
+                    $this->seminar_model->teilnehmer_erhoehen($id, $var1);
+                    var_dump($anzahlteilnehmer);
     
                     redirect('startseite_student');
                     }
