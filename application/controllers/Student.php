@@ -234,6 +234,10 @@
             );
             
             $data1 =$this->seminar_model->bewerbung_loeschen($data['seminarid'], $this->session->userdata('user_email'));
+            $anzahlbewerbungen = $this->seminar_model->get_anzahl_bewerbungen($this->session->userdata('user_email'));
+            $var = $anzahlbewerbungen[0]['#Bewerbung'];
+            $var--;  
+            $this->seminar_model->bewerbungen_verkleinern($this->session->userdata('user_email'), $var);
             $this->user_model->add_log($data['beschreibung'], 2);
 
             redirect('startseite_student');
