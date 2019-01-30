@@ -25,7 +25,16 @@
            
 
         }
+        public function seminar_pflegen($data1, $id){
+           
 
+           
+
+            //update seminar(seminar)
+            return $this->db->where('SeminarID', $id)->update('seminar', $data1);
+ 
+           
+         }
 
         
 
