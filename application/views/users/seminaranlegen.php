@@ -12,11 +12,7 @@
                     <input type="text" class="form-control" name="seminarname" placeholder="Seminarname">
                 </div>
                 </br>
-                <div class="form group">
-                    <label>Name des Lehrstuhls</label>
-                    <input type="text" class="form-control" name="lehrstuhlname" placeholder="Lehrstuhlname">
-                </div>
-                </br>
+                
                 <div class="form group">
                     <label>Seminarbeschreibung</label>
                     <input type="text" class="form-control" name="beschreibung" placeholder="Seminarbeschreibung">
