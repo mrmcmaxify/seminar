@@ -153,4 +153,16 @@
                   return $query->row();
               }
             }
+
+            public function delete_user_student($email){
+                $this->db->where('E-Mail', $email)->delete('student');
+            }
+
+            public function delete_user_lehrstuhl($email){
+                $this->db->where('E-Mail', $email)->delete('lehrstuhl');
+            }
+
+            public function delete_user_dekan($email){
+                $this->db->where('E-Mail', $email)->delete('dekanat');
+            }
 }

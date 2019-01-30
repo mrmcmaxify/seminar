@@ -234,6 +234,10 @@
             );
             
             $data1 =$this->seminar_model->bewerbung_loeschen($data['seminarid'], $this->session->userdata('user_email'));
+            $anzahlbewerbungen = $this->seminar_model->get_anzahl_bewerbungen($this->session->userdata('user_email'));
+            $var = $anzahlbewerbungen[0]['#Bewerbung'];
+            $var--;  
+            $this->seminar_model->bewerbungen_verkleinern($this->session->userdata('user_email'), $var);
             $this->user_model->add_log($data['beschreibung'], 2);
 
             redirect('startseite_student');
@@ -348,6 +352,11 @@
                     }
                     $this->seminar_model->zusagen_erhoehen($this->session->userdata('user_email'), $var);
                     $this->user_model->add_log($this->session->userdata('user_email'), 3);
+                    $anzahlteilnehmer = $this->seminar_model->get_anzahl_teilnehmer($id);
+                    $var1 = $anzahlteilnehmer[0]['Ist-Teilnehmerzahl'];
+                    $var1++;
+                    $this->seminar_model->teilnehmer_erhoehen($id, $var1);
+                    var_dump($anzahlteilnehmer);
     
                     redirect('startseite_student');
                     }

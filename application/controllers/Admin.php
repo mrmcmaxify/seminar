@@ -214,8 +214,22 @@
 		//Löscht den Benutzer mit Array $user
 		public function delete_user(){
 			$email=$this->input->post('email');
+			$user=$this->user_model->getUser($email);
 			if($this->user_model->delete_user($email)){
 				$this->session->set_flashdata('user_deleted', 'Der Benutzer wurde gelöscht.');
+				if($user->Rolle=='student'){
+					$this->user_model->delete_user_student($email);
+				}
+				elseif($user->Rolle=='dekan'){
+					$this->user_model->delete_user_dekan($email);
+				}
+				elseif($user->Rolle=='lehrstuhl'){
+					$this->user_model->delete_user_lehrstuhl($email);
+				}
+				$receiver_email=$email;
+				$subject='Löschung Seminarplatzvergabe Benutzer';
+				$message='Ihr Benutzeraccount vom Seminarplatzvergabe-System wurde vom Administrator gelöscht';
+				$this->Send_Mail($receiver_email, $subject, $message);
 			}
 			else{
 				$this->session->set_flashdata('user_deleted_failed', 'Der Benutzer konnte nicht gelöscht werden!');
