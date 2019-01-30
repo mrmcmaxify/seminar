@@ -25,10 +25,10 @@
                 </br>
                 <div class="form group">
                     <label>Motivationsschreiben notwendig?</label>
-                <input type="radio" id="ja" name="msnotwendig" value="ja" checked>
-                <label for="ja"> Ja</label> 
-                <input type="radio" id="nein" name="msnotwendig" value="nein">
-                <label for="nein"> Nein</label>
+                <input type="radio" id="1" name="msnotwendig" value="1" checked>
+                <label for="1"> Ja</label> 
+                <input type="radio" id="2" name="msnotwendig" value="2">
+                <label for="2"> Nein</label>
                 </div>
                 </br>
                 <select class="form-control" name="semester">

@@ -10,8 +10,8 @@
       <th scope="col">BA/MA</th>
       <th scope="col">ECTS</th>
       <th scope="col">HisQis</th>
-      <th scope="col">Motivationsschreiben</th>
       <th scope="col">Zuweisen</th>
+      <th scope="col">MS (falls gefordert)</th>
       
 
     </tr>
@@ -28,8 +28,6 @@
       <td><?php echo $seminarbewerbungen['BA/MA']; ?></td>
       <td><?php echo $seminarbewerbungen['ECTS']; ?></td>
       <td><a class="btn btn-default pull-left" href="<?php echo base_url(); ?>users/download/<?php echo $seminarbewerbungen['HisQis']; ?>">Download</a></td>
-      <td><a class="btn btn-default pull-left" href="<?php echo base_url(); ?>users/download/<?php echo $seminarbewerbungen['MS']; ?>">Download</a></td>
-
       <td>
       <?php echo form_open('lehrstuhl/verteilen'); ?>
       <input type="hidden" name="E-Mail" value="<?php echo $seminarbewerbungen['E-Mail'] ?>">
@@ -37,6 +35,10 @@
       <button type="submit" class="btn btn-primary">Zuweisen</button>
       <?php echo form_close(); ?>
       </td>
+      <?php if ($seminarbewerbungen['MSnotwendig'] == 1) {?>
+      <td><a class="btn btn-default pull-left" href="<?php echo base_url(); ?>users/download/<?php echo $seminarbewerbungen['MS']; }?>">Download</a></td>
+  
+     
       
     </tr>
 <?php endforeach; ?>
