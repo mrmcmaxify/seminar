@@ -379,11 +379,12 @@
             $von = $this->Fristen_model->get_frist_start($fristname);
             $frist_start = $von['0'];
             $startdatum = $frist_start['Von'];
-            $bis = $this->Fristen_model->get_frist_ende($fristname);
+           /* $bis = $this->Fristen_model->get_frist_ende($fristname);
             $frist_ende = $bis['0'];
-            $enddatum = $frist_ende['Bis'];
+            $enddatum = $frist_ende['Bis']; 
+            */
             $heute = date("Y-m-d");
-            if ( ($heute < $startdatum) || ($heute > $enddatum) ) {
+            if ( $heute >= $startdatum ) {
                 $this->load->view('templates/header');
                 $this->load->view('pages/ausserhalb_frist');
                 $this->load->view('templates/footer');
