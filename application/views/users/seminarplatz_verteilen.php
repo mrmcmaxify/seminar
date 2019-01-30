@@ -36,7 +36,7 @@
       <?php echo form_close(); ?>
       </td>
       <?php if ($seminarbewerbungen['MSnotwendig'] == 1) {?>
-      <td><a class="btn btn-default pull-left" href="<?php echo base_url(); ?>users/download/<?php echo $seminarbewerbungen['MS']; }?>">Download</a></td>
+      <td><a class="btn btn-default pull-left" href="<?php echo base_url(); ?>users/download/<?php echo $seminarbewerbungen['MS']; ?>">Download</a></td> <?php } ?>
   
      
       
