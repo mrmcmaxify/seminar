@@ -408,7 +408,7 @@
 
             if($this->form_validation->run() === FALSE){
                 $this->load->view('templates/header');
-                $this->load->view('daten_aendern', $data);
+                $this->load->view('pages/daten_aendern', $data);
                 $this->load->view('templates/footer');
             }
 
