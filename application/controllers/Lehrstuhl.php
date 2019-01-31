@@ -250,8 +250,10 @@
 		}
 
 		public function verteilen_anzeigen(){
-           // $this->load->view('templates/header');
+            // Seminar-ID aufnehmen
+            $seminarid=$this->input->post('SeminarID');
 
+            // Frist prüfen
             $fristname = '1. Auswahlphase';
             $von = $this->Fristen_model->get_frist_start($fristname);
             $frist_start = $von['0'];
@@ -277,7 +279,8 @@
             $email=$_SESSION['user_email'];
             $data= array(
 
-                'seminarbewerbung'=>$this->Seminarvergabe_model->get_seminarbewerbung($email),
+                'seminarbewerbung'=>$this->Seminarvergabe_model->get_seminarbewerbung_seminarid($email, $seminarid),
+                'seminarid'=>$seminarid,
 
 
 
@@ -295,7 +298,7 @@
             $fristid = $id['ID'];
             $data2= array(
                 
-                'seminarzuteilung'=>$this->Seminarvergabe_model->get_zuteilung($email, $fristid),
+                'seminarzuteilung'=>$this->Seminarvergabe_model->get_zuteilung_seminarid($email, $fristid, $seminarid),
 
 
 
@@ -308,7 +311,7 @@
     
             $data= array(
                 
-                'seminarzuteilung'=>$this->Seminarvergabe_model->get_verteilung_gesamt($email),
+                'seminarzuteilung'=>$this->Seminarvergabe_model->get_verteilung_gesamt_seminar($email, $seminarid),
 
 
 

@@ -1,6 +1,6 @@
 
 <h4>Bewerbungen</h4>
-<a href="<?php echo base_url(); ?>lehrstuhl/csv" class="btn btn-primary" role="button">Download Teilnehmerliste</a>
+<a href="<?php echo base_url(); ?>lehrstuhl/csv" class="btn btn-primary" role="button">Download Teilnehmerliste aller Seminare</a>
 <table class="table">
   <thead class="thead-dark">
     <tr>
