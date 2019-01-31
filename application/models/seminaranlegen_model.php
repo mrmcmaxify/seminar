@@ -1,6 +1,6 @@
 <?php  
     class Seminaranlegen_model extends CI_Model{
-        public function seminaranlegen($lehrstuhlname){
+        public function seminaranlegen(){
            
             
                
@@ -8,7 +8,7 @@
              //User data array(seminar)
              $data1 = array(
                 'seminarname' => $this->input->post('seminarname'),
-                'lehrstuhlname' => $lehrstuhlname,
+                'lehrstuhlname' => $this->input->post('lehrstuhlname'),
                 'beschreibung' => $this->input->post('beschreibung'), 
                 'soll-teilnehmerzahl' => $this->input->post('soll-teilnehmerzahl'),
                 'semester' => $this->input->post('semester'),
@@ -25,16 +25,7 @@
            
 
         }
-        public function seminar_pflegen($data1, $id){
-           
 
-           
-
-            //update seminar(seminar)
-            return $this->db->where('SeminarID', $id)->update('seminar', $data1);
- 
-           
-         }
 
         
 
