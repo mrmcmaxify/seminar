@@ -5,7 +5,8 @@
   <thead class="thead-dark">
     <tr>
       <th scope="col">E-Mail-Adresse des Studenten</th>
-      <th scope="col">Seminar-ID</th>
+      <th scope="col">SeminarID</th>
+      <th scope="col">Seminarname</th>
       <th scope="col">Fachsemester</th>
       <th scope="col">BA/MA</th>
       <th scope="col">ECTS</th>
@@ -24,6 +25,7 @@
     <tr>
       <th scope="row"> <?php echo $seminarbewerbungen['E-Mail']; ?> </th>
       <td><?php echo $seminarbewerbungen['SeminarID']; ?></td>
+      <td><?php echo $seminarbewerbungen['SeminarName']; ?></td>
       <td><?php echo $seminarbewerbungen['Fachsemester']; ?></td>
       <td><?php echo $seminarbewerbungen['BA/MA']; ?></td>
       <td><?php echo $seminarbewerbungen['ECTS']; ?></td>
