@@ -4,7 +4,8 @@
 <table class="table">
   <thead class="thead-dark">
     <tr>
-      <th scope="col">E-Mail-Adresse des Studenten</th>
+      <th scope="col">E-Mail-Adresse</th>
+      <th scope="col">Name des Studenten</th>
       <th scope="col">SeminarID</th>
       <th scope="col">Seminarname</th>
       <th scope="col">Fachsemester</th>
@@ -24,6 +25,9 @@
     <?php foreach ($seminarbewerbung as $seminarbewerbungen) : ?>
     <tr>
       <th scope="row"> <?php echo $seminarbewerbungen['E-Mail']; ?> </th>
+      <td><?php echo $seminarbewerbungen['Name'];
+      echo " ";
+      echo $seminarbewerbungen['Vorname']; ?></td>
       <td><?php echo $seminarbewerbungen['SeminarID']; ?></td>
       <td><?php echo $seminarbewerbungen['SeminarName']; ?></td>
       <td><?php echo $seminarbewerbungen['Fachsemester']; ?></td>

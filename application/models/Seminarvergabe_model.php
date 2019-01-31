@@ -27,7 +27,7 @@
 
         // Liefert alle Seminarbewerbungen des ausgewählten Seminars des (angemeldeten) Lehrstuhls
         public function get_seminarbewerbung_seminarid($email, $seminarid){
-            $this->db->select('student.E-Mail, seminar.SeminarName, seminarbewerbung.SeminarID, student.Fachsemester, student.BA/MA, student.ECTS, student.HisQis, seminarbewerbung.MS, seminar.MSnotwendig');
+            $this->db->select('student.E-Mail, student.Name, student.Vorname, seminar.SeminarName, seminarbewerbung.SeminarID, student.Fachsemester, student.BA/MA, student.ECTS, student.HisQis, seminarbewerbung.MS, seminar.MSnotwendig');
             $this->db->from('seminarbewerbung');
             $this->db->join('seminar', 'seminar.SeminarID = seminarbewerbung.SeminarID', 'inner');
             $this->db->join('student', 'student.E-Mail = seminarbewerbung.E-Mail', 'inner');
