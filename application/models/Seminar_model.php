@@ -3,7 +3,7 @@
         public function __construct(){
             $this->load->database();
         }
-        
+
         public function get_seminare(){
             $query = $this->db->get('seminar');
             return $query->result_array();
@@ -42,13 +42,13 @@
 
         // Liest seminarbewerbungen ein
         public function bewerbung_hinzufuegen($MSNotwendig, $seminarid){
-    
+
             if ($MSNotwendig === '1'){
                 //User data array(seminarbewerbung)
                 $data = array(
                     'e-mail' => $this->session->userdata('user_email'),
                     'seminarid' => $seminarid,
-                    'ms' => $this->input->post('ms')              
+                    'ms' => $this->input->post('ms')
                 );
             }
 
@@ -57,13 +57,13 @@
                     'e-mail' => $this->session->userdata('user_email'),
                     'seminarid' => $seminarid
                 );
-            } 
+            }
 
 
             //insert seminarbewerbung(seminarbewerbung)
             return $this->db->insert('seminarbewerbung', $data);
 
-            
+
 
         }
 
@@ -97,7 +97,7 @@
                     $emails[] = $row['SeminarID'];
                 }
             }
-            
+
 
             $this->db->select('*');
             if(!empty($emails)){
@@ -106,7 +106,7 @@
             }
             $query2 = $this->db->get('seminar');
             return $query2->result_array();
-    
+
 
         }
 
@@ -139,8 +139,8 @@
             $data =array(
                 '#Bewerbung' => $anzahl
             );
-            
-            
+
+
             $this->db->where('E-Mail', $email)->update('student', $data);
         }
 
@@ -204,7 +204,7 @@
             $data = array(
                 '#Annahmen' =>  $anzahl
             );
-    
+
             $this->db->where('E-Mail', $email)->update('student', $data);
         }
 
@@ -257,7 +257,7 @@
             }
             $query2 = $this->db->get('student');
             return $query2->num_rows();
-    
+
         }
 
         //Gibt Anzahl Masterstudenten ohne Seminarzuteilung zurück
@@ -278,7 +278,7 @@
             }
             $query2 = $this->db->get('student');
             return $query2->num_rows();
-    
+
         }
 
         //Gibt das aktuelle Semester zurück
@@ -289,7 +289,7 @@
             }
 
         }
-       
+
         //Speichert die Studentenstatistik
         public function save_studenten_statistik($data){
            return $this->db->insert('statistik_studenten', $data);
@@ -331,7 +331,7 @@
             return $this->db->where('E-Mail', $email)->update('student', $data1);
         }
 
-      
+
 
         //fügt den neuen Nachnamen dem Benutzer hinzu
         public function nachname_aendern($email){
@@ -343,7 +343,7 @@
 
         //Liefert alle Informationen zu Studenten zurück, die sich für ein Seminar beworben haben
         public function get_student_bewerbungen(){
-            
+
             $this->db->select('*');
             $this->db->from('seminarbewerbung');
             $this->db->join('student', 'seminarbewerbung.E-mail = student.E-Mail', 'inner');
@@ -352,7 +352,7 @@
             return $query->result_array();
         }
 
-        //erhöht die Anzahl an Teilnehmern im Seminar 
+        //erhöht die Anzahl an Teilnehmern im Seminar
         public function teilnehmer_erhoehen($seminarid, $anzahl){
             $data = array(
                 'Ist-Teilnehmerzahl' => $anzahl
@@ -368,6 +368,14 @@
             $this->db->where('SeminarID', $seminarid);
             $query = $this->db->get();
             return $query->result_array();
+        }
+        public function get_statistik_seminar(){
+
+            $this->db->select('*');
+            $this->db->from('statistik');
+            $query = $this->db->get();
+            return $query->result_array();
+
         }
         public function get_statistik_seminar(){
 

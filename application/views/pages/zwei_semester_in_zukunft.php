@@ -1,11 +1,11 @@
-<h4>Anzulegendes Semester:</h4>
+<h4>Anzulegendes Seminar:</h4>
 
 </br>
 <table class="table">
   <thead class="thead-dark">
     <tr>
       <th scope="col">Seminarname</th>
-      <th scope="col">Seminar-ID</th>
+      <th scope="col">Lehrstuhlname</th>
       <th scope="col">Beschreibung</th>
       <th scope="col">Soll-Teilnehmerzahl</th>
       <th scope="col">Semester</th>

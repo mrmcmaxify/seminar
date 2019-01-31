@@ -672,7 +672,7 @@
 		$this->load->dbutil();
 		$this->load->helper('file');
         $this->load->helper('download');
-		$report = $this->student_model->get_ba_ohne_query();
+		$report = $this->student_model->get_statistik_ba_ohne_query();
         $new_report = $this->dbutil->csv_from_result($report);
         force_download('BA_Studenten_ohne_Seminar.csv',$new_report);
 	}
@@ -681,7 +681,7 @@
 		$this->load->dbutil();
 		$this->load->helper('file');
         $this->load->helper('download');
-        $report = $this->student_model->get_ma_ohne_query();
+        $report = $this->student_model->get_statistik_ma_ohne_query();
         $new_report = $this->dbutil->csv_from_result($report);
         force_download('MA_Studenten_ohne_Seminar.csv',$new_report);
     }

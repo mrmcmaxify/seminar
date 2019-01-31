@@ -22,7 +22,7 @@
             $data['semester'] = $this->Fristen_model->getAllSemester();
 
             $this->form_validation->set_rules('seminarname', 'Seminarname', 'required');
-            $this->form_validation->set_rules('lehrstuhlname', 'Lehrstuhlname', 'required');
+           // $this->form_validation->set_rules('lehrstuhlname', 'Lehrstuhlname', 'required');
             $this->form_validation->set_rules('beschreibung', 'Beschreibung', 'required');
             $this->form_validation->set_rules('soll-teilnehmerzahl', 'Soll-Teilnehmerzahl', 'required');
             $this->form_validation->set_rules('semester', 'Semester', 'required');
@@ -37,18 +37,26 @@
 
 
             }else{
-                $bezeichnung = $this->input->post('semester');
-                $data = $this->Seminaranlegen_model->get_semesteranfang($bezeichnung);
-                $anfang = $data['0'];
-                //berechnet Semesteranfang als Unix-Timestamp
-                $semesteranfang = strtotime($anfang['anfang']);
-                //berechnet aktuelle Zeit als Unix-Timestamp
-                $heute = strtotime(date("Y-m-d"));
-                $differenz = $semesteranfang - $heute;
-                $sekunden_pro_zwei_semester = (60 * 60 * 24 * 365);
+
+                // liefert Lehrstuhlname
+                $email=$_SESSION['user_email'];
+                $get1 = $this->Staff_model->get_lehrstuhl($email);
+                $name = $get1['0'];
+                $lehrstuhlname = $name['LehrstuhlName'];
+
+                // Berechnung, ob mehr als zwei Semester in Zukunft
+                  $bezeichnung = $this->input->post('semester');
+                  $data = $this->Seminaranlegen_model->get_semesteranfang($bezeichnung);
+                   $anfang = $data['0'];
+                 //berechnet Semesteranfang als Unix-Timestamp
+                 $semesteranfang = strtotime($anfang['anfang']);
+                    //berechnet aktuelle Zeit als Unix-Timestamp
+                   $heute = strtotime(date("Y-m-d"));
+                     $differenz = $semesteranfang - $heute;
+                    $sekunden_pro_zwei_semester = (60 * 60 * 24 * 365);
                 //wenn gewähltes Semester mehr als zwei Semester in Zukunft liegt
                 if ($differenz < $sekunden_pro_zwei_semester){
-                    $this->Seminaranlegen_model->seminaranlegen();
+                    $this->Seminaranlegen_model->seminaranlegen($lehrstuhlname);
                     //Set confirm message
                     $this->session->set_flashdata('seminar_angelegt', 'Das Seminar wurde angelegt!');
     
@@ -58,14 +66,14 @@
                 else {
                     $data1 = array(
                         'seminarname' => $this->input->post('seminarname'),
-                        'lehrstuhlname' => $this->input->post('lehrstuhlname'),
+                        'lehrstuhlname' => $lehrstuhlname,
                         'beschreibung' => $this->input->post('beschreibung'), 
                         'sollteilnehmerzahl' => $this->input->post('soll-teilnehmerzahl'),
                         'semester' => $this->input->post('semester'),
                         'BAMA' => $this->input->post('BA/MA'),
                         'msnotwendig' => $this->input->post('msnotwendig'),             
                     );
-                    var_dump($data1);
+
                     $this->load->view('templates/header');
                     $this->load->view('pages/zwei_semester_in_zukunft', $data1);
                 }
@@ -78,9 +86,14 @@
             
             $data['title']= 'Seminar anlegen';
 
+            // liefert Lehrstuhlname
+            $email=$_SESSION['user_email'];
+            $get1 = $this->Staff_model->get_lehrstuhl($email);
+            $name = $get1['0'];
+            $lehrstuhlname = $name['LehrstuhlName'];
             
 
-            $this->Seminaranlegen_model->seminaranlegen();
+            $this->Seminaranlegen_model->seminaranlegen($lehrstuhlname);
             //Set confirm message
             $this->session->set_flashdata('seminar_angelegt', 'Das Seminar wurde angelegt!');
 
@@ -237,8 +250,10 @@
 		}
 
 		public function verteilen_anzeigen(){
-           // $this->load->view('templates/header');
+            // Seminar-ID aufnehmen
+            $seminarid=$this->input->post('SeminarID');
 
+            // Frist prüfen
             $fristname = '1. Auswahlphase';
             $von = $this->Fristen_model->get_frist_start($fristname);
             $frist_start = $von['0'];
@@ -264,7 +279,8 @@
             $email=$_SESSION['user_email'];
             $data= array(
 
-                'seminarbewerbung'=>$this->Seminarvergabe_model->get_seminarbewerbung($email),
+                'seminarbewerbung'=>$this->Seminarvergabe_model->get_seminarbewerbung_seminarid($email, $seminarid),
+                'seminarid'=>$seminarid,
 
 
 
@@ -282,7 +298,7 @@
             $fristid = $id['ID'];
             $data2= array(
                 
-                'seminarzuteilung'=>$this->Seminarvergabe_model->get_zuteilung($email, $fristid),
+                'seminarzuteilung'=>$this->Seminarvergabe_model->get_zuteilung_seminarid($email, $fristid, $seminarid),
 
 
 
@@ -295,7 +311,7 @@
     
             $data= array(
                 
-                'seminarzuteilung'=>$this->Seminarvergabe_model->get_verteilung_gesamt($email),
+                'seminarzuteilung'=>$this->Seminarvergabe_model->get_verteilung_gesamt_seminar($email, $seminarid),
 
 
 
@@ -366,11 +382,12 @@
             $von = $this->Fristen_model->get_frist_start($fristname);
             $frist_start = $von['0'];
             $startdatum = $frist_start['Von'];
-            $bis = $this->Fristen_model->get_frist_ende($fristname);
+           /* $bis = $this->Fristen_model->get_frist_ende($fristname);
             $frist_ende = $bis['0'];
-            $enddatum = $frist_ende['Bis'];
+            $enddatum = $frist_ende['Bis']; 
+            */
             $heute = date("Y-m-d");
-            if ( ($heute < $startdatum) || ($heute > $enddatum) ) {
+            if ( $heute >= $startdatum ) {
                 $this->load->view('templates/header');
                 $this->load->view('pages/ausserhalb_frist');
                 $this->load->view('templates/footer');
