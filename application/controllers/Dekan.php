@@ -37,7 +37,7 @@
 					'email'=>$this->input->post('E-Mail'),
 					'name'=>$this->input->post('Name'),
 					'vorname'=>$this->input->post('Vorname'),
-					'seminar'=>$this->seminar_model->get_seminare_ma(),
+					'seminar'=>$this->seminar_model->get_seminare_ba(),
 					'beworben'=>$this->seminar_model->get_seminare_beworben($email),
 	
 				);
@@ -46,7 +46,7 @@
 					'email'=>$this->input->post('E-Mail'),
 					'name'=>$this->input->post('Name'),
 					'vorname'=>$this->input->post('Vorname'),
-					'seminar'=>$this->seminar_model->get_seminare_ba(),
+					'seminar'=>$this->seminar_model->get_seminare_ma(),
 					'beworben'=>$this->seminar_model->get_seminare_beworben($email),
 	
 				);
