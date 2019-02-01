@@ -145,7 +145,7 @@
         }
 
         //erhöht die Anzahl der #Bewerbungen des Studenten
-        public function bewerbungen_v($email, $anzahl){
+        public function bewerbungen_verkleinern($email, $anzahl){
 
             $data =array(
                 '#Bewerbung' => $anzahl
@@ -377,12 +377,6 @@
             return $query->result_array();
 
         }
-        public function get_statistik_seminar(){
 
-            $this->db->select('*');
-            $this->db->from('statistik');
-            $query = $this->db->get();
-            return $query->result_array();
 
-        }
     }
