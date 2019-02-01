@@ -377,5 +377,12 @@
             return $query->result_array();
 
         }
-      
+        public function get_statistik_seminar(){
+
+            $this->db->select('*');
+            $this->db->from('statistik');
+            $query = $this->db->get();
+            return $query->result_array();
+
+        }
     }
