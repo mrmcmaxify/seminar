@@ -130,7 +130,7 @@
             if (($heute < $startdatum)||($startdatum === '0000-00-00')){
 
 
-			$this->form_validation->set_rules('Von1', 'Anmeldephase', 'required');
+			$this->form_validation->set_rules('Von1', 'Anmeldephase', 'required|callback_check_past');
 			$this->form_validation->set_rules('Bis1', 'Anmeldephase', 'required|callback_check_bigger['.$this->input->post('Von1').']');
 			$this->form_validation->set_rules('Von2', '1. Auswahlphase', 'required|callback_check_bigger['.$this->input->post('Bis1').']');
 			$this->form_validation->set_rules('Bis2', '1. Auswahlphase', 'required|callback_check_bigger['.$this->input->post('Von2').']');            
@@ -204,6 +204,20 @@
 	}
 		//Callback Funktion, überprüft ob vorige Frist kleiner ist, siehe Formvalidation
 		public function check_bigger($datejetzt, $datevor){
+			if ($datejetzt < $datevor){
+				$this->form_validation->set_message('check_bigger', 'Zeiträume müssen chronologisch korrekt geordnet sein!');
+				return false;       
+      		}else{
+
+				return true;
+			  }
+      			
+		}
+
+		//Callback Funktion, überprüft ob vorige Frist kleiner ist, siehe Formvalidation
+		public function check_date($date){
+
+			
 			if ($datejetzt < $datevor){
 				$this->form_validation->set_message('check_bigger', 'Zeiträume müssen chronologisch korrekt geordnet sein!');
 				return false;       

@@ -18,7 +18,7 @@
 
                 <?php if ($seminar[0]['MSNotwendig'] === '1'): ?>
                 <div class="form group">
-                    <label>Motivationsschreiben</label>
+                    <label>Motivationsschreiben (max. 2MB)</label>
                     <input type="file"  name="ms" size="20">
                 </div>
                 <?php endif; ?>
