@@ -66,7 +66,7 @@
                 'SeminarID' => $id,
             );
         
-            $this->db->insert('Seminarzuteilung', $data);
+            $this->db->insert('seminarzuteilung', $data);
 
             $data1 = array(
                 '#Annahmen' => '1',
