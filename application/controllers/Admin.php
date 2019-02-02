@@ -237,6 +237,7 @@
 			redirect('admin/search_user');
 		}
 
+		//Entsperrt Benutzer
 		public function unlock_user(){
 			$email=$this->input->post('email');
 			$user=$this->user_model->getUser($email);
@@ -253,7 +254,7 @@
 			redirect('admin/search_user');
 			
 		}
-
+		//Sperrt Benutzer
 		public function lock_user(){
 			$email=$this->input->post('email');
 			$user=$this->user_model->getUser( $email);
@@ -270,7 +271,7 @@
 			}
 			redirect('admin/search_user');
 		}
-		
+		//Durchsucht die Logdatei nach Emails
 		public function search_log(){
 
 			$data['log']= $this->admin_model->get_log();
@@ -290,6 +291,7 @@
 
 		}
 
+		//Funktion zum Versänden von Mails
 		public function Send_Mail($receiver_email, $subject, $message) {
 
 
@@ -337,7 +339,7 @@
 			}
 			
 		}
-
+		//Lädt  das view zum Anzeigen der Semesterzeiten
 		public function semesterzeiten_anzeigen(){
 
 			$data['semester']= $this->admin_model->get_semesterzeiten();	
@@ -416,7 +418,7 @@
 			}
 	
 		}
-
+		
 		public function delete_semester(){
 			$bezeichnung=$this->input->post('bezeichnung');
 				if($this->admin_model->delete_semester($bezeichnung)){
@@ -434,6 +436,94 @@
 				$this->load->view('admin/delete_semester', $data);
 				$this->load->view('templates/footer');
 			}
+
+			public function studiengang_anzeigen(){
+
+				$data['studiengang']= $this->admin_model->get_studiengaenge();	
+				$this->load->view('templates/header');
+				$this->load->view('admin/add_studiengang', $data);
+				$this->load->view('templates/footer');
+			}
+			//Ändert Fristen und überprüft Änderungen
+			public function studiengang_edit(){
+	
+				$this->form_validation->set_rules('bezeichnung', 'Bezeichnung', 'required|callback_check_studiengang_exists');
+				
+				
+	
+				if($this->form_validation->run() === FALSE){
+	
+					$data1['studiengang']= $this->admin_model->get_studiengaenge();	
+					$this->load->view('templates/header');
+					$this->load->view('admin/add_studiengang', $data1);
+					$this->load->view('templates/footer');
+	
+	
+				}
+				else{
+
+					$data= array (
+						'bezeichnung'=>$this->input->post('bezeichnung'),
+						
+					);
+					
+					if($this->admin_model->studiengang_edit($data)){
+	
+						$this->session->set_flashdata('studiengang_success', 'Studiengang wurde eingetragen!');
+	
+						$data1['studiengang']= $this->admin_model->get_studiengaenge();	
+	
+						$this->load->view('templates/header');
+						$this->load->view('admin/add_studiengang', $data1);
+						$this->load->view('templates/footer');
+	
+					}
+					else{
+				
+					$this->session->set_flashdata('studiengang_fail', 'Studiengang konnte nicht angelegt werden!');
+	
+					$data1['studiengang']= $this->admin_model->get_studiengaenge();	
+	
+					$this->load->view('templates/header');
+					$this->load->view('admin/add_studiengang', $data1);
+					$this->load->view('templates/footer');
+	
+					}
+				}
+			}
+
+				//Überprüft ob Studiengang bereits existiert für Formvalidation
+				public function check_studiengang_exists($bezeichnung){
+					$this->form_validation->set_message('check_studiengang_exists', 'Dieser Studiengang existiert bereits.');
+			
+					if($this->admin_model->check_studiengang_exists($bezeichnung)){
+						return true;
+					}
+					else{
+						return false;
+					}
+			
+				}
+
+				public function delete_studiengang_index(){
+					$data['bezeichnung']=$this->input->post('bezeichnung');
+					$this->load->view('templates/header');
+					$this->load->view('admin/delete_studiengang', $data);
+					$this->load->view('templates/footer');
+				}
+
+				public function delete_studiengang(){
+					$bezeichnung=$this->input->post('bezeichnung');
+						if($this->admin_model->delete_studiengang($bezeichnung)){
+							$this->session->set_flashdata('studiengang_deleted', 'Der Studiengang wurde gelöscht.');
+						}
+						else{
+							$this->session->set_flashdata('studiengang_deleted_failed', 'Der Studiengang konnte nicht gelöscht werden!');
+						}
+						redirect('admin/studiengang_anzeigen');
+					}
+
+				
 }
 
 
