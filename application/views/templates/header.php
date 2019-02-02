@@ -186,3 +186,6 @@
 <?php if($this->session->flashdata('studiengang_deleted_failed')): ?>
   <?php echo '<p class="alert alert-danger">'.$this->session->flashdata('studiengang_deleted_failed').'</p>'; ?>
 <?php endif; ?>
+<?php if($this->session->flashdata('user_is_locked_pw')): ?>
+  <?php echo '<p class="alert alert-danger">'.$this->session->flashdata('user_is_locked_pw').'</p>'; ?>
+<?php endif; ?>

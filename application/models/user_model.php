@@ -106,6 +106,7 @@
             $data = array(
                 'E-Mail' => $email,
                 'Loginsperre' => '2',
+                'Loginversuch' => '0'
             );
             $this->db->where('E-Mail', $email)->update('benutzeraccount', $data);
         }
@@ -177,5 +178,13 @@
                 return $query->result_array();
 
 
+            }
+
+            public function add_loginversuch($email, $versuch){
+                $data = array(
+                    'E-Mail' => $email,
+                    'Loginversuch' => $versuch
+                );
+                $this->db->where('E-Mail', $email)->update('benutzeraccount', $data);
             }
 }
