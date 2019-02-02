@@ -111,12 +111,13 @@
         }
 
         //Fügt dem Log einen Eintrag mit dem Benutzer $email und der $event id hinzu
-        public function add_log($email, $eventid){
+        public function add_log($email, $eventid, $seminarname){
             if($eventid=='1'){
                 $data = array(
                     'E-Mail' => $email,
                     'Event-id'=> $eventid,
-                    'Aktion' => 'Anmeldung an Seminar'
+                    'Aktion' => 'Anmeldung an Seminar',
+                    'Seminar' => $seminarname
                 );
                 $this->db->insert('logfile', $data);    
             }
@@ -125,7 +126,8 @@
                 $data = array(
                     'E-Mail' => $email,
                     'Event-id'=> $eventid,
-                    'Aktion' => 'Abmeldung von Seminar'
+                    'Aktion' => 'Abmeldung von Seminar',
+                    'Seminar' => $seminarname
                 );
                 $this->db->insert('logfile', $data);    
             }
@@ -134,7 +136,8 @@
                 $data = array(
                     'E-Mail' => $email,
                     'Event-id'=> $eventid,
-                    'Aktion' => 'Annahme Seminaranmeldung'
+                    'Aktion' => 'Annahme Seminaranmeldung',
+                    'Seminar' => $seminarname
                 );
                 $this->db->insert('logfile', $data);    
             }
@@ -143,12 +146,13 @@
                 $data = array(
                     'E-Mail' => $email,
                     'Event-id'=> $eventid,
-                    'Aktion' => 'Rücktritt Seminaranmeldung'
+                    'Aktion' => 'Rücktritt Seminaranmeldung',
+                    'Seminar' => $seminarname
                 );
                 $this->db->insert('logfile', $data);    
             }
         } 
-
+        
         public function getUser($email){
             $query = $this->db->where(['e-mail'=>$email])->get('benutzeraccount');
               if($query->num_rows() > 0){

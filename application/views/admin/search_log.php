@@ -10,6 +10,7 @@
       <th scope="col">E-Mail Adresse</th>
       <th scope="col">Event-ID</th>
       <th scope="col">Aktion</th>
+      <th scope="col">Seminar</th>
       <th scope="col">Zeitstempel</th>
 
     </tr>
@@ -23,6 +24,7 @@
       <th scope="row"> <?php echo $logs['E-Mail']; ?> </th>
       <td><?php echo $logs['Event-id']; ?></td>
       <td><?php echo $logs['Aktion'];?></td>
+      <td><?php echo $logs['Seminar'];?></td>
       <td><?php echo $logs['Zeitpunkt'];?></td>
     </tr>
 <?php endforeach; ?>
