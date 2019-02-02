@@ -163,7 +163,7 @@
 
                         $rolle = $user->Rolle;
 
-                        if(!($rolle=='admin') && $versuch<3){
+                        if(!($rolle=='admin') && $versuch<4){
                         if($user_rolle){
                             //Create session
                         $user_data = array(
@@ -219,9 +219,18 @@
                         
                             
                     }else{
+                        if($versuch==2){
+                            $this->session->set_flashdata('user_lock_warning', 'Bei der nächsten, falschen Passworteingabe wird Ihr Account gesperrt!.');
+                        }
                         $versuch++;
                         $this->user_model->add_loginversuch($email, $versuch);
                         $this->session->set_flashdata('login_failed', 'Login fehlgeschlagen');
+                        if($versuch==4){
+                            $this->session->set_flashdata('user_lock_warning', 'Bei der nächsten, falschen Passworteingabe wird Ihr Account gesperrt!.');
+                            $this->user_model->lock_user($email);
+                            $this->session->set_flashdata('user_locked_pw', 'Sie haben Ihr Passwort zu oft falsch eingegeben. Ihr Benutzeraccount wurde gesperrt. Bitte wenden Sie sich an den Administrator.');
+                            
+                        }
 
                         redirect('users/login');
 
@@ -289,8 +298,9 @@
 
                 }
                 }
-                elseif($versuch>2){
+                elseif($versuch>3){
                     $this->user_model->lock_user($email);
+                    $this->session->set_flashdata('user_locked_pw', 'Sie haben Ihr Passwort zu oft falsch eingegeben. Ihr Benutzeraccount wurde gesperrt. Bitte wenden Sie sich an den Administrator.');
                     redirect('users/login');
                 }
                 else{

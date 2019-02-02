@@ -189,3 +189,9 @@
 <?php if($this->session->flashdata('user_is_locked_pw')): ?>
   <?php echo '<p class="alert alert-danger">'.$this->session->flashdata('user_is_locked_pw').'</p>'; ?>
 <?php endif; ?>
+<?php if($this->session->flashdata('user_lock_warning')): ?>
+  <?php echo '<p class="alert alert-warning">'.$this->session->flashdata('user_lock_warning').'</p>'; ?>
+<?php endif; ?>
+<?php if($this->session->flashdata('user_locked_pw')): ?>
+  <?php echo '<p class="alert alert-danger">'.$this->session->flashdata('user_locked_pw').'</p>'; ?>
+<?php endif; ?>
