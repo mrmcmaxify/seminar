@@ -27,6 +27,14 @@
                     <label>Name</label>
                     <input type="text" class="form-control" name="name" placeholder="Name" value="<?php echo set_value('name'); ?>">
                 </div>
+                </br>
+                <label>Studiengang</label>
+                <select class="form-control" name="studiengang">
+                        <?php foreach($studiengang as $studie){ ?>
+                            <option value="<?php echo $studie['Name']; ?>"><?php echo $studie['Name']; ?></option>';
+                        <?php } ?>
+                 </select>
+                </br>
                 <div class="form group">
                     <label>Fachsemester</label>
                     <input type="text" class="form-control" name="fachsemester" placeholder="Fachsemester" value="<?php echo set_value('fachsemester'); ?>">
@@ -43,7 +51,7 @@
                     <input type="text" class="form-control" name="ects" placeholder="ECTS" value="<?php echo set_value('ects'); ?>">
                 </div>
                 <div class="form group">
-                    <label>HisQis-Auszug</label>
+                    <label>HisQis-Auszug (max. 2MB)</label>
                     <input type="file"  name="hisqis" size="20">
                 </div>
                 </br>

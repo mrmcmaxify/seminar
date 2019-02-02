@@ -17,15 +17,18 @@
                 $this->load->view('templates/footer');
             }
             else {
-            $data['title']= 'Registrieren';
-            $this->form_validation->set_rules('e-mail', 'Name', 'required|valid_email|callback_check_email_exists|callback_email_check');
-            $this->form_validation->set_rules('password', 'Passwort', 'required|callback_valid_password');
-            $this->form_validation->set_rules('password2', 'Passwort bestätigen', 'matches[password]');
-            $this->form_validation->set_rules('vorname', 'Vorname', 'required');
-            $this->form_validation->set_rules('name', 'Name', 'required');
-            $this->form_validation->set_rules('fachsemester', 'Fachsemester', 'required');
-            $this->form_validation->set_rules('ba/ma', 'BA/MA', 'required');
-            $this->form_validation->set_rules('ects', 'ECTS', 'required');
+            
+                $data['title']= 'Registrieren';
+                $data['studiengang']=$this->user_model->get_studiengang();
+                $this->form_validation->set_rules('e-mail', 'Name', 'required|valid_email|callback_check_email_exists|callback_email_check');
+                $this->form_validation->set_rules('password', 'Passwort', 'required|callback_valid_password');
+                $this->form_validation->set_rules('password2', 'Passwort bestätigen', 'matches[password]');
+                $this->form_validation->set_rules('vorname', 'Vorname', 'required');
+                $this->form_validation->set_rules('name', 'Name', 'required');
+                $this->form_validation->set_rules('studiengang', 'Studiengang', 'required');
+                $this->form_validation->set_rules('fachsemester', 'Fachsemester', 'required');
+                $this->form_validation->set_rules('ba/ma', 'BA/MA', 'required');
+                $this->form_validation->set_rules('ects', 'ECTS', 'required');
             
             if (empty($_FILES['hisqis']['name']))
                 {

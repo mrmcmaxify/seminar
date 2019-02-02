@@ -37,7 +37,7 @@
 					'email'=>$this->input->post('E-Mail'),
 					'name'=>$this->input->post('Name'),
 					'vorname'=>$this->input->post('Vorname'),
-					'seminar'=>$this->seminar_model->get_seminare_ma(),
+					'seminar'=>$this->seminar_model->get_seminare_ba(),
 					'beworben'=>$this->seminar_model->get_seminare_beworben($email),
 	
 				);
@@ -46,7 +46,7 @@
 					'email'=>$this->input->post('E-Mail'),
 					'name'=>$this->input->post('Name'),
 					'vorname'=>$this->input->post('Vorname'),
-					'seminar'=>$this->seminar_model->get_seminare_ba(),
+					'seminar'=>$this->seminar_model->get_seminare_ma(),
 					'beworben'=>$this->seminar_model->get_seminare_beworben($email),
 	
 				);
@@ -130,7 +130,7 @@
             if (($heute < $startdatum)||($startdatum === '0000-00-00')){
 
 
-			$this->form_validation->set_rules('Von1', 'Anmeldephase', 'required');
+			$this->form_validation->set_rules('Von1', 'Anmeldephase', 'required|callback_check_date');
 			$this->form_validation->set_rules('Bis1', 'Anmeldephase', 'required|callback_check_bigger['.$this->input->post('Von1').']');
 			$this->form_validation->set_rules('Von2', '1. Auswahlphase', 'required|callback_check_bigger['.$this->input->post('Bis1').']');
 			$this->form_validation->set_rules('Bis2', '1. Auswahlphase', 'required|callback_check_bigger['.$this->input->post('Von2').']');            
@@ -206,6 +206,21 @@
 		public function check_bigger($datejetzt, $datevor){
 			if ($datejetzt < $datevor){
 				$this->form_validation->set_message('check_bigger', 'Zeiträume müssen chronologisch korrekt geordnet sein!');
+				return false;       
+      		}else{
+
+				return true;
+			  }
+      			
+		}
+
+		//Callback Funktion, überprüft ob erste Frist in der Vergangenheit liegt, siehe Formvalidation
+		public function check_date($date){
+
+			$datejetzt= date("Y-m-d");
+			
+			if ($date < $datejetzt){
+				$this->form_validation->set_message('check_date', 'Das Startdatum darf nicht in der Vergangenheit liegen.');
 				return false;       
       		}else{
 

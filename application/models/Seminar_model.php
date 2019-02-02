@@ -144,6 +144,17 @@
             $this->db->where('E-Mail', $email)->update('student', $data);
         }
 
+        //erhöht die Anzahl der #Bewerbungen des Studenten
+        public function bewerbungen_v($email, $anzahl){
+
+            $data =array(
+                '#Bewerbung' => $anzahl
+            );
+
+
+            $this->db->where('E-Mail', $email)->update('student', $data);
+        }
+
 
         //löscht die ausgewählte Bewerbung
         public function bewerbung_loeschen($seminarid, $email){
@@ -366,5 +377,5 @@
             return $query->result_array();
 
         }
-      
+
     }
