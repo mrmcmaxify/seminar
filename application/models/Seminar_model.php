@@ -150,8 +150,8 @@
             $data =array(
                 '#Bewerbung' => $anzahl
             );
-            
-            
+
+
             $this->db->where('E-Mail', $email)->update('student', $data);
         }
 
@@ -377,6 +377,5 @@
             return $query->result_array();
 
         }
-
 
     }
