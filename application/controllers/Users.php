@@ -46,6 +46,9 @@
                 //Encrypt password
                 $enc_password = md5($this->input->post('password'));
 
+                //Empfänger E-Mail
+                $email = $this->input->post('e-mail');
+
                 
                 //File Upload
                 $config['upload_path']          = './uploads/';                
@@ -72,8 +75,17 @@
                         //Aufruf register methode
                         $this->user_model->register($enc_password, $filename);
 
+                        //Verifizierung der E-Mail
+                        $receiver_email= $email;
+                        $subject='Verifizierung der E-Mail-Adresse';
+                        $message = 'Thank you for registering to Seminarplatzvergabesystem.
+                        Please click the following link to proceed to the Questionnaire https://132.231.36.202/seminar/users/login';
+                        
+
+						$this->Send_Mail($receiver_email, $subject, $message);
+
                         //Set confirm message
-                        $this->session->set_flashdata('user_registered', 'Sie sind jetzt registriert!');
+                        $this->session->set_flashdata('user_registered', 'Sie sind jetzt registriert und können nun Ihren Accont per Mail verifizieren!');
 
                         redirect('startseite');
 
@@ -483,8 +495,150 @@
 			$this->load->view('templates/footer');
 
 
+        }
+        
+        public function Send_Mail($receiver_email, $subject, $message) {
+
+
+
+			// Storing submitted values
+			$sender_email = 'seminarplatzvergabe.uni.passau@gmail.com';
+			$user_password = 'rfvBGT5%';
+			$username = 'seminarplatzvergabe.uni.passau@gmail.com';
+			
+			// Load email library and passing configured values to email library
+			$this->load->library('email');
+			// Configure email library
+			$config['protocol'] = 'smtp';
+			$config['smtp_host'] = 'ssl://smtp.googlemail.com';
+			$config['smtp_port'] = 465;
+			$config['smtp_user'] = $sender_email;
+			$config['smtp_pass'] = $user_password;
+			$config['smtp_timeout'] = '7';
+			$config['charset'] = 'utf-8';
+			$config['newline'] = "\r\n";
+			$config['mailtype'] = 'text/html';
+			$config['validation'] = TRUE;
+			
+
+			// Load email library and passing configured values to email library
+			$this->email->initialize($config);
+	
+			// Sender email address
+			$this->email->from($sender_email, $username);
+			// Receiver email address
+			$this->email->to($receiver_email);
+			// Subject of email
+			$this->email->subject($subject);
+			// Message in email
+			$this->email->message($message);
+
+			echo $this->email->print_debugger();
+	
+			if ($this->email->send()) {
+				$data['message_display'] = 'Email Successfully Send !';
+				$this->session->set_flashdata('email_success', 'Email Successfully Send !');
+			} else {
+				$this->session->set_flashdata('email_error', 'Invalid Gmail Account or Password !');
+				echo $this->email->print_debugger();
+			}
+			
 		}
 
+		public function send_emails(){
+			$this->load->view('templates/header');
+            $this->load->view('users/send_emails');
+			$this->load->view('templates/footer');
+		}
+
+        public function verifizieren($email){
+
+
+
+			$this->load->view('templates/header');
+			$this->load->view('pages/verifizieren', $email);
+			$this->load->view('templates/footer');
+
+
+        }
+
+        function generatePassword ( $passwordlength = 8,
+                            $numNonAlpha = 1,
+                            $numNumberChars = 1,
+                            $useCapitalLetter = true ) {
+    
+            $numberChars = '123456789';
+            $specialChars = '!$%&=?*-:;.,+~@_';
+            $secureChars = 'abcdefghjkmnpqrstuvwxyz';
+            $stack = '';
+                
+            // Stack für Password-Erzeugung füllen
+            $stack = $secureChars;
+            
+            if ( $useCapitalLetter == true )
+                $stack .= strtoupper ( $secureChars );
+                
+            $count = $passwordlength - $numNonAlpha - $numNumberChars;
+            $temp = str_shuffle ( $stack );
+            $stack = substr ( $temp , 0 , $count );
+            
+            if ( $numNonAlpha > 0 ) {
+                $temp = str_shuffle ( $specialChars );
+                $stack .= substr ( $temp , 0 , $numNonAlpha );
+            }
+                
+            if ( $numNumberChars > 0 ) {
+                $temp = str_shuffle ( $numberChars );
+                $stack .= substr ( $temp , 0 , $numNumberChars );
+            }
+                    
+                
+            // Stack durchwürfeln
+            $stack = str_shuffle ( $stack );
+                
+            // Rückgabe des erzeugten Passwort
+            return $stack;
+            
+        }
         
+        public function passwort_vergessen(){
+            $data['title']= 'Passwort vergessen';
+
+            $this->form_validation->set_rules('e-mail', 'E-Mail', 'required');
+            
+       
+            if($this->form_validation->run() === FALSE){
+                $this->load->view('templates/header');
+                $this->load->view('users/passwort_vergessen', $data);
+                $this->load->view('templates/footer');
+
+
+            }
+            else{
+
+                //Get e-mail
+                $email = $this->input->post('e-mail');
+                $password = $this->generatePassword();
+                
+
+                //E_amil verschicken
+                $receiver_email= $email;
+                $subject= 'Neues Passwort für Seminarplatzvergabesystem';
+                $message = 'Hier ist Ihr neues Passwort für das Seminarplatzvergabesystem: '
+                . $password.
+                ' ' ;
+                
+                //Encrypt password
+                $enc_password = md5($password);
+
+                $this->Send_Mail($receiver_email, $subject, $message);
+
+                $this->user_model->updatePassword($enc_password, $receiver_email);
+
+                redirect('/startseite');
+            }
+        }
+
+
     }
 
