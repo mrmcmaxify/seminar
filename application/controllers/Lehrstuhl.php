@@ -379,9 +379,7 @@
 
 
         }
-        public function vergebene_seminarplaetze_anzeigen(){
-           
-        }
+
 
         public function seminar_loeschen_anzeigen(){
             $fristname = 'Anmeldephase';
