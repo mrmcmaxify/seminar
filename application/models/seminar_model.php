@@ -344,10 +344,10 @@
         //Liefert alle Informationen zu Studenten zurück, die sich für ein Seminar beworben haben
         public function get_student_bewerbungen(){
 
-            $this->db->select('*');
+            $this->db->select('student.E-Mail', 'student.#Annahmen');
             $this->db->from('seminarbewerbung');
             $this->db->join('student', 'seminarbewerbung.E-mail = student.E-Mail', 'inner');
-            $this->db->group_by('seminarbewerbung.E-mail');
+            $this->db->group_by('student.E-Mail', 'student.#Annahmen');
             $query = $this->db->get();
             return $query->result_array();
         }
