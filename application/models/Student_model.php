@@ -77,7 +77,7 @@
 
         }
 
-        //Trägt Studenten, die vom Lehrstuhl zugewiesen wurden, in Seminarzuteilung ein und Setzt #Annahmen +1
+        //Trägt Studenten, die vom Lehrstuhl zugewiesen wurden, in Teilnehmer ein und Setzt #Annahmen +1
         public function zuweisen_durch_lehrstuhl($email, $id, $fristid){
             $data2 = array(
                 'E-Mail' => $email,
@@ -85,14 +85,14 @@
                 'PhasenID' => $fristid,
             );
         
-            $this->db->insert('seminarzuteilung', $data2);
+            $this->db->insert('teilnehmer', $data2);
 
-            $data1 = array(
+            /*  $data1 = array(
                 '#Annahmen' => '1',
             );
             $this->db->where('E-Mail', $email);
             $this->db->update('student', $data1);
-
+           */
             $data3 = array(
                 'Eingeladen' => '1',
             );
