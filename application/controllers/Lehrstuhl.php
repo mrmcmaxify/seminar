@@ -253,6 +253,11 @@
             // Seminar-ID aufnehmen
             $seminarid=$this->input->post('SeminarID');
 
+            // Seminarname abfragen
+            $name = $this->Seminarvergabe_model->get_seminarname($seminarid);
+            $get_name = $name['0'];
+            $seminarname = $get_name['SeminarName'];
+
             // Frist prüfen
             $fristname = '1. Auswahlphase';
             $von = $this->Fristen_model->get_frist_start($fristname);
@@ -281,6 +286,7 @@
 
                 'seminarbewerbung'=>$this->Seminarvergabe_model->get_seminarbewerbung_seminarid($email, $seminarid),
                 'seminarid'=>$seminarid,
+                'seminarname'=>$seminarname,
 
 
 

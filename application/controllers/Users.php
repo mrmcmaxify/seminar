@@ -3,7 +3,6 @@
     class Users extends CI_Controller{
         //Registrierung
         public function register(){
-<<<<<<< Updated upstream
             $fristname = 'Anmeldephase';
             $von = $this->Fristen_model->get_frist_start($fristname);
             $frist_start = $von['0'];
@@ -30,17 +29,6 @@
                 $this->form_validation->set_rules('fachsemester', 'Fachsemester', 'required');
                 $this->form_validation->set_rules('ba/ma', 'BA/MA', 'required');
                 $this->form_validation->set_rules('ects', 'ECTS', 'required');
-=======
-            $data['title']= 'Registrieren';
-            $this->form_validation->set_rules('e-mail', 'Name', 'required|valid_email|callback_check_email_exists|callback_email_check');
-            $this->form_validation->set_rules('password', 'Passwort', 'required|callback_valid_password');
-            $this->form_validation->set_rules('password2', 'Passwort bestätigen', 'matches[password]');
-            $this->form_validation->set_rules('vorname', 'Vorname', 'required');
-            $this->form_validation->set_rules('name', 'Name', 'required');
-            $this->form_validation->set_rules('fachsemester', 'Fachsemester', 'required');
-            $this->form_validation->set_rules('ba/ma', 'BA/MA', 'required');
-            $this->form_validation->set_rules('ects', 'ECTS', 'required');
->>>>>>> Stashed changes
             
             if (empty($_FILES['hisqis']['name']))
                 {
@@ -321,11 +309,7 @@
                 }
                 
             }else{
-<<<<<<< Updated upstream
                 $this->session->set_flashdata('user_is_locked', 'Diese E-Mail existiert nicht im System oder Ihr Benutzeraccount ist gesperrt. Bitte wenden Sie sich an den Administrator.');
-=======
-                $this->session->set_flashdata('user_is_locked', 'Ihr Benutzeraccount ist gesperrt. Bitte wenden Sie sich an den Administrator.');
->>>>>>> Stashed changes
                 redirect('users/login');
             }
 
