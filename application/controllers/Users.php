@@ -152,13 +152,91 @@
                 $email = $this->input->post('e-mail');
                 $user = $this->user_model->getUser($email);
                 $sperre=$user->Loginsperre;
+                $versuch=$user->Loginversuch;
                 if($sperre=='2'){
-                    //Get and encrypt password
-                    $password = md5($this->input->post('password'));
-
-                    //Login user
-                    $user_rolle = $this->user_model->login($email, $password);
                     
+                        //Get and encrypt password
+                        $password = md5($this->input->post('password'));
+
+                        //Login user
+                        $user_rolle = $this->user_model->login($email, $password);
+
+                        $rolle = $user->Rolle;
+
+                        if(!($rolle=='admin') && $versuch<4){
+                        if($user_rolle){
+                            //Create session
+                        $user_data = array(
+                            'user_email' => $email,
+                            'rolle' => $user_rolle,
+                            'logged_in' => true
+
+
+                        );
+                        $this->user_model->add_loginversuch($email, 0);
+                        $this->session->set_userdata($user_data);
+                        
+
+                            //Set message
+                            $this->session->set_flashdata('user_loggedin', 'Sie sind jetzt eingeloggt!');
+
+
+                            //Lädt spezifische Daten für Dekan Startseite
+                            if($user_data['rolle']==='dekan'){
+                                $data['seminar']= $this->seminar_model->get_seminare();
+                                $data['fristen']=$this->Fristen_model->get_fristen();
+                                $data['ba_ohne']=$this->student_model->get_ba_ohne();
+                                $data['ma_ohne']=$this->student_model->get_ma_ohne();
+                    
+                
+                                $this->load->view('templates/header');
+                                $this->load->view('pages/startseite_dekan', $data);
+                                $this->load->view('templates/footer');
+                                
+                            }elseif($user_data['rolle']==='admin'){
+                                $data['seminar']= $this->seminar_model->get_seminare();
+                                $data['fristen']=$this->Fristen_model->get_fristen();
+                    
+                                    $this->load->view('templates/header');
+                                    $this->load->view('pages/startseite', $data);
+                                    $this->load->view('templates/footer');
+                            
+                            }elseif($user_data['rolle']==='lehrstuhl'){
+                                $email=$_SESSION['user_email'];
+                                $data= array(
+                                    
+                                    'seminar'=>$this->Seminarvergabe_model->get_seminare($email),
+                    
+                                );
+                                
+                                $this->load->view('templates/header');
+                                $this->load->view('pages/startseite_lehrstuhl', $data);
+                                $this->load->view('templates/footer');
+                            }else{
+                            //Lädt Startseite des jeweiligen Benutzers   
+                                redirect('startseite_'.$user_data['rolle']);
+                            }
+                        
+                            
+                    }else{
+                        if($versuch==2){
+                            $this->session->set_flashdata('user_lock_warning', 'Bei der nächsten, falschen Passworteingabe wird Ihr Account gesperrt!.');
+                        }
+                        $versuch++;
+                        $this->user_model->add_loginversuch($email, $versuch);
+                        $this->session->set_flashdata('login_failed', 'Login fehlgeschlagen');
+                        if($versuch==4){
+                            $this->session->set_flashdata('user_lock_warning', 'Bei der nächsten, falschen Passworteingabe wird Ihr Account gesperrt!.');
+                            $this->user_model->lock_user($email);
+                            $this->session->set_flashdata('user_locked_pw', 'Sie haben Ihr Passwort zu oft falsch eingegeben. Ihr Benutzeraccount wurde gesperrt. Bitte wenden Sie sich an den Administrator.');
+                            
+                        }
+
+                        redirect('users/login');
+
+                    }
+                }
+                elseif($rolle=='admin'){
                     if($user_rolle){
                         //Create session
                     $user_data = array(
@@ -219,6 +297,17 @@
                     redirect('users/login');
 
                 }
+                }
+                elseif($versuch>3){
+                    $this->user_model->lock_user($email);
+                    $this->session->set_flashdata('user_locked_pw', 'Sie haben Ihr Passwort zu oft falsch eingegeben. Ihr Benutzeraccount wurde gesperrt. Bitte wenden Sie sich an den Administrator.');
+                    redirect('users/login');
+                }
+                else{
+                    $this->session->set_flashdata('user_is_locked_pw', 'Ihr Benutzeraccount ist gesperrt, da Sie das Passwort zu oft eingegeben haben. Bitte wenden Sie sich an den Administrator.');
+                redirect('users/login');
+                }
+                
             }else{
                 $this->session->set_flashdata('user_is_locked', 'Diese E-Mail existiert nicht im System oder Ihr Benutzeraccount ist gesperrt. Bitte wenden Sie sich an den Administrator.');
                 redirect('users/login');

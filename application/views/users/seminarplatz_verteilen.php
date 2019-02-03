@@ -1,13 +1,13 @@
 
-<h4>Bewerbungen</h4>
+<h4>Bewerbungen für das Seminar Nr. <?php echo $seminarid; ?> " <?php echo $seminarname; ?> "</h4>
 <a href="<?php echo base_url(); ?>lehrstuhl/csv" class="btn btn-primary" role="button">Download Teilnehmerliste aller Seminare</a>
 <table class="table">
   <thead class="thead-dark">
     <tr>
+
       <th scope="col">E-Mail-Adresse</th>
-      <th scope="col">Name des Studenten</th>
-      <th scope="col">SeminarID</th>
-      <th scope="col">Seminarname</th>
+      <th scope="col">Name</th>
+      <th scope="col">Studiengang</th>
       <th scope="col">Fachsemester</th>
       <th scope="col">BA/MA</th>
       <th scope="col">ECTS</th>
@@ -24,12 +24,12 @@
 
     <?php foreach ($seminarbewerbung as $seminarbewerbungen) : ?>
     <tr>
+
       <th scope="row"> <?php echo $seminarbewerbungen['E-Mail']; ?> </th>
       <td><?php echo $seminarbewerbungen['Name'];
       echo " ";
       echo $seminarbewerbungen['Vorname']; ?></td>
-      <td><?php echo $seminarbewerbungen['SeminarID']; ?></td>
-      <td><?php echo $seminarbewerbungen['SeminarName']; ?></td>
+            <td><?php echo $seminarbewerbungen['Studiengang']; ?></td>
       <td><?php echo $seminarbewerbungen['Fachsemester']; ?></td>
       <td><?php echo $seminarbewerbungen['BA/MA']; ?></td>
       <td><?php echo $seminarbewerbungen['ECTS']; ?></td>

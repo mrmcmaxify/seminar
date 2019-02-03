@@ -101,5 +101,33 @@
                 return false;
             }
         }
+        //Gibt alle Studiengänge zurück
+        public function get_studiengaenge(){
+            $this->db->order_by('Name', 'ASC');
+            $query = $this->db->get('studiengang');
+            return $query->result_array();
+        }
+        //schreibt neue Studiengang in die DB
+        public function studiengang_edit($data){
+            
+            $date1['Name']=$data['bezeichnung'];
+    
+            $this->db->insert('studiengang',$date1);
+            
+            return true;
+        }
+        //Löscht Studiengang
+        public function delete_studiengang($bezeichnung){
+            return $this->db->where('Name', $bezeichnung)->delete('studiengang');
+        }
+        //Überprüft ob bereits ein Studiengang mit $bezeichnung existiert
+        public function check_studiengang_exists($bezeichnung){
+            $query = $this->db->get_where('studiengang', array('Name' => $bezeichnung));
+            if(empty($query->row_array())){
+                return true;
+            }else{
+                return false;
+            }
+        }
 
     }

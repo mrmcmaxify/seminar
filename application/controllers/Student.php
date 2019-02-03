@@ -151,7 +151,7 @@
                                     $anzahlbewerbungen[0]['#Bewerbung'] = $var;
                                     
                                     $this->seminar_model->bewerbungen_erhoehen($this->session->userdata('user_email'), $var);
-                                    $this->user_model->add_log($data1['e-mail'], 1);
+                                    $this->user_model->add_log($data1['e-mail'], 1, $data['seminar'][0]['SeminarName']);
                         
 
                                     //Set confirm message
@@ -192,6 +192,10 @@
                 'e-mail'=> $this->session->userdata('user_email')
             );
 
+            $data= array(
+                'seminar'=>$this->seminar_model->get_seminar($data1['seminarid']),
+            );
+
             $anzahlbewerbungen = $this->seminar_model->get_anzahl_bewerbungen($this->session->userdata('user_email'));
             $this->seminar_model->bewerbung_hinzufuegen($data1['msnotwendig'], $data1['seminarid']);
             $var = $anzahlbewerbungen[0]['#Bewerbung'];
@@ -200,7 +204,7 @@
             $anzahlbewerbungen[0]['#Bewerbung'] = $var;
             
             $this->seminar_model->bewerbungen_erhoehen($this->session->userdata('user_email'), $var);
-            $this->user_model->add_log($data1['e-mail'], 1);
+            $this->user_model->add_log($data1['e-mail'], 1, $data['seminar'][0]['SeminarName']);
 
 
             //Set confirm message
@@ -232,13 +236,17 @@
                 'msnotwendig'=>$this->input->post('MSNotwendig'),
                 'e-mail'=> $this->session->userdata('user_email')
             );
+
+            $data3= array(
+                'seminar'=>$this->seminar_model->get_seminar($data['seminarid']),
+            );
             
             $data1 =$this->seminar_model->bewerbung_loeschen($data['seminarid'], $this->session->userdata('user_email'));
             $anzahlbewerbungen = $this->seminar_model->get_anzahl_bewerbungen($this->session->userdata('user_email'));
             $var = $anzahlbewerbungen[0]['#Bewerbung'];
             $var--;  
             $this->seminar_model->bewerbungen_verkleinern($this->session->userdata('user_email'), $var);
-            $this->user_model->add_log($data['beschreibung'], 2);
+            $this->user_model->add_log($data['beschreibung'], 2, $data3['seminar'][0]['SeminarName']);
 
             redirect('startseite_student');
             
@@ -307,7 +315,7 @@
             );
             
             $this->seminar_model->bewerbung_loeschen($data['seminar'][0]['SeminarID'], $this->session->userdata('user_email'));
-            $this->user_model->add_log($this->session->userdata('user_email'), 4);
+            $this->user_model->add_log($this->session->userdata('user_email'), 4, $data['seminar'][0]['SeminarName']);
 
             redirect('startseite_student');
         }
@@ -333,8 +341,13 @@
             $heute = date("Y-m-d");
 
             
+
             if ( (($heute >= $startdatum) && ($heute <= $enddatum))||(($heute >= $startdatum1) && ($heute <= $enddatum1))) {
                 $id=$this->input->post('SeminarID');
+
+                $data= array(
+                    'seminar'=>$this->seminar_model->get_seminar($id),
+                );
 
                 $anzahlzusagen = $this->seminar_model->get_anzahl_zusagen($this->session->userdata('user_email'));
     
@@ -351,7 +364,7 @@
                         $this->seminar_model->seminar_zusagen($id, $this->session->userdata('user_email'), 4);
                     }
                     $this->seminar_model->zusagen_erhoehen($this->session->userdata('user_email'), $var);
-                    $this->user_model->add_log($this->session->userdata('user_email'), 3);
+                    $this->user_model->add_log($this->session->userdata('user_email'), 3, $data['seminar'][0]['SeminarName']);
                     $anzahlteilnehmer = $this->seminar_model->get_anzahl_teilnehmer($id);
                     $var1 = $anzahlteilnehmer[0]['Ist-Teilnehmerzahl'];
                     $var1++;
