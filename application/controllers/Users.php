@@ -325,8 +325,13 @@
             $this->session->unset_userdata('rolle');
             $this->session->unset_userdata('logged_in');
 
+            // Logout durch Loginsperre
+            echo $message;
+
+
             //Set logout message
             $this->session->set_flashdata('user_loggedout', 'Sie sind jetzt ausgeloggt!');
+
 
             redirect('startseite');
 
