@@ -16,7 +16,7 @@
 
 <?php echo form_close(); ?>
 
-</br> 
+
 
 
 <?php echo form_open('users/passwort_vergessen'); ?>

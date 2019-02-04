@@ -361,6 +361,17 @@
             }
 
         }
+
+        //Check if e-mail exists
+        public function check_email_exists1($email){
+
+            if($this->user_model->check_email_exists($email)){
+                return false;
+            }else{
+                return true;
+            }
+
+        }
        
         //Ändert das Passwort
         public function changepw(){
@@ -609,7 +620,7 @@
         public function passwort_vergessen(){
             $data['title']= 'Passwort vergessen';
 
-            $this->form_validation->set_rules('e-mail', 'E-Mail', 'required');
+            $this->form_validation->set_rules('e-mail', 'E-Mail', 'required|callback_email_check');
             
        
             if($this->form_validation->run() === FALSE){
@@ -621,26 +632,43 @@
             }
             else{
 
+                
+
                 //Get e-mail
                 $email = $this->input->post('e-mail');
-                $password = $this->generatePassword();
+
+                if ($this->check_email_exists1($email)){
+                    $password = $this->generatePassword();
                 
 
-                //E_amil verschicken
-                $receiver_email= $email;
-                $subject= 'Neues Passwort für Seminarplatzvergabesystem';
-                $message = 'Hier ist Ihr neues Passwort für das Seminarplatzvergabesystem: '
-                . $password.
-                ' ' ;
+                    //E_amil verschicken
+                    $receiver_email= $email;
+                    $subject= 'Neues Passwort für Seminarplatzvergabesystem';
+                    $message = 'Hier ist Ihr neues Passwort für das Seminarplatzvergabesystem: '
+                    . $password.
+                    ' ' ;
+                    
+                    //Encrypt password
+                    $enc_password = md5($password);
+    
+                    $this->Send_Mail($receiver_email, $subject, $message);
+    
+                    $this->user_model->updatePassword($enc_password, $receiver_email);
+
+                    $this->session->set_flashdata('user_registered', 'Das neue Passwort wurde an Ihre E-Mail versendet!');
+    
+                    redirect('/startseite');
+                }
+                else{
+                    $this->session->set_flashdata('email_error', 'Die E-Mail ist nicht im System registriert!');
+
+                    $this->load->view('templates/header');
+                    $this->load->view('users/passwort_vergessen', $data);
+                    $this->load->view('templates/footer');
+                }
+
                 
-                //Encrypt password
-                $enc_password = md5($password);
-
-                $this->Send_Mail($receiver_email, $subject, $message);
-
-                $this->user_model->updatePassword($enc_password, $receiver_email);
-
-                redirect('/startseite');
+                
             }
         }
 
