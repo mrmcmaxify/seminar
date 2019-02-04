@@ -62,7 +62,38 @@
         }
 
 
+        public function bewerbung_hinzufuegen2(){
+            $fristname = 'Anmeldephase';
+            $von = $this->Fristen_model->get_frist_start($fristname);
+            $frist_start = $von['0'];
+            $startdatum = $frist_start['Von'];
+            $bis = $this->Fristen_model->get_frist_ende($fristname);
+            $frist_ende = $bis['0'];
+            $enddatum = $frist_ende['Bis'];
+            $heute = date("Y-m-d");
+            if ( ($heute < $startdatum) || ($heute > $enddatum) ) {
+                $this->load->view('templates/header');
+                $this->load->view('pages/ausserhalb_frist_student');
+                $this->load->view('templates/footer');
+            }
+            else{
 
+            $data1=array(
+                'seminarid'=>$this->input->post('SeminarID'),
+                'beschreibung'=>$this->input->post('Beschreibung'),
+                'msnotwendig'=>$this->input->post('MSNotwendig'),
+                'e-mail'=> $this->session->userdata('user_email')
+            );
+            $id=$this->input->post('SeminarID');
+            $data= array(
+                'seminar'=>$this->seminar_model->get_seminar($id),
+            );
+
+            $this->load->view('templates/header');
+			$this->load->view('users/bewerbung_hinzufuegen', $data);
+            $this->load->view('templates/footer');
+            }
+        }
 
 
 
@@ -171,9 +202,32 @@
                     }
 
                     else{
-                        $this->load->view('templates/header');
-                        $this->load->view('users/bewerbung_hinzufuegen', $data);
-                        $this->load->view('templates/footer');
+                        $data1=array(
+                            'seminarid'=>$this->input->post('SeminarID'),
+                            'beschreibung'=>$this->input->post('Beschreibung'),
+                            'msnotwendig'=>$this->input->post('MSNotwendig'),
+                            'e-mail'=> $this->session->userdata('user_email')
+                        );
+            
+                        $data= array(
+                            'seminar'=>$this->seminar_model->get_seminar($data1['seminarid']),
+                        );
+            
+                        $anzahlbewerbungen = $this->seminar_model->get_anzahl_bewerbungen($this->session->userdata('user_email'));
+                        $this->seminar_model->bewerbung_hinzufuegen($data1['msnotwendig'], $data1['seminarid']);
+                        $var = $anzahlbewerbungen[0]['#Bewerbung'];
+                        $var++;
+                        
+                        $anzahlbewerbungen[0]['#Bewerbung'] = $var;
+                        
+                        $this->seminar_model->bewerbungen_erhoehen($this->session->userdata('user_email'), $var);
+                        $this->user_model->add_log($data1['e-mail'], 1, $data['seminar'][0]['SeminarName']);
+            
+            
+                        //Set confirm message
+                        $this->session->set_flashdata('bewerbung_hinzugefuegt', 'Die Bewerbung wurde hinzugefuegt!');
+            
+                        redirect('startseite_student');
 
                     }
                 }
@@ -187,35 +241,7 @@
         }
 
 
-        public function bewerbung_hinzufuegen1(){
 
-            $data1=array(
-                'seminarid'=>$this->input->post('SeminarID'),
-                'beschreibung'=>$this->input->post('Beschreibung'),
-                'msnotwendig'=>$this->input->post('MSNotwendig'),
-                'e-mail'=> $this->session->userdata('user_email')
-            );
-
-            $data= array(
-                'seminar'=>$this->seminar_model->get_seminar($data1['seminarid']),
-            );
-
-            $anzahlbewerbungen = $this->seminar_model->get_anzahl_bewerbungen($this->session->userdata('user_email'));
-            $this->seminar_model->bewerbung_hinzufuegen($data1['msnotwendig'], $data1['seminarid']);
-            $var = $anzahlbewerbungen[0]['#Bewerbung'];
-            $var++;
-            
-            $anzahlbewerbungen[0]['#Bewerbung'] = $var;
-            
-            $this->seminar_model->bewerbungen_erhoehen($this->session->userdata('user_email'), $var);
-            $this->user_model->add_log($data1['e-mail'], 1, $data['seminar'][0]['SeminarName']);
-
-
-            //Set confirm message
-            $this->session->set_flashdata('bewerbung_hinzugefuegt', 'Die Bewerbung wurde hinzugefuegt!');
-
-            redirect('startseite_student');
-        }
 
 
         public function bewerbung_loeschen(){

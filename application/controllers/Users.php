@@ -672,6 +672,14 @@
             }
         }
 
+        public function passwort_vergessen1(){
+
+            $data['title']= 'Passwort vergessen';
+            $this->load->view('templates/header');
+            $this->load->view('users/passwort_vergessen', $data);
+            $this->load->view('templates/footer');
+        }
+
 
     }
 

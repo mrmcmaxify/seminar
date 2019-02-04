@@ -9,7 +9,7 @@
 
 <?php echo validation_errors(); ?>
 
-<?php echo form_open('student/bewerbung_hinzufuegen1'); ?>
+<?php echo form_open('student/bewerbung_hinzufuegen'); ?>
     
     <div class="row">
         
