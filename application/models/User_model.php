@@ -180,6 +180,15 @@
 
             }
 
+            public function get_loginsperre($email){
+                $this->db->select('Loginsperre');
+                $this->db->from('benutzeraccount');
+                $this->db->where('E-Mail', $email);
+                $query=$this->db->get();
+                return $query->result_array();
+
+            }
+
             public function add_loginversuch($email, $versuch){
                 $data = array(
                     'E-Mail' => $email,
