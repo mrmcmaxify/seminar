@@ -19,7 +19,7 @@
       $test = $this->seminar_model->get_bama($this->session->userdata('user_email'));
       $heute = date("Y-m-d");
       $semester = $this->seminar_model->getCurSemester1($heute);
-      var_dump($semester);
+      
       $data = $this->seminar_model->get_seminare_beworben1($this->session->userdata('user_email'),$test[0]['BA/MA'], $semester[0]['bezeichnung'] );
       //var_dump($data);
       $data1 = $this->seminar_model->get_seminare_not_beworben($this->session->userdata('user_email'),$test[0]['BA/MA'], $semester[0]['bezeichnung']);
