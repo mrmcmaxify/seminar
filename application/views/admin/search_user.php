@@ -44,7 +44,7 @@
       <?php echo form_close(); ?>
       <?php echo form_open('admin/unlock_user'); ?>
       <input type="hidden" name="email" value="<?php echo $users['E-Mail']; ?>">
-      <button type="submit" class="btn btn-primary">Entsprerren</button>
+      <button type="submit" class="btn btn-primary">Entsperren</button>
       <?php echo form_close(); ?>
       </td>
     </tr>

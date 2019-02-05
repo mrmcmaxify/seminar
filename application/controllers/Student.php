@@ -121,7 +121,7 @@
                 );
                 
                 $id=$this->input->post('SeminarID');
-                $data= array(
+                $data2= array(
                     'seminar'=>$this->seminar_model->get_seminar($id),
                 );
 
@@ -135,7 +135,7 @@
                         
                     
                         
-                            if (empty($_FILES['ms']['e-mail'])){
+                        if (empty($_FILES['ms']['name'])){
                         
                                 $this->form_validation->set_rules('ms', 'MS', 'required');
                             }
@@ -143,23 +143,18 @@
                        
                             
                                 
-                        if($this->form_validation->run() === FALSE){
-                            $this->load->view('templates/header');
-                            $this->load->view('users/bewerbung_hinzufuegen', $data);
-                            $this->load->view('templates/footer');
-                            
-                        }
+                        
 
                         else{
                             
-                            
+                                
                                 //File Upload
                                 $config['upload_path']          = './uploads/';                
                                 $config['allowed_types']        = 'pdf';
                                 $config['max_size']             = 2048;
                                 
 
-                                $filename = time().$_FILES['ms']['e-mail'];
+                                $filename = time().$_FILES['ms']['name'];
                                 $config['file_name'] = $filename;
                                 
                             
@@ -179,14 +174,14 @@
                                 
 
                                    
-                                    $this->seminar_model->bewerbung_hinzufuegen($data1['msnotwendig'], $data1['seminarid']);
+                                    $this->seminar_model->bewerbung_hinzufuegen($data1['msnotwendig'], $data1['seminarid'], $filename);
                                     $var = $anzahlbewerbungen[0]['#Bewerbung'];
                                     $var++;
                                     
                                     $anzahlbewerbungen[0]['#Bewerbung'] = $var;
                                     
                                     $this->seminar_model->bewerbungen_erhoehen($this->session->userdata('user_email'), $var);
-                                    $this->user_model->add_log($data1['e-mail'], 1, $data['seminar'][0]['SeminarName']);
+                                    $this->user_model->add_log($data1['e-mail'], 1, $data2['seminar'][0]['SeminarName']);
                         
 
                                     //Set confirm message
@@ -214,7 +209,7 @@
                         );
             
                         $anzahlbewerbungen = $this->seminar_model->get_anzahl_bewerbungen($this->session->userdata('user_email'));
-                        $this->seminar_model->bewerbung_hinzufuegen($data1['msnotwendig'], $data1['seminarid']);
+                        $this->seminar_model->bewerbung_hinzufuegen($data1['msnotwendig'], $data1['seminarid'], NULL);
                         $var = $anzahlbewerbungen[0]['#Bewerbung'];
                         $var++;
                         
@@ -345,6 +340,10 @@
             );
             
             $this->seminar_model->bewerbung_loeschen($data['seminar'][0]['SeminarID'], $this->session->userdata('user_email'));
+            $anzahlbewerbungen = $this->seminar_model->get_anzahl_bewerbungen($this->session->userdata('user_email'));
+            $var = $anzahlbewerbungen[0]['#Bewerbung'];
+            $var--;  
+            $this->seminar_model->bewerbungen_verkleinern($this->session->userdata('user_email'), $var);
             $this->user_model->add_log($this->session->userdata('user_email'), 4, $data['seminar'][0]['SeminarName']);
 
             redirect('startseite_student');
