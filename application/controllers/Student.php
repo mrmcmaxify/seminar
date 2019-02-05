@@ -209,7 +209,7 @@
                         );
             
                         $anzahlbewerbungen = $this->seminar_model->get_anzahl_bewerbungen($this->session->userdata('user_email'));
-                        $this->seminar_model->bewerbung_hinzufuegen($data1['msnotwendig'], $data1['seminarid']);
+                        $this->seminar_model->bewerbung_hinzufuegen($data1['msnotwendig'], $data1['seminarid'], NULL);
                         $var = $anzahlbewerbungen[0]['#Bewerbung'];
                         $var++;
                         
@@ -340,6 +340,10 @@
             );
             
             $this->seminar_model->bewerbung_loeschen($data['seminar'][0]['SeminarID'], $this->session->userdata('user_email'));
+            $anzahlbewerbungen = $this->seminar_model->get_anzahl_bewerbungen($this->session->userdata('user_email'));
+            $var = $anzahlbewerbungen[0]['#Bewerbung'];
+            $var--;  
+            $this->seminar_model->bewerbungen_verkleinern($this->session->userdata('user_email'), $var);
             $this->user_model->add_log($this->session->userdata('user_email'), 4, $data['seminar'][0]['SeminarName']);
 
             redirect('startseite_student');

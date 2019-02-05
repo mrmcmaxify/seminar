@@ -27,12 +27,13 @@
         }
 
         //Gibt alle Seminare aus, auf die sich ein bestimmter Student beworben hat
-        public function get_seminare_beworben1($email, $bama){
+        public function get_seminare_beworben1($email, $bama, $semester){
             $this->db->select('*');
             $this->db->from('seminarbewerbung');
             $this->db->join('seminar', 'seminarbewerbung.SeminarID = seminar.SeminarID', 'inner');
             $this->db->where('E-Mail', $email);
             $this->db->where('seminar.BA/MA', $bama);
+            $this->db->where('seminar.Semester', $semester);
             $this->db->order_by('Seminarname', 'DESC');
             $query = $this->db->get();
             return $query->result_array();
@@ -87,7 +88,7 @@
         }
 
         //Gibt alle Seminare aus, auf die sich ein bestimmter Student noch nicht beworben hat
-        public function get_seminare_not_beworben($email, $bama){
+        public function get_seminare_not_beworben($email, $bama, $semester){
 
             $emails = [];
             $query1 = $this->db->select('SeminarID')->where('E-Mail', $email)->get('seminarbewerbung')->result_array();
@@ -103,6 +104,7 @@
             if(!empty($emails)){
                 $this->db->where_not_in('SeminarID',$emails);
                 $this->db->where('BA/MA',$bama);
+                $this->db->where('Semester',$semester);
             }
             $query2 = $this->db->get('seminar');
             return $query2->result_array();
@@ -120,12 +122,13 @@
         }
 
         //gibt Seminare zurück, die vom Lehrstuhl zugesagt worden sind
-        public function get_seminare_angemeldet($email, $bama){
+        public function get_seminare_angemeldet($email, $bama, $semester){
             $this->db->select('*');
             $this->db->from('seminarbewerbung');
             $this->db->join('seminar', 'seminarbewerbung.SeminarID = seminar.SeminarID', 'inner');
             $this->db->where('E-Mail', $email);
             $this->db->where('seminar.BA/MA', $bama);
+            $this->db->where('seminar.Semester', $semester);
             $this->db->where('Eingeladen', 1);
             $this->db->where('ZugesagtAm', '0000-00-00');
             $this->db->order_by('Seminarname', 'DESC');
@@ -171,12 +174,13 @@
         }
 
          //gibt Seminare zurück, die vom Lehrstuhl zugesagt worden sind
-         public function get_seminare_zugesagt($email, $bama){
+         public function get_seminare_zugesagt($email, $bama, $semester){
             $this->db->select('*');
             $this->db->from('seminarzuteilung');
             $this->db->join('seminar', 'seminarzuteilung.SeminarID = seminar.SeminarID', 'inner');
             $this->db->where('E-Mail', $email);
             $this->db->where('seminar.BA/MA', $bama);
+            $this->db->where('seminar.Semester', $semester);
             $this->db->order_by('Seminarname', 'DESC');
             $query = $this->db->get();
             return $query->result_array();
@@ -287,6 +291,14 @@
             if($query->num_rows() > 0){
                 return $query->row();
             }
+
+        }
+
+        //Gibt das aktuelle Semester zurück
+        public function getCurSemester1($date){
+            $query = $this->db->where('ende >=', $date)->where('anfang <=', $date)->get('semesterzeiten');
+            
+            return $query->result_array();
 
         }
 
