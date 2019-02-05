@@ -128,6 +128,7 @@
             $this->db->join('seminar', 'seminarbewerbung.SeminarID = seminar.SeminarID', 'inner');
             $this->db->where('E-Mail', $email);
             $this->db->where('seminar.BA/MA', $bama);
+            $this->db->where('seminar.Semester', $semester);
             $this->db->where('Eingeladen', 1);
             $this->db->where('ZugesagtAm', '0000-00-00');
             $this->db->order_by('Seminarname', 'DESC');
