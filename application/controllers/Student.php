@@ -10,7 +10,7 @@
 			if($this->session->userdata('rolle') == 'student' && $this->session->userdata('logged_in') == true && $loginsperre == 2){
 			}
 			elseif($this->session->userdata('logged_in') == true){
-				redirect('users/logout');
+				redirect('users/logout', $message);
 			}
 			else{
 				redirect('users/login');
@@ -19,7 +19,7 @@
 
         //Aufruf der Startseite vom Student
 		public function startseite_student(){
-			$this->load->view('templates/header');
+            $this->load->view('templates/header');
             $this->load->view('pages/startseite_student');
 			$this->load->view('templates/footer');
         }
@@ -488,5 +488,13 @@
             }
             
         }
+         //Daten ändern anzeigen
+         public function daten_aendern(){
+
+
+                $this->load->view('templates/header');
+                $this->load->view('pages/daten_aendern');
+                $this->load->view('templates/footer');
+         }
 
     }
