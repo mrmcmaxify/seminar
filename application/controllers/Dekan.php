@@ -65,6 +65,21 @@
 		}
 		//Trägt Studenten in Seminarzuweisung-Tabelle ein
 		public function zuweisen(){
+			$fristname = 'Zuteilungsphase';
+            $von = $this->Fristen_model->get_frist_start($fristname);
+            $frist_start = $von['0'];
+            $startdatum = $frist_start['Von'];
+            $bis = $this->Fristen_model->get_frist_ende($fristname);
+            $frist_ende = $bis['0'];
+            $enddatum = $frist_ende['Bis'];
+            $heute = date("Y-m-d");
+            if ( (($heute < $startdatum) || ($heute > $enddatum))) {
+                $this->load->view('templates/header');
+                $this->load->view('pages/ausserhalb_frist');
+                $this->load->view('templates/footer');
+           
+			}
+			else{
 			$email=$this->input->post('E-Mail');
 			$id=$this->input->post('SeminarID');
 			$lehrstuhlname=$this->input->post('LehrstuhlName');
@@ -93,6 +108,7 @@
 
 				$this->session->set_flashdata('zugewiesen_nicht', 'Konnte nicht zuweisen, bitte Admin kontaktieren!');
 			}
+		}
 
 
 
