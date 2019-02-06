@@ -1,4 +1,4 @@
-<?php echo "Wollen Sie sich wirklich diese Seminarbewerbung rückgängig machen? " ?>
+<?php echo "Wollen Sie wirklich diese Seminarbewerbung rückgängig machen? " ?>
 <h3> <b><?php// echo $beschreibung;?></b> </h3>
 </br>
 </br>

@@ -1,12 +1,13 @@
 <?php  
     class User_model extends CI_Model{
-        public function register($enc_password, $filename){
+        public function register($enc_password, $filename, $hash){
             //User data array(benutzeraccount)
             $data = array(
                 'e-mail' => $this->input->post('e-mail'),
                 'passwort' => $enc_password,
                 'rolle' => "student",
-                'Loginsperre' => '2'
+                'Loginsperre' => '1',
+                'Hash' => $hash
 
             );
             
@@ -195,5 +196,27 @@
                     'Loginversuch' => $versuch
                 );
                 $this->db->where('E-Mail', $email)->update('benutzeraccount', $data);
+            }
+
+            //Verifizierung
+            public function verify($email, $hash){
+                $this->db->select('*');
+                $this->db->from('benutzeraccount');
+                $this->db->where('E-Mail', $email);
+                $this->db->where('Hash', $hash);
+                $query=$this->db->get();
+                if(empty($query->row_array())){
+                    return false;
+                }else{
+                    return true;
+                }
+        
+            }
+
+            public function verify1($email, $hash){
+                $data = array(
+                    'Loginsperre' => 2                  
+                );
+                $this->db->where('E-Mail', $email)->where('Hash', $hash)->update('benutzeraccount', $data);
             }
 }

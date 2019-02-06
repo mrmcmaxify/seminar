@@ -46,9 +46,15 @@
                 //Encrypt password
                 $enc_password = md5($this->input->post('password'));
 
+                //E-Mail-Verifikation
+                $hash = md5( rand(0,1000) ); // Generate random 32 character hash and assign it to a local variable.
+                // Example output: f4552671f8909587cf485ea990207f3b
+
                 //Empfänger E-Mail
                 $email = $this->input->post('e-mail');
 
+                //Empfänger-Passwort
+                $password = $this->input->post('password');
                 
                 //File Upload
                 $config['upload_path']          = './uploads/';                
@@ -73,16 +79,28 @@
                         $data = array('upload_data' => $this->upload->data());
                         
                         //Aufruf register methode
-                        $this->user_model->register($enc_password, $filename);
+                        $this->user_model->register($enc_password, $filename, $hash);
 
-                        //Verifizierung der E-Mail
-                        $receiver_email= $email;
-                        $subject='Verifizierung der E-Mail-Adresse';
-                        $message = 'Thank you for registering to Seminarplatzvergabesystem.
-                        Please click the following link to proceed to the Questionnaire https://132.231.36.202/seminar/users/login';
+                        $to      = $email; // Send email to our user
+                        $subject = 'Signup | Verification'; // Give the email a subject 
+                        $message = '
+
+                        Thanks for signing up!
+                        Your account has been created, you can login with the following credentials after you have activated your account by pressing the url below.
+
+                        ------------------------
+                        Username: '.$email.'
                         
+                        ------------------------
 
-						$this->Send_Mail($receiver_email, $subject, $message);
+                        Please click this link to activate your account:
+                        https://132.231.36.202/seminar/users/verify/?email='.$email.'&hash='.$hash.'
+
+                        '; // Our message above including the link
+                                    
+
+                        //mail($to, $subject, $message, $headers); // Send our email
+                        $this->Send_Mail($to, $subject, $message);
 
                         //Set confirm message
                         $this->session->set_flashdata('user_registered', 'Sie sind jetzt registriert und können nun Ihren Accont per Mail verifizieren!');
@@ -680,6 +698,37 @@
             $this->load->view('templates/footer');
         }
 
+        public function verify(){
 
+            $data['title']= 'verify';
+            $this->load->view('templates/header');
+            $this->load->view('users/verify', $data);
+            $this->load->view('templates/footer');
+        }
+
+        public function verify1(){
+
+            $data['title']= 'verify';
+            $hash=$this->input->post('Hash');
+            $email=$this->input->post('Email');
+
+
+            $register = $this->user_model->verify($email, $hash);
+
+
+            if ($register === FALSE){
+                $this->load->view('templates/header');
+                $this->load->view('users/verify_denied', $data);
+                $this->load->view('templates/footer');
+            }
+            else{
+                $this->user_model->verify1($email, $hash);
+                $this->load->view('templates/header');
+                $this->load->view('users/verify_accepted', $data);
+                $this->load->view('templates/footer');
+            }
+        }
+
+      
     }
 
