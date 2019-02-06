@@ -106,7 +106,7 @@
 
 			}else{
 
-				$this->session->set_flashdata('zugewiesen_nicht', 'Konnte nicht zuweisen, bitte Admin kontaktieren!');
+				$this->session->set_flashdata('zugewiesen_nicht', 'Konnte nicht zuweisen, bitte Admin kontaktieren admin@uni-passau.de!');
 			}
 		}
 
@@ -386,11 +386,11 @@
 					}
 	
 					else{
-						$this->session->set_flashdata('reset_failed', 'Bei dem Löschen der Daten trat ein Fehler auf! Bitte kontaktieren Sie den Administrator. Error: '.$error);
+						$this->session->set_flashdata('reset_failed', 'Bei dem Löschen der Daten trat ein Fehler auf! Bitte kontaktieren Sie den Administrator admin@uni-passau.de. Error: '.$error);
 						redirect('dekan/startseite_dekan');
 					}
 				}else{
-					$this->session->set_flashdata('save_failed', 'Speicherung der Statistik fehlgeschlagen! Daten wurden nicht gelöscht. Bitte kontaktieren Sie den Administrator.  Error: '.$error);
+					$this->session->set_flashdata('save_failed', 'Speicherung der Statistik fehlgeschlagen! Daten wurden nicht gelöscht. Bitte kontaktieren Sie den Administrator admin@uni-passau.de.  Error: '.$error);
 					redirect('dekan/startseite_dekan');
 				}
 				
