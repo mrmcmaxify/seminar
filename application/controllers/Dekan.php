@@ -75,7 +75,7 @@
             $heute = date("Y-m-d");
             if ( (($heute < $startdatum) || ($heute > $enddatum))) {
                 $this->load->view('templates/header');
-                $this->load->view('pages/ausserhalb_frist');
+                $this->load->view('pages/ausserhalb_frist_dekan');
                 $this->load->view('templates/footer');
            
 			}
