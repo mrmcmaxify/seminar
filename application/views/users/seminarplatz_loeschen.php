@@ -1,5 +1,5 @@
 
-<h4>In aktueller Phase zugewiesene Seminare</h4>
+<h4>In aktueller Phase zugewiesene Studenten</h4>
 <table class="table">
   <thead class="thead-dark">
     <tr>

@@ -2,11 +2,17 @@
 
     class Lehrstuhl extends CI_Controller{
         function __construct(){
-			parent::__construct();
-			if($this->session->userdata('rolle') == 'lehrstuhl' && $this->session->userdata('logged_in') == true){
+            parent::__construct();
+            $email=$_SESSION['user_email'];
+            $sperre = $this->user_model->get_loginsperre($email);
+            $get_sperre = $sperre['0'];
+            $loginsperre = $get_sperre['Loginsperre'];
+
+			if($this->session->userdata('rolle') == 'lehrstuhl' && $this->session->userdata('logged_in') == true && $loginsperre == 2){
 			}
 			elseif($this->session->userdata('logged_in') == true){
-				redirect('users/logout');
+
+				redirect('users/logout', $message);
 			}
 			else{
 				redirect('users/login');
@@ -15,9 +21,6 @@
 
 		//Seminar anlegen - Semesterüberprüfung nocht nicht geschehen
         public function seminaranlegen(){
-           // $zustimmung=$this->input->post('Zustimmen');
-            //var_dump($zustimmung);
-
             $data['title']= 'Seminar anlegen';
             $data['semester'] = $this->Fristen_model->getAllSemester();
 
@@ -253,6 +256,11 @@
             // Seminar-ID aufnehmen
             $seminarid=$this->input->post('SeminarID');
 
+            // Seminarname abfragen
+            $name = $this->Seminarvergabe_model->get_seminarname($seminarid);
+            $get_name = $name['0'];
+            $seminarname = $get_name['SeminarName'];
+
             // Frist prüfen
             $fristname = '1. Auswahlphase';
             $von = $this->Fristen_model->get_frist_start($fristname);
@@ -281,6 +289,7 @@
 
                 'seminarbewerbung'=>$this->Seminarvergabe_model->get_seminarbewerbung_seminarid($email, $seminarid),
                 'seminarid'=>$seminarid,
+                'seminarname'=>$seminarname,
 
 
 
@@ -373,9 +382,7 @@
 
 
         }
-        public function vergebene_seminarplaetze_anzeigen(){
-           
-        }
+
 
         public function seminar_loeschen_anzeigen(){
             $fristname = 'Anmeldephase';

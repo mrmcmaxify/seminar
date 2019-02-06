@@ -17,14 +17,16 @@
   <tbody>
     <?php 
       $test = $this->seminar_model->get_bama($this->session->userdata('user_email'));
-    
-      $data = $this->seminar_model->get_seminare_beworben1($this->session->userdata('user_email'),$test[0]['BA/MA']);
+      $heute = date("Y-m-d");
+      $semester = $this->seminar_model->getCurSemester1($heute);
+      
+      $data = $this->seminar_model->get_seminare_beworben1($this->session->userdata('user_email'),$test[0]['BA/MA'], $semester[0]['bezeichnung'] );
       //var_dump($data);
-      $data1 = $this->seminar_model->get_seminare_not_beworben($this->session->userdata('user_email'),$test[0]['BA/MA']);
+      $data1 = $this->seminar_model->get_seminare_not_beworben($this->session->userdata('user_email'),$test[0]['BA/MA'], $semester[0]['bezeichnung']);
       //var_dump($data1);
-      $data2 = $this->seminar_model->get_seminare_angemeldet($this->session->userdata('user_email'),$test[0]['BA/MA']);    
+      $data2 = $this->seminar_model->get_seminare_angemeldet($this->session->userdata('user_email'),$test[0]['BA/MA'], $semester[0]['bezeichnung']);    
       //var_dump($data2);
-      $data3 = $this->seminar_model->get_seminare_zugesagt($this->session->userdata('user_email'),$test[0]['BA/MA']);    
+      $data3 = $this->seminar_model->get_seminare_zugesagt($this->session->userdata('user_email'),$test[0]['BA/MA'], $semester[0]['bezeichnung']);    
       //var_dump($data);
      foreach ($data1 as $seminare) :
       ?>
@@ -38,7 +40,7 @@
       <?php echo form_close(); ?>
       </td>
       <td>
-      <?php echo form_open('student/bewerbung_hinzufuegen'); ?>
+      <?php echo form_open('student/bewerbung_hinzufuegen2'); ?>
       <input type="hidden" name="SeminarID" value="<?php echo $seminare['SeminarID']; ?>">
       <input type="hidden" name="Beschreibung" value="<?php echo $seminare['Beschreibung']; ?>">
       <input type="hidden" name="MSNotwendig" value="<?php echo $seminare['MSNotwendig']; ?>">

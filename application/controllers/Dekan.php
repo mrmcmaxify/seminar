@@ -4,7 +4,11 @@
 		//Zeigt Startseite des Dekans an
 		function __construct(){
 			parent::__construct();
-			if($this->session->userdata('rolle') == 'dekan' && $this->session->userdata('logged_in') == true){
+			$email=$_SESSION['user_email'];
+            $sperre = $this->user_model->get_loginsperre($email);
+            $get_sperre = $sperre['0'];
+            $loginsperre = $get_sperre['Loginsperre'];
+			if($this->session->userdata('rolle') == 'dekan' && $this->session->userdata('logged_in') == true && $loginsperre == 2){
 			}
 			elseif($this->session->userdata('logged_in') == true){
 				redirect('users/logout');
@@ -259,7 +263,7 @@
             $heute = date("Y-m-d");
             if (!($heute>$enddatum) ) {
                 $this->load->view('templates/header');
-                $this->load->view('pages/ausserhalb_frist');
+                $this->load->view('pages/ausserhalb_frist_dekan');
                 $this->load->view('templates/footer');
             }
             else {

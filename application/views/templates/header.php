@@ -34,6 +34,7 @@
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>admin/add_user">Benutzer hinzufügen</a>
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>admin/search_user">Benutzer bearbeiten</a>
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>admin/semesterzeiten_anzeigen">Semesterzeiten bearbeiten</a>
+      <a class="nav-item nav-link" href="<?php echo base_url(); ?>admin/studiengang_anzeigen">Studiengänge bearbeiten</a>
       <a class="nav-item nav-link" href="<?php echo base_url(); ?>admin/search_log">Log anzeigen</a>
       
       <?php endif; ?>
@@ -46,8 +47,8 @@
       <?php endif; ?>
       <!-- Rollennavbar Student -->
       <?php if($this->session->userdata('rolle')==='student') : ?>
-      <a class="nav-item nav-link" href="<?php echo base_url(); ?>startseite_student">Startseite</a>
-      <a class="nav-item nav-link" href="<?php echo base_url(); ?>daten_aendern">Daten ändern</a>
+      <a class="nav-item nav-link" href="<?php echo base_url(); ?>student/startseite_student">Startseite</a>
+      <a class="nav-item nav-link" href="<?php echo base_url(); ?>student/daten_aendern">Daten ändern</a>
       <?php endif; ?>
 
       
@@ -172,4 +173,25 @@
 <?php endif; ?>
 <?php if($this->session->flashdata('user_is_locked')): ?>
   <?php echo '<p class="alert alert-danger">'.$this->session->flashdata('user_is_locked').'</p>'; ?>
+<?php endif; ?>
+<?php if($this->session->flashdata('studiengang_success')): ?>
+  <?php echo '<p class="alert alert-success">'.$this->session->flashdata('studiengang_success').'</p>'; ?>
+<?php endif; ?>
+<?php if($this->session->flashdata('studiengang_fail')): ?>
+  <?php echo '<p class="alert alert-danger">'.$this->session->flashdata('studiengang_fail').'</p>'; ?>
+<?php endif; ?>
+<?php if($this->session->flashdata('sstudiengang_deleted')): ?>
+  <?php echo '<p class="alert alert-success">'.$this->session->flashdata('studiengang_deleted').'</p>'; ?>
+<?php endif; ?>
+<?php if($this->session->flashdata('studiengang_deleted_failed')): ?>
+  <?php echo '<p class="alert alert-danger">'.$this->session->flashdata('studiengang_deleted_failed').'</p>'; ?>
+<?php endif; ?>
+<?php if($this->session->flashdata('user_is_locked_pw')): ?>
+  <?php echo '<p class="alert alert-danger">'.$this->session->flashdata('user_is_locked_pw').'</p>'; ?>
+<?php endif; ?>
+<?php if($this->session->flashdata('user_lock_warning')): ?>
+  <?php echo '<p class="alert alert-warning">'.$this->session->flashdata('user_lock_warning').'</p>'; ?>
+<?php endif; ?>
+<?php if($this->session->flashdata('user_locked_pw')): ?>
+  <?php echo '<p class="alert alert-danger">'.$this->session->flashdata('user_locked_pw').'</p>'; ?>
 <?php endif; ?>

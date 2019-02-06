@@ -15,3 +15,18 @@
 
 
 <?php echo form_close(); ?>
+
+
+
+
+<?php echo form_open('users/passwort_vergessen1'); ?>
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+
+            
+            <button type="submit"  class="btn btn-link">Passwort vergessen</button>
+        </div>
+    </div>
+
+
+<?php echo form_close(); ?>
