@@ -73,6 +73,12 @@
             );
             $this->db->where('E-Mail', $email);
             $this->db->update('student', $data1);
+
+            $data3 = array(
+                'ZugesagtAm' => date("Y-m-d"),
+            );
+            $this->db->where('E-Mail', $email);
+            $this->db->update('seminarbewerbung', $data3);
             return true;
 
         }
