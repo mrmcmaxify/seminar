@@ -232,17 +232,8 @@
 			if($this->student_model->zuweisen_durch_lehrstuhl($email, $id, $fristid)){
 				
 				$this->session->set_flashdata('zugewiesen', 'Zuweisung erfolgreich!');
-				
-                $email=$_SESSION['user_email'];
-                $data= array(
-                    
-                    'seminar'=>$this->Seminarvergabe_model->get_seminare($email),
-    
-                );
-
-				$this->load->view('templates/header');
-				$this->load->view('pages/startseite_lehrstuhl', $data);
-				$this->load->view('templates/footer');
+               
+                $this->verteilen_anzeigen();
 
 			}else{
 
@@ -363,17 +354,7 @@
 				
 				$this->session->set_flashdata('entfernt', 'Zuweisung erfolgreich entfernt!');
 				
-                $email=$_SESSION['user_email'];
-                $data= array(
-                    
-                    'seminar'=>$this->Seminarvergabe_model->get_seminare($email),
-    
-                );
-
-				$this->load->view('templates/header');
-				$this->load->view('pages/startseite_lehrstuhl', $data);
-				$this->load->view('templates/footer');
-
+                $this->verteilen_anzeigen();
 			}else{
 
 				$this->session->set_flashdata('zugewiesen_nicht_entfernt', 'Konnte Zuweisung nicht aufheben, bitte Admin kontaktieren!');

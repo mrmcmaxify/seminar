@@ -38,7 +38,7 @@
             $query=$this->db->get();
             return $query->result_array();
          }
-         // Liefert das ausgewählte Seminar
+         // Liefert den Startzeitpunkt eines Semesters
          public function get_semesteranfang($bezeichnung){
             $this->db->select('anfang');
             $this->db->from('semesterzeiten');
