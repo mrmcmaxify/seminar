@@ -103,7 +103,7 @@
                         $this->Send_Mail($to, $subject, $message);
 
                         //Set confirm message
-                        $this->session->set_flashdata('user_registered', 'Sie sind jetzt registriert und können nun Ihren Accont per Mail verifizieren!');
+                        $this->session->set_flashdata('user_registered', 'Sie sind jetzt registriert und können nun Ihren Acount per Mail verifizieren!');
 
                         redirect('startseite');
 
