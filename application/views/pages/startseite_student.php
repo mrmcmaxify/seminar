@@ -98,7 +98,7 @@
 
 </br></br>
 
-<h4>Angemeldete Seminare: </h4>
+<h4>Seminareinladungen: </h4>
 <p>  Annahme/Ablehnung in der 1. Annahmephase von <?php echo $zeiten[2]['Von'] ?> bis <?php echo $zeiten[2]['Bis']; ?>, sowie in der 2.Annahmephase von <?php echo $zeiten[4]['Von'] ?> bis <?php echo $zeiten[4]['Bis']; ?> möglich </p>
 <table class="table">
   <thead class="thead-dark">
