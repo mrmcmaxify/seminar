@@ -24,7 +24,7 @@
   </tbody>
 </table>
 
-<h4>Neues Semester anlegen:</h4>
+<h4>Neuen Studiengang anlegen:</h4>
 
 <?php echo validation_errors(); ?>
 
