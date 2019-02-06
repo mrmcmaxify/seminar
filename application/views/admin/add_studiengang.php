@@ -3,7 +3,7 @@
   <thead class="thead-dark">
     <tr>
       <th scope="col">Studiengang</th>
-      
+      <th scope="col">Aktionen</th>
       
     </tr>
   </thead>
@@ -11,12 +11,12 @@
     <?php foreach ($studiengang as $stud) : ?>
     <tr>
       <th scope="row"> <?php echo $stud['Name']; ?> </th>
-      <td>
+      <th>
       <?php echo form_open('admin/delete_studiengang_index'); ?>
       <input type="hidden" name="bezeichnung" value="<?php echo $stud['Name']; ?>">
       <button type="submit" class="btn btn-primary">Löschen</button>
       <?php echo form_close(); ?>
-      </td>
+      </th>
       
       
     </tr>

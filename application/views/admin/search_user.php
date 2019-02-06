@@ -11,7 +11,7 @@
       <th scope="col">Benutzerrolle</th>
       <th scope="col">Loginsperre</th>
       <th scope="col">Registriert seit</th>
-      <th scope="col">Funktionen</th>
+      <th scope="col">Aktionen</th>
 
     </tr>
   </thead>
