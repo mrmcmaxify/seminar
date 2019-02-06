@@ -240,6 +240,20 @@
 
 
         public function bewerbung_loeschen(){
+            $fristname = 'Anmeldephase';
+            $von = $this->Fristen_model->get_frist_start($fristname);
+            $frist_start = $von['0'];
+            $startdatum = $frist_start['Von'];
+            $bis = $this->Fristen_model->get_frist_ende($fristname);
+            $frist_ende = $bis['0'];
+            $enddatum = $frist_ende['Bis'];
+            $heute = date("Y-m-d");
+            if ( ($heute < $startdatum) || ($heute > $enddatum) ) {
+                $this->load->view('templates/header');
+                $this->load->view('pages/ausserhalb_frist_student');
+                $this->load->view('templates/footer');
+            }
+            else{
             $data=array(
                 'seminarid'=>$this->input->post('SeminarID'),
                 'beschreibung'=>$this->input->post('Beschreibung'),
@@ -250,6 +264,7 @@
             $this->load->view('templates/header');
             $this->load->view('users/bewerbung_loeschen', $data);
             $this->load->view('templates/footer');
+        }
 
         }
 
