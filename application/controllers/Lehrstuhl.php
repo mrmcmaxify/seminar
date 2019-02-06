@@ -229,29 +229,6 @@
             $getid = $get['0'];
             $fristid = $getid['ID'];
 
-			if($this->student_model->zuweisen_durch_lehrstuhl($email, $id, $fristid)){
-				
-				$this->session->set_flashdata('zugewiesen', 'Zuweisung erfolgreich!');
-               
-                $this->verteilen_anzeigen();
-
-			}else{
-
-				$this->session->set_flashdata('zugewiesen_nicht', 'Konnte nicht zuweisen, bitte Admin kontaktieren!');
-            }
-        
-
-		}
-
-		public function verteilen_anzeigen(){
-            // Seminar-ID aufnehmen
-            $seminarid=$this->input->post('SeminarID');
-
-            // Seminarname abfragen
-            $name = $this->Seminarvergabe_model->get_seminarname($seminarid);
-            $get_name = $name['0'];
-            $seminarname = $get_name['SeminarName'];
-
             // Frist prüfen
             $fristname = '1. Auswahlphase';
             $von = $this->Fristen_model->get_frist_start($fristname);
@@ -274,7 +251,32 @@
                
            
             }
-            else {
+
+			elseif($this->student_model->zuweisen_durch_lehrstuhl($email, $id, $fristid)){
+				
+				$this->session->set_flashdata('zugewiesen', 'Zuweisung erfolgreich!');
+               
+                $this->verteilen_anzeigen();
+
+			}else{
+
+				$this->session->set_flashdata('zugewiesen_nicht', 'Konnte nicht zuweisen, bitte Admin kontaktieren!');
+            }
+        
+
+		}
+
+		public function verteilen_anzeigen(){
+            // Seminar-ID aufnehmen
+            $seminarid=$this->input->post('SeminarID');
+
+            // Seminarname abfragen
+            $name = $this->Seminarvergabe_model->get_seminarname($seminarid);
+            $get_name = $name['0'];
+            $seminarname = $get_name['SeminarName'];
+
+            
+            
             $email=$_SESSION['user_email'];
             $data= array(
 
@@ -322,7 +324,7 @@
 			$this->load->view('users/seminarplaetze_anzeigen', $data);
 			
             $this->load->view('templates/footer');
-        }
+        
 
         }
         
@@ -348,9 +350,31 @@
 
         public function loeschen(){
 			$email=$this->input->post('E-Mail');
-			$id=$this->input->post('SeminarID');
+            $id=$this->input->post('SeminarID');
+            // Frist prüfen
+            $fristname = '1. Auswahlphase';
+            $von = $this->Fristen_model->get_frist_start($fristname);
+            $frist_start = $von['0'];
+            $startdatum = $frist_start['Von'];
+            $bis = $this->Fristen_model->get_frist_ende($fristname);
+            $frist_ende = $bis['0'];
+            $enddatum = $frist_ende['Bis'];
+            $fristname2 = '2. Auswahlphase';
+            $von2 = $this->Fristen_model->get_frist_start($fristname2);
+            $frist_start2 = $von2['0'];
+            $startdatum2 = $frist_start2['Von'];
+            $bis2 = $this->Fristen_model->get_frist_ende($fristname2);
+            $frist_ende2 = $bis2['0'];
+            $enddatum2 = $frist_ende2['Bis'];
+            $heute = date("Y-m-d");
+            if ( (($heute < $startdatum) || ($heute > $enddatum)) && (($heute < $startdatum2) || ($heute > $enddatum2)) ) {
+                $this->load->view('templates/header');
+                $this->load->view('pages/ausserhalb_frist');
+               
+           
+            }
 
-			if($this->Seminarvergabe_model->zuteilung_entfernen($email,$id)){
+			elseif($this->Seminarvergabe_model->zuteilung_entfernen($email,$id)){
 				
 				$this->session->set_flashdata('entfernt', 'Zuweisung erfolgreich entfernt!');
 				
