@@ -258,7 +258,7 @@
                         if($versuch==4){
                             $this->session->set_flashdata('user_lock_warning', 'Bei der nächsten, falschen Passworteingabe wird Ihr Account gesperrt!.');
                             $this->user_model->lock_user($email);
-                            $this->session->set_flashdata('user_locked_pw', 'Sie haben Ihr Passwort zu oft falsch eingegeben. Ihr Benutzeraccount wurde gesperrt. Bitte wenden Sie sich an den Administrator.');
+                            $this->session->set_flashdata('user_locked_pw', 'Sie haben Ihr Passwort zu oft falsch eingegeben. Ihr Benutzeraccount wurde gesperrt. Bitte wenden Sie sich an den Administrator admin@uni-passau.de.');
                             
                         }
 
@@ -330,16 +330,16 @@
                 }
                 elseif($versuch>3){
                     $this->user_model->lock_user($email);
-                    $this->session->set_flashdata('user_locked_pw', 'Sie haben Ihr Passwort zu oft falsch eingegeben. Ihr Benutzeraccount wurde gesperrt. Bitte wenden Sie sich an den Administrator.');
+                    $this->session->set_flashdata('user_locked_pw', 'Sie haben Ihr Passwort zu oft falsch eingegeben. Ihr Benutzeraccount wurde gesperrt. Bitte wenden Sie sich an den Administrator admin@uni-passau.de.');
                     redirect('users/login');
                 }
                 else{
-                    $this->session->set_flashdata('user_is_locked_pw', 'Ihr Benutzeraccount ist gesperrt, da Sie das Passwort zu oft eingegeben haben. Bitte wenden Sie sich an den Administrator.');
+                    $this->session->set_flashdata('user_is_locked_pw', 'Ihr Benutzeraccount ist gesperrt, da Sie das Passwort zu oft eingegeben haben. Bitte wenden Sie sich an den Administrator admin@uni-passau.de.');
                 redirect('users/login');
                 }
                 
             }else{
-                $this->session->set_flashdata('user_is_locked', 'Diese E-Mail existiert nicht im System oder Ihr Benutzeraccount ist gesperrt. Bitte wenden Sie sich an den Administrator.');
+                $this->session->set_flashdata('user_is_locked', 'Diese E-Mail existiert nicht im System oder Ihr Benutzeraccount ist gesperrt. Bitte wenden Sie sich an den Administrator admin@uni-passau.de.');
                 redirect('users/login');
             }
 
