@@ -21,9 +21,6 @@
 
 		//Seminar anlegen - Semesterüberprüfung nocht nicht geschehen
         public function seminaranlegen(){
-           // $zustimmung=$this->input->post('Zustimmen');
-            //var_dump($zustimmung);
-
             $data['title']= 'Seminar anlegen';
             $data['semester'] = $this->Fristen_model->getAllSemester();
 
