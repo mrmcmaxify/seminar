@@ -24,7 +24,7 @@
       <th scope="row"> <?php echo $logs['E-Mail']; ?> </th>
       <td><?php echo $logs['Event-id']; ?></td>
       <td><?php echo $logs['Aktion'];?></td>
-      <td><?php echo $logs['Seminargit'];?></td>
+      <td><?php echo $logs['Seminar'];?></td>
       <td><?php echo $logs['Zeitpunkt'];?></td>
     </tr>
 <?php endforeach; ?>
