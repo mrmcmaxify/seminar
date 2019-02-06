@@ -148,7 +148,7 @@
         }
 
         //erhöht die Anzahl der #Bewerbungen des Studenten
-        public function bewerbungen_verkleinern($email, $anzahl){
+        public function bewerbungen_v($email, $anzahl){
 
             $data =array(
                 '#Bewerbung' => $anzahl
