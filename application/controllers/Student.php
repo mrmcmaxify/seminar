@@ -286,7 +286,7 @@
             $var = $anzahlbewerbungen[0]['#Bewerbung'];
             $var--;  
             $this->seminar_model->bewerbungen_verkleinern($this->session->userdata('user_email'), $var);
-            $this->user_model->add_log($data['beschreibung'], 2, $data3['seminar'][0]['SeminarName']);
+            $this->user_model->add_log($data['e-mail'], 2, $data3['seminar'][0]['SeminarName']);
 
             redirect('startseite_student');
             
