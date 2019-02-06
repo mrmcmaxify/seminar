@@ -162,6 +162,9 @@
 
             public function delete_user_student($email){
                 $this->db->where('E-Mail', $email)->delete('student');
+                $this->db->where('E-Mail', $email)->delete('seminarbewerbung');
+                $this->db->where('E-Mail', $email)->delete('seminarzuteilung');
+                $this->db->where('E-Mail', $email)->delete('teilnehmer');
             }
 
             public function delete_user_lehrstuhl($email){
