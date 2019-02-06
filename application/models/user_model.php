@@ -16,7 +16,6 @@
                 'e-mail' => $this->input->post('e-mail'),
                 'vorname' => $this->input->post('vorname'),
                 'name' => $this->input->post('name'),
-                'studiengang' => $this->input->post('studiengang'),
                 'fachsemester' => $this->input->post('fachsemester'),
                 'ba/ma' => $this->input->post('ba/ma'),
                 'ects' => $this->input->post('ects'),
@@ -25,7 +24,6 @@
 
             //insert user(benutzeraccount)
             $this->db->insert('benutzeraccount', $data);
-            //insert user(student)
             return $this->db->insert('student', $data1);
 
            
@@ -166,12 +164,5 @@
 
             public function delete_user_dekan($email){
                 $this->db->where('E-Mail', $email)->delete('dekanat');
-            }
-
-            public function get_studiengang(){
-                $query = $this->db->get('studiengang');
-                return $query->result_array();
-
-
             }
 }
